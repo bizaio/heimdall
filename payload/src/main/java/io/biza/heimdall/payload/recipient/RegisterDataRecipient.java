@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.biza.babelfish.cdr.converters.UriStringToUriConverter;
 import io.biza.babelfish.cdr.converters.UriToUriStringConverter;
-import io.biza.heimdall.payload.common.LegalEntityDetail;
-import io.biza.heimdall.payload.enumerations.DataHolderStatusType;
 import io.biza.heimdall.payload.enumerations.DataRecipientStatusType;
 import io.biza.heimdall.payload.enumerations.IndustryType;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,10 +1,9 @@
-package io.biza.heimdall.payload.recipient;
+package io.biza.heimdall.payload.registration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.biza.heimdall.payload.enumerations.DataRecipientStatusType;
+import io.biza.heimdall.payload.enumerations.RegistrationErrorType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,18 +20,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "An individual software product with status")
-public class DataRecipientStatus {
-  
-  @JsonProperty("dataRecipientId")
+public class RegistrationError {
+
+  @JsonProperty("error")
   @NotEmpty
-  @Schema(
-      description = "Unique Data Recipient Identifier")
-  String dataRecipientId;
+  @Schema(description = "Predefined error code as described in section 3.3 OIDC Dynamic Client Registration")
+  RegistrationErrorType error;
   
-  @JsonProperty("dataRecipientStatus")
-  @NotNull
-  @Schema(
-      description = "Data Recipient Status")
-  DataRecipientStatusType dataRecipientStatus;
+  @JsonProperty("error_description")
+  @NotEmpty
+  @Schema(description = "Additional text description of the error for debugging.")
+  String errorDescription;
 
 }
