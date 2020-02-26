@@ -2,6 +2,7 @@ package io.biza.heimdall.payload.registration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.biza.heimdall.payload.enumerations.RegistrationErrorType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +24,7 @@ import lombok.ToString;
 public class RegistrationError {
 
   @JsonProperty("error")
-  @NotEmpty
+  @NotNull
   @Schema(description = "Predefined error code as described in section 3.3 OIDC Dynamic Client Registration")
   RegistrationErrorType error;
   

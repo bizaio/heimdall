@@ -2,7 +2,7 @@ package io.biza.heimdall.payload.holder;
 
 import java.net.URI;
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -28,13 +28,13 @@ import lombok.ToString;
 public class RegisterDataHolderAuth {
   
   @JsonProperty("registerUType")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "The type of authentication and authorisation in use")
   RegisterAuthType registerUType;
   
   @JsonProperty("jwksEndpoint")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "JWKS endpoint for private_key_jwt client auth with Data Recipient")
   @JsonSerialize(converter = UriToUriStringConverter.class)

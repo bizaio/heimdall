@@ -2,13 +2,13 @@ package io.biza.heimdall.payload.holder;
 
 import java.net.URI;
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.biza.babelfish.cdr.converters.UriStringToUriConverter;
 import io.biza.babelfish.cdr.converters.UriToUriStringConverter;
+import io.biza.heimdall.payload.enumerations.CDRVersionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,10 +28,10 @@ import lombok.ToString;
 public class RegisterDataHolderBrandServiceEndpoint {
   
   @JsonProperty("version")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "The major version of the high level standards. This is not the version of the endpoint or the payload being requested but the version of the overall standards being applied. This version number will be \"v\" followed by the major version of the standards as a positive integer (e.g. v1, v12 or v76)")
-  String version;
+  CDRVersionType version;
   
   @Schema(
       description = "Base URI for the Data Holder's Consumer Data Standard public endpoints",

@@ -54,6 +54,11 @@ public class RegisterDataHolderBrand {
   @Schema(description = "Data Holder Status")
   DataHolderStatusType status;
   
+  @JsonProperty("endpointDetail")
+  @NotNull
+  @Schema(description = "Provides the endpoint details for the brand")
+  RegisterDataHolderBrandServiceEndpoint endpointDetail;
+  
   @JsonProperty("authDetails")
   @NotNull
   @Schema(description = "Provides details of authorisation endpoints for Data Holders")

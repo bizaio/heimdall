@@ -10,18 +10,50 @@
 	<name>Heimdall: Parent Project</name>
 	<description>The Heimdall project is intended to be a sample implementation of the Consumer Data Right register. It is currently being developed by Biza.io as part of it's DataRight Lab initiative.</description>
 	<properties>
-		<java.version>11</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
-		<babelfish-cdr.version>1.2.4</babelfish-cdr.version>
-		<swagger-core.version>2.1.1</swagger-core.version>
-		<validation-api.version>2.0.1.Final</validation-api.version>
-		<junit-jupiter.version>5.6.0-M1</junit-jupiter.version>
-		<lombok.version>1.18.10</lombok.version>
-		<maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
+        <spring-boot.version>2.2.3.RELEASE</spring-boot.version>
+        <spring-security-oauth2.version>${spring-boot.version}</spring-security-oauth2.version>
+        <spring-security-oauth2-autoconfigure.version>${spring-boot.version}</spring-security-oauth2-autoconfigure.version>
+        <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <node.version>v12.14.1</node.version>
+        <docker.image.prefix>bizaio</docker.image.prefix>
+        <npm.version>6.12.1</npm.version>
+        <swagger-core.version>2.1.1</swagger-core.version>
+        <springdoc-openapi-ui.version>1.2.25</springdoc-openapi-ui.version>
+        <springdoc-openapi-maven-plugin.version>0.2</springdoc-openapi-maven-plugin.version>
+        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
+        <babelfish-cdr.version>1.2.4</babelfish-cdr.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <lombok.version>1.18.10</lombok.version>
+        <junit-jupiter.version>5.6.0-M1</junit-jupiter.version>
+        <hibernate-validator.version>[6.1.0,)</hibernate-validator.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
+        <javax.el-api.version>3.0.0</javax.el-api.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>${maven-surefire-plugin.version}</maven-failsafe-plugin.version>
+        <slf4j-simple.version>1.7.30</slf4j-simple.version>
+        <nimbus-jose-jwt.version>8.4</nimbus-jose-jwt.version>
+        <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
+        <hibernate-core.version>5.4.10.Final</hibernate-core.version>
+        <orika.version>1.5.4</orika.version>
+        <h2.version>1.4.200</h2.version>
+        <spring-shell.version>2.0.1.RELEASE</spring-shell.version>
+        <classgraph.version>4.8.60</classgraph.version>
+        <dockerfile.skip>true</dockerfile.skip>
+        <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>        
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <github-release-maven-plugin.version>1.0.2</github-release-maven-plugin.version>
+        <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+        <skip.npm>true</skip.npm>
 	</properties>
 
 	<scm>
@@ -31,6 +63,9 @@
 	</scm>
 	<modules>
 		<module>payload</module>
+		<module>data</module>
+		<module>admin-service</module>
+		<module>register-api-service</module>
 	</modules>
 
 	<build>

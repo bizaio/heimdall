@@ -64,7 +64,7 @@ public class RegistrationProperties {
   String clientDescription;
 
   @JsonProperty("client_uri")
-  @NotEmpty
+  @NotNull
   @Schema(description = "URL string of a web page providing information about the client")
   @JsonSerialize(converter = UriToUriStringConverter.class)
   @JsonDeserialize(converter = UriStringToUriConverter.class)
@@ -83,14 +83,14 @@ public class RegistrationProperties {
   String organisationName;
 
   @JsonProperty("redirect_uris")
-  @NotEmpty
+  @NotNull
   @Schema(description = "Array of redirection URI strings for use in redirect-based flows")
   @JsonSerialize(converter = UriToUriStringConverter.class)
   @JsonDeserialize(converter = UriStringToUriConverter.class)
   List<URI> redirectUris;
 
   @JsonProperty("logo_uri")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "URL string that references a logo for the client. If present, the server SHOULD display this image to the end-user during approval")
   @JsonSerialize(converter = UriToUriStringConverter.class)
@@ -98,7 +98,7 @@ public class RegistrationProperties {
   URI logoUri;
 
   @JsonProperty("tos_uri")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "URL string that points to a human-readable terms of service document for the Software Product")
   @JsonSerialize(converter = UriToUriStringConverter.class)
@@ -106,7 +106,7 @@ public class RegistrationProperties {
   URI tosUri;
 
   @JsonProperty("policy_uri")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "URL string that points to a human-readable policy document for the Software Product")
   @JsonSerialize(converter = UriToUriStringConverter.class)
@@ -114,7 +114,7 @@ public class RegistrationProperties {
   URI policyUri;
 
   @JsonProperty("jwks_uri")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "URL string referencing the client JSON Web Key (JWK) Set [RFC7517] document, which contains the client public keys")
   @JsonSerialize(converter = UriToUriStringConverter.class)
@@ -122,7 +122,7 @@ public class RegistrationProperties {
   URI jwksUri;
 
   @JsonProperty("revocation_uri")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "URI string that references the location of the Software Product consent revocation endpoint")
   @JsonSerialize(converter = UriToUriStringConverter.class)
@@ -130,23 +130,23 @@ public class RegistrationProperties {
   URI revocationUri;
 
   @JsonProperty("token_endpoint_auth_method")
-  @NotEmpty
+  @NotNull
   @Schema(description = "The requested authentication method for the token endpoint")
   ClientAuthenticationMethodType tokenEndpointAuthMethod;
 
   @JsonProperty("token_endpoint_auth_signing_alg")
-  @NotEmpty
+  @NotNull
   @Schema(description = "The algorithm used for signing the JWT")
   JWSSigningAlgorithmType tokenEndpointAuthSigningAlgorithm;
 
   @JsonProperty("grant_types")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "Array of OAuth 2.0 grant type strings that the client can use at the token endpoint")
   List<List<OIDCGrantType>> grantTypes;
 
   @JsonProperty("response_types")
-  @NotEmpty
+  @NotNull
   @Schema(
       description = "Array of the OAuth 2.0 response type strings that the client can use at the authorization endpoint.")
   List<OAuth2ResponseType> responseTypes;
@@ -159,7 +159,7 @@ public class RegistrationProperties {
   @JsonProperty("id_token_signed_response_alg")
   @Schema(description = "ID Token JWS Signing Algorithms Supported")
   @Builder.Default
-  @NotEmpty
+  @NotNull
   List<JWSSigningAlgorithmType> idTokenSigningAlgorithms = List.of(JWSSigningAlgorithmType.PS256);
 
   @JsonProperty("id_token_encrypted_response_alg")
