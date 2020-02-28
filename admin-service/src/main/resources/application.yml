@@ -10,7 +10,7 @@ spring:
             jwt:
                jwk-set-uri: https://id.dev.lab.dataright.io/auth/realms/deepthought/protocol/openid-connect/certs
    datasource:
-     url: jdbc:h2:file:../localdb/basedb;AUTO_SERVER=true
+     url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
      driverClassName: org.h2.Driver
    jpa:
      database: H2
