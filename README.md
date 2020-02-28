@@ -2,7 +2,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.biza/heimdall?label=latest%20release)](https://search.maven.org/artifact/io.biza/heimdall) [![Nexus Latest Snapshot](https://img.shields.io/nexus/s/io.biza/heimdall?label=latest%20snapshot&server=https%3A%2F%2Foss.sonatype.org)](https://oss.sonatype.org/#nexus-search;classname~io.biza.heimdall) [![CDR Register v1.1.0](https://img.shields.io/badge/CDR%20Register-v1.1.0-brightgreen)](https://cdr-register.github.io/register)
 
-[![develop build](https://img.shields.io/travis/com/bizaio/heimdall/develop?label=develop%20build)](https://travis-ci.com/bizaio/heimdall) [![master build](https://img.shields.io/travis/com/bizaio/heimdall/master?label=master%20build)](https://travis-ci.com/bizaio/heimdall) [![GitHub issues](https://img.shields.io/github/issues/bizaio/heimdall)](https://github.com/bizaio/heimdall/issues) ![GitHub](https://img.shields.io/github/license/bizaio/heimdall)
+[![develop build](https://img.shields.io/travis/com/bizaio/heimdall/develop?label=develop%20build)](https://travis-ci.com/bizaio/heimdall) [![master build](https://img.shields.io/travis/com/bizaio/heimdall/master?label=master%20build)](https://travis-ci.com/bizaio/heimdall) [![GitHub issues](https://img.shields.io/github/issues/bizaio/heimdall)](https://github.com/bizaio/heimdall/issues) ![GitHub](https://img.shields.io/github/license/bizaio/heimdall) 
 
 The Heimdall project is intended to be an example Register (as defined by the [CDR Register](https://cdr-register.github.io/register)) for the Australian Consumer Data Right (aka "open banking"). It is currently being developed by Biza.io as part of it's DataRight Lab initiative.
 
