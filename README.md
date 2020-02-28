@@ -52,7 +52,6 @@ We are working on cleaner methods of getting started with Heimdall but right now
 
 *Heimdall* is currently deployed within the following projects or organisations:
 - [DataRight Lab](https://dataright.io/lab)
-- [Biza Hosted Holder](https://biza.io/holder/)
 
 If you are using *Heimdall* in your organisation we welcome you to let us know by [email](mailto:hello@biza.io).
 
