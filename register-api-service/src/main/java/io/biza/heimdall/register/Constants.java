@@ -12,6 +12,8 @@ public class Constants {
   public final static String TAG_BANKING_DATA_HOLDER_DESCRIPTION = "Banking Data Holder API";
   public final static String TAG_BANKING_DATA_RECIPIENT_NAME = "banking-data-recipient";
   public final static String TAG_BANKING_DATA_RECIPIENT_DESCRIPTION = "Banking Data Recipient API";
+  public final static String TAG_BANKING_REGISTER_NAME = "register";
+  public final static String TAG_BANKING_REGISTER_DESCRIPTION = "Register Functions";
 
 
   /**
@@ -40,5 +42,11 @@ public class Constants {
   public final static String RESPONSE_CODE_NO_CONTENT = "204";
   public final static String RESPONSE_CODE_UNPROCESSABLE_ENTITY = "422";
 
+  /**
+   * Register Constants
+   */
+  public final static String REGISTER_ISSUER = "dio-register";
+  public final static long REGISTER_SSA_LENGTH_HOURS = 1;
+  
 
 }

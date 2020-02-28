@@ -11,6 +11,7 @@ import io.biza.heimdall.payload.registration.SoftwareStatementAssertion;
 import io.biza.heimdall.payload.responses.DataRecipientsStatusList;
 import io.biza.heimdall.payload.responses.ResponseRegisterDataRecipientList;
 import io.biza.heimdall.payload.responses.SoftwareProductsStatusList;
+import io.biza.heimdall.shared.util.RawJson;
 
 public interface BankingDataRecipientApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
@@ -25,8 +26,8 @@ public interface BankingDataRecipientApiDelegate {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<SoftwareStatementAssertion> getSoftwareStatementAssertion(
-      @NotNull @Valid UUID brandId, @NotNull @Valid UUID productId) {
+  default ResponseEntity<RawJson> getSoftwareStatementAssertion(
+      UUID brandId, UUID productId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

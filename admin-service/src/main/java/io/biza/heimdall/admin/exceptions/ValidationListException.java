@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.biza.heimdall.admin.model.enumerations.DioExceptionType;
-import io.biza.heimdall.admin.model.payloads.ValidationError;
+import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
+import io.biza.heimdall.shared.payloads.dio.ValidationError;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +37,7 @@ public class ValidationListException extends Exception {
   @NotNull
   @NonNull
   @Schema(description = "Deep Thought Exception Type")
-  DioExceptionType type;
+  HeimdallExceptionType type;
   
   @JsonProperty("explanation")
   @NotNull

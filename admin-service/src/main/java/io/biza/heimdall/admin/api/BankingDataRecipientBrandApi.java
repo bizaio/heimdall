@@ -3,10 +3,8 @@ package io.biza.heimdall.admin.api;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandApiDelegate;
 import io.biza.heimdall.admin.exceptions.ValidationListException;
-import io.biza.heimdall.admin.model.payloads.DioDataRecipientBrand;
+import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,11 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = Constants.TAG_DATA_RECIPIENT_NAME, description = Constants.TAG_DATA_RECIPIENT_DESCRIPTION)
 @RequestMapping("/v1/data-recipient/{recipientId}/brand")
@@ -49,8 +43,8 @@ public interface BankingDataRecipientBrandApi {
           array = @ArraySchema(schema = @Schema(implementation = DioDataRecipientBrand.class))))})
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
-  default ResponseEntity<List<DioDataRecipientBrand>> listRecipientBrandes() {
-    return getDelegate().listRecipientBrands();
+  default ResponseEntity<List<DioDataRecipientBrand>> listRecipientBrandes(@NotNull @Valid @PathVariable("recipientId") UUID recipientId) {
+    return getDelegate().listRecipientBrands(recipientId);
   }
   
   @Operation(summary = "Get a single Recipient Brand", description = "Returns a single recipient brand entry",
@@ -62,11 +56,12 @@ public interface BankingDataRecipientBrandApi {
           content = @Content(schema = @Schema(implementation = DioDataRecipientBrand.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_NOT_FOUND,
           description = Constants.RESPONSE_OBJECT_NOT_FOUND)})
-  @GetMapping(value = "/{recipientId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+  @GetMapping(value = "/{brandId}", produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
   default ResponseEntity<DioDataRecipientBrand> getRecipientBrand(
-      @NotNull @Valid @PathVariable("recipientId") UUID recipientId) {
-    return getDelegate().getRecipientBrand(recipientId);
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
+      @NotNull @Valid @PathVariable("brandId") UUID brandId) {
+    return getDelegate().getRecipientBrand(recipientId, brandId);
   }
 
   @Operation(summary = "Create a Recipient Brand", description = "Creates and Returns a new Recipient Brand",
@@ -82,11 +77,11 @@ public interface BankingDataRecipientBrandApi {
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
-  default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(
-      @NotNull @RequestBody DioDataRecipientBrand recipient) throws ValidationListException {
-    return getDelegate().createRecipientBrand(recipient);
+  default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(@NotNull @Valid @PathVariable("recipientId") UUID recipientId,
+      @NotNull @RequestBody DioDataRecipientBrand brand) throws ValidationListException {
+    return getDelegate().createRecipientBrand(recipientId, brand);
   }
-
+  
   @Operation(summary = "Update a single Recipient Brand",
       description = "Updates and Returns an existing Recipient Brand",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
@@ -98,13 +93,13 @@ public interface BankingDataRecipientBrandApi {
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
           description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
               array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
-  @PutMapping(path = "/{recipientId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
+  @PutMapping(path = "/{brandId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<DioDataRecipientBrand> updateRecipientBrand(
-      @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId, @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @RequestBody DioDataRecipientBrand recipient) throws ValidationListException {
-    return getDelegate().updateRecipientBrand(recipientId, recipient);
+    return getDelegate().updateRecipientBrand(recipientId, brandId, recipient);
   }
 
   @Operation(summary = "Delete a single RecipientBrand", description = "Deletes a RecipientBrand",
@@ -117,11 +112,12 @@ public interface BankingDataRecipientBrandApi {
           content = @Content(schema = @Schema(implementation = DioDataRecipientBrand.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_NOT_FOUND,
           description = Constants.RESPONSE_OBJECT_NOT_FOUND)})
-  @DeleteMapping(path = "/{recipientId}")
+  @DeleteMapping(path = "/{brandId}")
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<Void> deleteRecipientBrand(
-      @NotNull @Valid @PathVariable("recipientId") UUID recipientId) {
-    return getDelegate().deleteRecipientBrand(recipientId);
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
+      @NotNull @Valid @PathVariable("brandId") UUID brandId) {
+    return getDelegate().deleteRecipientBrand(recipientId, brandId);
   }
 
 }

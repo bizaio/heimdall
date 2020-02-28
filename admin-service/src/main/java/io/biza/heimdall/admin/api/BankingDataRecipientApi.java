@@ -3,10 +3,8 @@ package io.biza.heimdall.admin.api;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.admin.exceptions.ValidationListException;
-import io.biza.heimdall.admin.model.payloads.DioDataRecipient;
+import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,11 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = Constants.TAG_DATA_RECIPIENT_NAME, description = Constants.TAG_DATA_RECIPIENT_DESCRIPTION)
 @RequestMapping("/v1/data-recipient")

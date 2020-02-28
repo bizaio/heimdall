@@ -82,7 +82,7 @@
         </dependency>
         <dependency>
             <groupId>io.biza</groupId>
-            <artifactId>heimdall-data</artifactId>
+            <artifactId>heimdall-shared</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -234,7 +234,7 @@
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
                 <version>${springdoc-openapi-maven-plugin.version}</version>
                 <configuration>
-                    <apiDocsUrl>http://localhost:8080/dio-au/v3/api-docs</apiDocsUrl>
+                    <apiDocsUrl>http://localhost:8081/cdr-register/v3/api-docs</apiDocsUrl>
                 </configuration>
                 <executions>
                     <execution>

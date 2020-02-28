@@ -43,7 +43,7 @@ public class RegisterDataHolderBrand {
   @Schema(description = "Industry Type")
   IndustryType industry;
   
-  @JsonProperty("brandName")
+  @JsonProperty("legalEntity")
   @NotNull
   @Schema(
       description = "The data that is common to all organisations, regardless of the type (e.g. company, trust, partnership, government)")

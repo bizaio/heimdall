@@ -13,7 +13,7 @@ import io.biza.babelfish.cdr.converters.EpochToOffsetDateTimeConverter;
 import io.biza.babelfish.cdr.converters.OffsetDateTimeToEpochConverter;
 import io.biza.babelfish.cdr.converters.UriStringToUriConverter;
 import io.biza.babelfish.cdr.converters.UriToUriStringConverter;
-import io.biza.heimdall.payload.enumerations.RegistrationSoftwareRole;
+import io.biza.heimdall.payload.enumerations.RegisterSoftwareRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,9 +40,10 @@ public class SoftwareStatementAssertion {
   @JsonProperty("iat")
   @JsonSerialize(converter = OffsetDateTimeToEpochConverter.class)
   @JsonDeserialize(converter = EpochToOffsetDateTimeConverter.class)
+  @Builder.Default
   @Schema(
-      description = "The time at which the request was issued by the TPP expressed as seconds since 1970-01-01T00:00:00Z as measured in UTC")
-  OffsetDateTime iat;
+      description = "The time at which the request was issued by the Recipient expressed as seconds since 1970-01-01T00:00:00Z as measured in UTC")
+  OffsetDateTime iat = OffsetDateTime.now();
 
   @JsonProperty("exp")
   @JsonSerialize(converter = OffsetDateTimeToEpochConverter.class)
@@ -141,14 +142,14 @@ public class SoftwareStatementAssertion {
       description = "String representing a unique identifier assigned by the ACCC Register and used by registration endpoints to identify the software product to be dynamically registered.")
   String softwareId;
   
-  @JsonProperty("software_roles")
+  @JsonProperty("software_role")
   @NotNull
-  RegistrationSoftwareRole softwareRole;
+  RegisterSoftwareRole softwareRole;
 
   @JsonProperty("scope")
   @NotNull
   @Schema(
       description = "String containing a space-separated list of scope values that the client can use when requesting access tokens.")
-  List<String> scope;
+  String scope;
 
 }

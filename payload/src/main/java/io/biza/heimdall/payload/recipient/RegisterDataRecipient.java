@@ -28,7 +28,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "A Single Data Holder Brand")
+@Schema(description = "A Single Data Recipient")
 public class RegisterDataRecipient {
 
   @JsonProperty("legalEntityId")

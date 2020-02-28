@@ -6,6 +6,7 @@ import io.biza.heimdall.payload.responses.ResponseRegisterDataRecipientList;
 import io.biza.heimdall.payload.responses.SoftwareProductsStatusList;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
+import io.biza.heimdall.shared.util.RawJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -71,7 +72,7 @@ public interface BankingDataRecipientApi {
       content = @Content(schema = @Schema(implementation = SoftwareStatementAssertion.class)))})
   @RequestMapping(path = "/brands/{brandId}/software-products/{productId}/ssa",
       method = RequestMethod.GET)
-  default ResponseEntity<SoftwareStatementAssertion> getSoftwareStatementAssertion(
+  default ResponseEntity<RawJson> getSoftwareStatementAssertion(
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @Valid @PathVariable("productId") UUID productId) {
     return getDelegate().getSoftwareStatementAssertion(brandId, productId);
@@ -87,7 +88,7 @@ public interface BankingDataRecipientApi {
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a list of software products from the Register",
       content = @Content(schema = @Schema(implementation = SoftwareProductsStatusList.class)))})
-  @RequestMapping(path = "/brands/{brandId}/software-products/{productId}/ssa",
+  @RequestMapping(path = "/brands/software-products/status",
       method = RequestMethod.GET)
   default ResponseEntity<SoftwareProductsStatusList> getSoftwareProductStatuses() {
     return getDelegate().getSoftwareProductStatuses();

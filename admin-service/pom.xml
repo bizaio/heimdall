@@ -82,7 +82,7 @@
         </dependency>
         <dependency>
             <groupId>io.biza</groupId>
-            <artifactId>heimdall-data</artifactId>
+            <artifactId>heimdall-shared</artifactId>
             <version>${project.version}</version>
         </dependency>
 
