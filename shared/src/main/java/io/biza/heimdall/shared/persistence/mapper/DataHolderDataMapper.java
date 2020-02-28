@@ -13,10 +13,8 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import ma.glasnost.orika.MapperFactory;
 
@@ -25,6 +23,7 @@ public class DataHolderDataMapper implements OrikaFactoryConfigurerInterface {
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
     orikaMapperFactory.classMap(DataHolderData.class, DioDataHolder.class)
+    .fieldAToB("id", "id")
     .byDefault()
     .register();
   }

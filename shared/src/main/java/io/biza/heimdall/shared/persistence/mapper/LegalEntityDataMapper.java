@@ -13,12 +13,9 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
+import io.biza.heimdall.payload.common.LegalEntityDetail;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.payloads.dio.DioLegalEntity;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.model.LegalEntityData;
 import ma.glasnost.orika.MapperFactory;
 
@@ -30,5 +27,12 @@ public class LegalEntityDataMapper implements OrikaFactoryConfigurerInterface {
     .field("legalName", "name")
     .byDefault()
     .register();
+    
+    orikaMapperFactory.classMap(LegalEntityData.class, LegalEntityDetail.class)
+    .fieldAToB("id", "legalEntityId")
+    .field("legalName", "legalEntityName")
+    .byDefault()
+    .register();    
+
   }
 }

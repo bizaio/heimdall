@@ -1,5 +1,6 @@
 package io.biza.heimdall.register.api.impl;
 
+import java.security.PrivateKey;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.jose4j.jwk.JsonWebKey;
+import org.jose4j.jwk.PublicJsonWebKey;
+import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
@@ -37,10 +40,12 @@ import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
+import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
+import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
 import io.biza.heimdall.shared.persistence.repository.RegisterJWKRepository;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
 import io.biza.heimdall.shared.persistence.specifications.DataHolderBrandSpecifications;
@@ -54,7 +59,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipientApiDelegate {
 
   @Autowired
-  DataRecipientBrandRepository dataRecipientBrandRepository;
+  DataRecipientRepository dataRecipientRepository;
 
   @Autowired
   RegisterJWKRepository jwkRepository;
@@ -67,7 +72,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
 
   @Override
   public ResponseEntity<ResponseRegisterDataRecipientList> getBankingDataRecipients() {
-    List<DataRecipientBrandData> dataRecipientData = dataRecipientBrandRepository.findAll();
+    List<DataRecipientData> dataRecipientData = dataRecipientRepository.findAll();
 
     ResponseRegisterDataRecipientList listResponse = ResponseRegisterDataRecipientList.builder()
         .data(mapper.mapAsList(dataRecipientData, RegisterDataRecipient.class)).build();
@@ -77,7 +82,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
 
   @Override
   public ResponseEntity<DataRecipientsStatusList> getBankingDataRecipientStatuses() {
-    List<DataRecipientBrandData> dataRecipientData = dataRecipientBrandRepository.findAll();
+    List<DataRecipientData> dataRecipientData = dataRecipientRepository.findAll();
 
     DataRecipientsStatusList listResponse = DataRecipientsStatusList.builder()
         .dataRecipients(mapper.mapAsList(dataRecipientData, DataRecipientStatus.class)).build();
@@ -89,7 +94,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
   public ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId,
       UUID productId) {
 
-    JsonWebKey registerJwk;
+    PublicJsonWebKey registerJwk;
 
     /**
      * If jwks isn't initialised we can't do anything
@@ -103,7 +108,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
       Random randomKeyIndex = new Random();
       RegisterJWKData jwkData = jwkList.get(randomKeyIndex.nextInt(jwkList.size()));
       try {
-        registerJwk = JsonWebKey.Factory.newJwk(jwkData.jwk());
+        registerJwk = PublicJsonWebKey.Factory.newPublicJwk(jwkData.jwk());
 
       } catch (JoseException e) {
         LOG.error("Encountered a JOSE Exception while loading register json web key {}", e.toString());
@@ -148,9 +153,9 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
        */
       JsonWebSignature jws = new JsonWebSignature();
       jws.setPayload(ssaClaims.toJson());
-      jws.setKey(registerJwk.getKey());
-      jws.setKeyIdHeaderValue(registerJwk.getKeyId());
       jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_PSS_USING_SHA256);
+      jws.setKey(registerJwk.getPrivateKey());
+      jws.setKeyIdHeaderValue(registerJwk.getKeyId());
       try {
         String jwsResult = jws.getCompactSerialization();
         return ResponseEntity.ok(RawJson.from(jwsResult));

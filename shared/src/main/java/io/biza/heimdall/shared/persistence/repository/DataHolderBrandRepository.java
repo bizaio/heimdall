@@ -20,7 +20,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 
 @Repository
 public interface DataHolderBrandRepository extends JpaRepository<DataHolderBrandData, UUID>, JpaSpecificationExecutor<DataHolderBrandData> {

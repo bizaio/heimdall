@@ -20,18 +20,9 @@ public class Constants {
    * Security labels
    */
   public final static String SECURITY_SCHEME_NAME = "heimdall_auth";
-  public final static String SECURITY_SCOPE_HOLDER_READ = "HEIMDALL:ADMIN:HOLDER:READ";
-  public final static String OAUTH2_SCOPE_HOLDER_READ =
-      "hasAuthority('SCOPE_" + SECURITY_SCOPE_HOLDER_READ + "')";
-  public final static String SECURITY_SCOPE_HOLDER_WRITE = "HEIMDALL:ADMIN:HOLDER:WRITE";
-  public final static String OAUTH2_SCOPE_HOLDER_WRITE =
-      "hasAuthority('SCOPE_" + SECURITY_SCOPE_HOLDER_WRITE + "')";
-  public final static String SECURITY_SCOPE_RECIPIENT_READ = "HEIMDALL:ADMIN:RECIPIENT:READ";
-  public final static String OAUTH2_SCOPE_RECIPIENT_READ =
-      "hasAuthority('SCOPE_" + SECURITY_SCOPE_RECIPIENT_READ + "')";
-  public final static String SECURITY_SCOPE_RECIPIENT_WRITE = "HEIMDALL:ADMIN:RECIPIENT:WRITE";
-  public final static String OAUTH2_SCOPE_RECIPIENT_WRITE =
-      "hasAuthority('SCOPE_" + SECURITY_SCOPE_RECIPIENT_WRITE + "')";
+  public final static String SECURITY_SCOPE_REGISTER_BANK_READ = "cdr-register:bank:read";
+  public final static String OAUTH2_SCOPE_REGISTER_BANK_READ =
+      "hasAuthority('SCOPE_" + SECURITY_SCOPE_REGISTER_BANK_READ + "')";
 
   /**
    * Response codes as strings

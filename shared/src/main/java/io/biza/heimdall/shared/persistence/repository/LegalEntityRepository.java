@@ -16,9 +16,6 @@ package io.biza.heimdall.shared.persistence.repository;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.LegalEntityData;
 
 @Repository

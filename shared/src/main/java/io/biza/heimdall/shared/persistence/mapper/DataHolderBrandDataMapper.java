@@ -17,7 +17,6 @@ import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import ma.glasnost.orika.MapperFactory;
 
 public class DataHolderBrandDataMapper implements OrikaFactoryConfigurerInterface {
@@ -26,7 +25,7 @@ public class DataHolderBrandDataMapper implements OrikaFactoryConfigurerInterfac
   public void configure(MapperFactory orikaMapperFactory) {
     orikaMapperFactory.classMap(DataHolderBrandData.class, RegisterDataHolderBrand.class)
     .fieldAToB("id", "dataHolderBrandId")
-    .field("dataHolder.industry", "industryType")
+    .field("dataHolder.industry", "industry")
     .field("dataHolder.legalEntity", "legalEntity")
     .byDefault()
     .register();

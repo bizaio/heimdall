@@ -77,7 +77,7 @@ public class LegalEntityDetail {
   
   @JsonProperty("industryCode")
   @Schema(description = "Industry Type")
-  IndustryType industryCode;
+  String industryCode;
   
   @Schema(description = "Legal organisation type")
   @JsonProperty("organisationType")

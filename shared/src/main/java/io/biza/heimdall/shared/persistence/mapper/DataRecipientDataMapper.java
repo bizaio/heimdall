@@ -13,18 +13,10 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.holder.RegisterDataHolderAuth;
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrandServiceEndpoint;
-import io.biza.heimdall.payload.recipient.DataRecipientBrandMetaData;
 import io.biza.heimdall.payload.recipient.DataRecipientStatus;
 import io.biza.heimdall.payload.recipient.RegisterDataRecipient;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandEndpointData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
+import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import ma.glasnost.orika.MapperFactory;
 
@@ -41,6 +33,11 @@ public class DataRecipientDataMapper implements OrikaFactoryConfigurerInterface 
     orikaMapperFactory.classMap(DataRecipientData.class, RegisterDataRecipient.class)
     .fieldAToB("legalEntity.id", "legalEntityId")
     .field("legalEntity.legalName", "legalEntityName")
+    .byDefault()
+    .register();
+    
+    orikaMapperFactory.classMap(DataRecipientData.class, DioDataRecipient.class)
+    .fieldAToB("id", "id")
     .byDefault()
     .register();
 

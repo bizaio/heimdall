@@ -15,6 +15,7 @@ package io.biza.heimdall.shared.persistence.model;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
@@ -30,6 +31,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -41,7 +43,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import io.biza.heimdall.payload.enumerations.DataHolderStatusType;
-import io.biza.heimdall.payload.enumerations.IndustryType;
 import lombok.ToString;
 
 @Builder
@@ -87,6 +88,25 @@ public class DataHolderBrandData {
   @UpdateTimestamp
   @Column(name = "LAST_UPDATED")
   OffsetDateTime lastUpdated;
+  
+  @PrePersist
+  public void prePersist() {
+    if (authDetails() != null) {
+      for (DataHolderBrandAuthData one : authDetails) {
+        one.dataHolderBrand(this);
+      }
+    }
+    
+    if(dataHolder() != null) {
+      Set<DataHolderBrandData> brands = new HashSet<DataHolderBrandData>();
+      brands.addAll(dataHolder.dataHolderBrands());
+      brands.add(this);
+      dataHolder.dataHolderBrands(brands);
+    }
+    if (endpointDetail() != null) {
+      endpointDetail.dataHolderBrand(this);
+    }
+  }
   
   
 }

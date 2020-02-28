@@ -14,6 +14,7 @@
 package io.biza.heimdall.shared.persistence.model;
 
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CollectionTable;
@@ -30,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
@@ -108,5 +110,15 @@ public class SoftwareProductData {
   @Column(name="SCOPES", nullable=false)
   @Enumerated(EnumType.STRING)
   Set<RegisterScope> scopes;
+  
+  @PrePersist
+  public void prePersist() {
+    if (dataRecipientBrand() != null) {
+      Set<SoftwareProductData> products = new HashSet<SoftwareProductData>();
+      products.addAll(dataRecipientBrand.softwareProducts());
+      products.add(this);
+      dataRecipientBrand.softwareProducts(products);
+    }
+  }
     
 }

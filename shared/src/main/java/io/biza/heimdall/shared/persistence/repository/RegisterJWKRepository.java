@@ -18,10 +18,6 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import io.biza.heimdall.payload.enumerations.JWKStatus;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientData;
-import io.biza.heimdall.shared.persistence.model.LegalEntityData;
 import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
 
 @Repository

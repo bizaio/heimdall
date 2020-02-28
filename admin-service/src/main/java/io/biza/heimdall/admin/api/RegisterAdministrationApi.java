@@ -3,7 +3,7 @@ package io.biza.heimdall.admin.api;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderApiDelegate;
 import io.biza.heimdall.admin.api.delegate.RegisterAdministrationApiDelegate;
-import io.biza.heimdall.admin.exceptions.ValidationListException;
+import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.heimdall.shared.payloads.dio.DioRegisterJWK;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Tag(name = Constants.TAG_DATA_HOLDER_NAME, description = Constants.TAG_DATA_HOLDER_DESCRIPTION)
+@Tag(name = Constants.TAG_DATA_REGISTER_ADMIN_NAME, description = Constants.TAG_DATA_REGISTER_ADMIN_DESCRIPTION)
 @RequestMapping("/v1/register")
 public interface RegisterAdministrationApi {
 

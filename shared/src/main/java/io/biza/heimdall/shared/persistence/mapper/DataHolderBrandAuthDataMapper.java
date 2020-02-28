@@ -14,12 +14,8 @@
 package io.biza.heimdall.shared.persistence.mapper;
 
 import io.biza.heimdall.payload.holder.RegisterDataHolderAuth;
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import ma.glasnost.orika.MapperFactory;
 
 public class DataHolderBrandAuthDataMapper implements OrikaFactoryConfigurerInterface {

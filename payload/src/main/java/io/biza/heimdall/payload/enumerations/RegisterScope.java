@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Register Available Scopes", enumAsRef = true)
 public enum RegisterScope implements LabelValueEnumInterface {
   // @formatter:off
-  BANK_ACCOUNTS_BASIC_READ("data-recipient-software-product", "data-recipient-software-product"),
+  BANK_ACCOUNTS_BASIC_READ("bank:accounts.basic:read", "bank:accounts.basic:read"),
   BANK_ACCOUNTS_DETAIL_READ("bank:accounts.detail:read", "bank:accounts.detail:read"),
   BANK_TRANSACTIONS_READ("bank:transactions:read", "bank:transactions:read"),
   BANK_PAYEES_READ("bank:payees:read", "bank:payees:read"),

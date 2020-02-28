@@ -4,7 +4,6 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.biza.heimdall.payload.enumerations.DataRecipientStatusType;
@@ -31,12 +30,6 @@ public class DioDataRecipient {
   @NotNull
   @Schema(description = "Data Holder Identifier")
   UUID id;
-  
-  @JsonProperty("name")
-  @NotEmpty
-  @Schema(
-      description = "Unique legal name of the organisation")
-  String name;
   
   @JsonProperty("legalEntity")
   @NotNull

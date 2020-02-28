@@ -15,9 +15,7 @@ package io.biza.heimdall.shared.persistence.model;
 
 import java.time.LocalDate;
 import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -29,14 +27,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
-import io.biza.babelfish.cdr.converters.LocaleToCountryStringConverter;
 import io.biza.babelfish.cdr.enumerations.CommonOrganisationType;
 import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.persistence.converter.LocaleDataConverter;
@@ -70,7 +66,7 @@ public class LegalEntityData {
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "DATA_RECIPIENT_ID", foreignKey = @ForeignKey(name = "LEGAL_ENTITY_DATA_RECIPIENT_ID_FK"))
-  DataHolderData dataRecipient;
+  DataRecipientData dataRecipient;
   
   @Column(name = "LEGAL_NAME")
   @NotNull
@@ -102,5 +98,16 @@ public class LegalEntityData {
   @Column(name = "ORGANISATION_TYPE")
   @Enumerated(EnumType.STRING)
   CommonOrganisationType organisationType;
+  
+  @PrePersist
+  public void prePersist() {
+    if (dataHolder() != null) {
+      dataHolder.legalEntity(this);
+    }
+    if (dataRecipient() != null) {
+      dataRecipient.legalEntity(this);
+    }
+
+  }
   
 }

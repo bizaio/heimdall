@@ -53,7 +53,7 @@ public class RegisterDataRecipient {
   URI logoUri;
 
   @JsonProperty("dataRecipientBrands")
-  @Schema(description = "Endpoints related to Data Holder Brand services")
+  @Schema(description = "Endpoints related to Data Recipient Brands")
   List<DataRecipientBrandMetaData> dataRecipientBrands;
 
   @JsonProperty("status")

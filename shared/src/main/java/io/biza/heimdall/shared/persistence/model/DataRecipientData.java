@@ -22,14 +22,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -73,6 +71,7 @@ public class DataRecipientData {
   URI logoUri;
   
   @OneToMany(mappedBy = "dataRecipient", cascade = CascadeType.ALL)
+  @ToString.Exclude
   Set<DataRecipientBrandData> dataRecipientBrands;
   
   @Column(name = "STATUS")
@@ -83,5 +82,16 @@ public class DataRecipientData {
   @Column(name = "LAST_UPDATED")
   OffsetDateTime lastUpdated;
   
+  @PrePersist
+  public void prePersist() {
+    if (dataRecipientBrands() != null) {
+      for (DataRecipientBrandData one : dataRecipientBrands) {
+        one.dataRecipient(this);
+      }
+    }
+    if (legalEntity() != null) {
+      legalEntity.dataRecipient(this);
+    }
+  }
   
 }

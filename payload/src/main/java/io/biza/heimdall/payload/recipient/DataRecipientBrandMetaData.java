@@ -1,6 +1,7 @@
 package io.biza.heimdall.payload.recipient;
 
 import java.net.URI;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,7 +48,7 @@ public class DataRecipientBrandMetaData {
   
   @JsonProperty("softwareProducts")
   @Schema(description = "Data Recipient Brand Software Products")
-  SoftwareProductMetaData softwareProducts;
+  List<SoftwareProductMetaData> softwareProducts;
   
   @JsonProperty("status")
   @Schema(description = "Data Recipient Brand Status")

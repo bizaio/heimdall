@@ -13,15 +13,9 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.holder.RegisterDataHolderAuth;
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrandServiceEndpoint;
 import io.biza.heimdall.payload.recipient.DataRecipientBrandMetaData;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandEndpointData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
+import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import ma.glasnost.orika.MapperFactory;
 
@@ -33,6 +27,13 @@ public class DataRecipientBrandDataMapper implements OrikaFactoryConfigurerInter
     .fieldAToB("id", "dataRecipientBrandId")
     .byDefault()
     .register();
+    
+    orikaMapperFactory.classMap(DataRecipientBrandData.class, DioDataRecipientBrand.class)
+    .fieldAToB("id", "id")
+    .field("brandName", "name")
+    .byDefault()
+    .register();
+
 
   }
 }

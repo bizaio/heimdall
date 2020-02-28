@@ -37,7 +37,7 @@ public enum IndustryType implements LabelValueEnumInterface {
       }
     }
     throw new LabelValueEnumValueNotSupportedException(
-        "Unable to identify value of DioEmailType from " + text,
+        "Unable to identify value of IndustryType from " + text,
         IndustryType.class.getSimpleName(), IndustryType.values(),
         text);
   }

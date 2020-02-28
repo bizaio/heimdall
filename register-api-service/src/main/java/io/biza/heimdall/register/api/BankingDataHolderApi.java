@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,11 +36,12 @@ public interface BankingDataHolderApi {
               description = "Version of the API end point requested by the client. Must be set to a positive integer.")
   },
   security = {@SecurityRequirement(name = "cdr-register",
-      scopes = Constants.SECURITY_SCOPE_HOLDER_READ)})
+      scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a Response containing the Data Holder Brands",
       content = @Content(schema = @Schema(implementation = ResponseRegisterDataHolderBrandList.class)))})
   @RequestMapping(path = "/brands", method = RequestMethod.GET)
+  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<ResponseRegisterDataHolderBrandList> getBankingDataHolderBrands(
       @Valid @RequestParam(name = "updated-since",
       required = false) OffsetDateTime updatedSince,

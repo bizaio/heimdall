@@ -13,19 +13,10 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.holder.RegisterDataHolderAuth;
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrandServiceEndpoint;
-import io.biza.heimdall.payload.recipient.DataRecipientBrandMetaData;
 import io.biza.heimdall.payload.recipient.SoftwareProductMetaData;
 import io.biza.heimdall.payload.recipient.SoftwareProductStatus;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandEndpointData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import ma.glasnost.orika.MapperFactory;
 
@@ -46,6 +37,7 @@ public class SoftwareProductDataMapper implements OrikaFactoryConfigurerInterfac
     .register();
     
     orikaMapperFactory.classMap(SoftwareProductData.class, DioSoftwareProduct.class)
+    .fieldAToB("id", "id")
     .byDefault()
     .register();
 

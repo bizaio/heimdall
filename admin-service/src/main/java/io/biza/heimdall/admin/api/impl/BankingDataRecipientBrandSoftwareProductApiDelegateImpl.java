@@ -13,9 +13,9 @@ import org.springframework.validation.annotation.Validated;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.BankingDataRecipientBrandSoftwareProductApi;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandSoftwareProductApiDelegate;
-import io.biza.heimdall.admin.exceptions.ValidationListException;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
+import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
@@ -60,7 +60,7 @@ public class BankingDataRecipientBrandSoftwareProductApiDelegateImpl implements 
   @Override
   public ResponseEntity<List<DioSoftwareProduct>> listRecipientBrandSoftwareProducts(UUID recipientId, UUID brandId) {
 
-    Optional<DataRecipientBrandData> recipient = brandRepository.findById(recipientId);
+    Optional<DataRecipientBrandData> recipient = brandRepository.findByIdAndDataRecipientId(brandId, recipientId);
 
     if (!recipient.isPresent()) {
       LOG.warn("Attempted to list software products on non existent recipient {} and brand of {}", recipientId, brandId);

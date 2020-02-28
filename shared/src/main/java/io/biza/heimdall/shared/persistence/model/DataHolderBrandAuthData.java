@@ -14,6 +14,8 @@
 package io.biza.heimdall.shared.persistence.model;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -66,5 +69,15 @@ public class DataHolderBrandAuthData {
   @Column(name = "JWKS_ENDPOINT")
   @NotNull
   URI jwksEndpoint;
+  
+  @PrePersist
+  public void prePersist() {
+    if(dataHolderBrand() != null) {
+      Set<DataHolderBrandAuthData> authData = new HashSet<DataHolderBrandAuthData>();
+      authData.addAll(dataHolderBrand.authDetails());
+      authData.add(this);
+      dataHolderBrand.authDetails(authData);
+    }
+  }
   
 }

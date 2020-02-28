@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.biza.heimdall.payload.enumerations.DataRecipientStatusType;
 import io.biza.heimdall.payload.enumerations.RegisterScope;
 import io.biza.heimdall.payload.enumerations.RegisterSoftwareRole;
 import io.biza.heimdall.payload.enumerations.SoftwareProductStatusType;
@@ -64,6 +63,12 @@ public class DioSoftwareProduct {
   @Schema(description = "Software Product Logo URI")
   @NotNull
   URI logoUri;
+  
+  @JsonProperty("jwksUri")
+  @Schema(description = "JWKS URI")
+  @NotNull
+  URI jwksUri;
+
   
   @JsonProperty("tosUri")
   @Schema(description = "Software Product TOS URI")

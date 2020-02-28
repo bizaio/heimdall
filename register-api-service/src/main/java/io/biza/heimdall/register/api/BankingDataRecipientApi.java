@@ -20,6 +20,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,11 +38,12 @@ public interface BankingDataRecipientApi {
       parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
           description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
       security = {@SecurityRequirement(name = "cdr-register",
-          scopes = Constants.SECURITY_SCOPE_RECIPIENT_READ)})
+          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a Response containing the Data Recipients", content = @Content(
           schema = @Schema(implementation = ResponseRegisterDataRecipientList.class)))})
   @RequestMapping(method = RequestMethod.GET)
+  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<ResponseRegisterDataRecipientList> getBankingDataRecipients() {
     return getDelegate().getBankingDataRecipients();
   }
@@ -51,11 +53,12 @@ public interface BankingDataRecipientApi {
       parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
           description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
       security = {@SecurityRequirement(name = "cdr-register",
-          scopes = Constants.SECURITY_SCOPE_RECIPIENT_READ)})
+          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a response containing a set of Data Recipient statuses",
       content = @Content(schema = @Schema(implementation = DataRecipientsStatusList.class)))})
   @RequestMapping(path = "/status", method = RequestMethod.GET)
+  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<DataRecipientsStatusList> getBankingDataRecipientStatuses() {
     return getDelegate().getBankingDataRecipientStatuses();
   }
@@ -66,12 +69,13 @@ public interface BankingDataRecipientApi {
       parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
           description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
       security = {@SecurityRequirement(name = "cdr-register",
-          scopes = Constants.SECURITY_SCOPE_RECIPIENT_READ)})
+          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Get a Software Statement Assertion (SSA) for a software product on the CDR Register to be used for Dynamic Registration with a Data Holder",
       content = @Content(schema = @Schema(implementation = SoftwareStatementAssertion.class)))})
   @RequestMapping(path = "/brands/{brandId}/software-products/{productId}/ssa",
       method = RequestMethod.GET)
+  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<RawJson> getSoftwareStatementAssertion(
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @Valid @PathVariable("productId") UUID productId) {
@@ -84,12 +88,13 @@ public interface BankingDataRecipientApi {
       parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
           description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
       security = {@SecurityRequirement(name = "cdr-register",
-          scopes = Constants.SECURITY_SCOPE_RECIPIENT_READ)})
+          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a list of software products from the Register",
       content = @Content(schema = @Schema(implementation = SoftwareProductsStatusList.class)))})
   @RequestMapping(path = "/brands/software-products/status",
       method = RequestMethod.GET)
+  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<SoftwareProductsStatusList> getSoftwareProductStatuses() {
     return getDelegate().getSoftwareProductStatuses();
   }

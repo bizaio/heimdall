@@ -2,7 +2,7 @@ package io.biza.heimdall.admin.api;
 
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderApiDelegate;
-import io.biza.heimdall.admin.exceptions.ValidationListException;
+import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

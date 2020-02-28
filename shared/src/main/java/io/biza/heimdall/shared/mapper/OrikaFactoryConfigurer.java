@@ -103,9 +103,9 @@ public class OrikaFactoryConfigurer {
        * Configure bidirectional configurers
        */
       try (ScanResult mapperResult = new ClassGraph().enableAllInfo()
-          .whitelistPackages("io.biza.deepthought.heimdall.persistence.mapper", "io.biza.deepthought.heimdall.payloads.mapper").scan()) {
+          .whitelistPackages("io.biza.heimdall.shared.persistence.mapper", "io.biza.heimdall.shared.payloads.mapper").scan()) {
         ClassInfoList configurerClasses =
-            mapperResult.getClassesImplementing("io.biza.deepthought.shared.mapper.OrikaFactoryConfigurerInterface");
+            mapperResult.getClassesImplementing("io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface");
 
         for (Class<?> clazz : configurerClasses.loadClasses()) {
           try {

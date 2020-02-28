@@ -16,13 +16,12 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
-        <spring-boot.version>2.2.3.RELEASE</spring-boot.version>
-        <spring-security-oauth2.version>${spring-boot.version}</spring-security-oauth2.version>
-        <spring-security-oauth2-autoconfigure.version>${spring-boot.version}</spring-security-oauth2-autoconfigure.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
         <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <node.version>v12.14.1</node.version>
         <docker.image.prefix>bizaio</docker.image.prefix>
+        <bcprov-jdk.version>1.64</bcprov-jdk.version>
         <npm.version>6.12.1</npm.version>
         <swagger-core.version>2.1.1</swagger-core.version>
         <springdoc-openapi-ui.version>1.2.25</springdoc-openapi-ui.version>

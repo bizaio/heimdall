@@ -16,9 +16,7 @@ package io.biza.heimdall.shared.persistence.repository;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandEndpointData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 
 @Repository
 public interface DataHolderBrandEndpointRepository extends JpaRepository<DataHolderBrandEndpointData, UUID> {

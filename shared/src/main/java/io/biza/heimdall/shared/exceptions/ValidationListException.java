@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.admin.exceptions;
+package io.biza.heimdall.shared.exceptions;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class ValidationListException extends Exception {
   @JsonProperty("type")
   @NotNull
   @NonNull
-  @Schema(description = "Deep Thought Exception Type")
+  @Schema(description = "Heimdall Exception Type")
   HeimdallExceptionType type;
   
   @JsonProperty("explanation")

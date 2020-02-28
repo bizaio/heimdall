@@ -27,6 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
@@ -78,5 +79,12 @@ public class DataHolderBrandEndpointData {
   
   @Column(name = "WEBSITE_URI")
   URI websiteUri;
+  
+  @PrePersist
+  public void prePersist() {
+    if(dataHolderBrand() != null) {
+      dataHolderBrand.endpointDetail(this);
+    }
+  }
   
 }

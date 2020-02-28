@@ -13,12 +13,8 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.payloads.dio.DioRegisterJWK;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
 import ma.glasnost.orika.MapperFactory;
 

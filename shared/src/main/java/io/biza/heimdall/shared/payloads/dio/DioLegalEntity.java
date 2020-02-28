@@ -12,7 +12,6 @@ import io.biza.babelfish.cdr.converters.LocalDateToStringConverter;
 import io.biza.babelfish.cdr.converters.LocaleToCountryStringConverter;
 import io.biza.babelfish.cdr.converters.StringToLocalDateConverter;
 import io.biza.babelfish.cdr.enumerations.CommonOrganisationType;
-import io.biza.heimdall.payload.enumerations.IndustryType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,7 +47,7 @@ public class DioLegalEntity {
   LocalDate registrationDate;
   
   @Schema(
-      description = "Enumeration with values from [ISO 3166 Alpha-3](https://www.iso.org/iso-3166-country-codes.html) country codes.  Assumed to be AUS if absent")
+      description = "Enumeration with values from [ISO 3166 Alpha-3](https://www.iso.org/iso-3166-country-codes.html) country codes.  Assumed to be AUS if absent", type = "string")
   @JsonSerialize(converter = LocaleToCountryStringConverter.class)
   @JsonDeserialize(converter = CountryStringToLocaleConverter.class)
   @JsonProperty("registeredCountry")
@@ -70,7 +69,7 @@ public class DioLegalEntity {
   
   @JsonProperty("industryCode")
   @Schema(description = "Industry Type")
-  IndustryType industryCode;
+  String industryCode;
   
   @Schema(description = "Legal organisation type")
   @JsonProperty("organisationType")

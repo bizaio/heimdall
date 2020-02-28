@@ -17,5 +17,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Deep Thought Exception Type", enumAsRef = true)
 public enum HeimdallExceptionType {
-  INVALID_HOLDER, INVALID_RECIPIENT, INVALID_BRAND
+  INVALID_HOLDER, INVALID_RECIPIENT, INVALID_BRAND, VALIDATION_ERROR, INVALID_PARAMETER_FORMAT, DATABASE_ERROR, INVALID_JSON
 }

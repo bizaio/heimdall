@@ -11,53 +11,47 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.shared.persistence.model;
+package io.biza.heimdall.shared.payloads.dio;
 
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import java.util.List;
+import java.util.ArrayList;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.hibernate.annotations.Type;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
 import lombok.ToString;
 
-@Builder
+@Valid
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
 @ToString
-@Valid
-@Table(name = "REGISTER_JWK")
-public class RegisterJWKData {
-
-  @Id
-  @Column(name = "ID", insertable = true)
-  @Type(type = "uuid-char")
-  UUID id;
-  
-  @Column(name = "JWK")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Schema(description = "Validation Error Response")
+public class ResponseValidationError {
+  @JsonProperty("type")
   @NotNull
-  @Lob
-  String jwk;
+  @NonNull
+  @Schema(description = "Heimdall Exception Type")
+  HeimdallExceptionType type;
   
-  @Column(name = "STATUS")
+  @JsonProperty("explanation")
   @NotNull
+  @NonNull
+  @Schema(description = "Validation Exception Explanation")
+  String explanation;
+  
+  @JsonProperty("validationErrors")
+  @Schema(description = "A List of Validation Errors Encountered")
   @Builder.Default
-  @Enumerated(EnumType.STRING)
-  JWKStatus status = JWKStatus.ACTIVE;
-  
-  
+  List<ValidationError> validationErrors = new ArrayList<ValidationError>();
+
 }

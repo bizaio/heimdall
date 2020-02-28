@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @SpringBootApplication
-@EnableOAuth2Client
 @ComponentScan({"io.biza.heimdall.shared.component", "io.biza.heimdall.shared.loaders",
     "io.biza.heimdall.register"})
 public class HeimdallRegisterApplication {

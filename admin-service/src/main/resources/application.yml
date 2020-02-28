@@ -1,14 +1,17 @@
 deepthought:
   version: 1.0.0
+
 server:
-  servlet:
-    context-path: /dio-au
+   servlet:
+      context-path: /dio-register
+
 spring:
    security:
       oauth2:
-         resourceserver:
-            jwt:
-               jwk-set-uri: https://id.dev.lab.dataright.io/auth/realms/deepthought/protocol/openid-connect/certs
+        resourceserver:
+          jwt:
+            jws-algorithm: PS256
+            jwk-set-uri: https://id.dev.lab.dataright.io/auth/realms/localdev/protocol/openid-connect/certs
    datasource:
      url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
      driverClassName: org.h2.Driver
@@ -19,5 +22,4 @@ spring:
        ddl-auto: update
    jackson:
      default-property-inclusion: non_empty
-
    
