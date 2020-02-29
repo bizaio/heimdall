@@ -6,7 +6,9 @@ import io.biza.heimdall.admin.api.delegate.RegisterAdministrationApiDelegate;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
+import io.biza.heimdall.shared.payloads.dio.DioRegisterCertificate;
 import io.biza.heimdall.shared.payloads.dio.DioRegisterJWK;
+import io.biza.heimdall.shared.payloads.requests.dio.RequestCACertificateSign;
 import io.biza.heimdall.shared.payloads.requests.dio.RequestJwkCreate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -52,6 +54,18 @@ public interface RegisterAdministrationApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_KEY_ADMIN)
   default ResponseEntity<DioRegisterJWK> createJwk(@NotNull @RequestBody RequestJwkCreate createRequest) throws JoseException {
     return getDelegate().createJwk(createRequest);
+  }
+  
+  @Operation(summary = "Sign a certificate signing request using the Heimdall CA Certificate", description = "This accepts a CSR and signs it using the Certificate Authority generated on startup by Heimdall",
+      security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
+          scopes = {Constants.OAUTH2_SCOPE_KEY_ADMIN})})
+  @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
+      description = Constants.RESPONSE_SUCCESSFUL_LIST, content = @Content(
+          array = @ArraySchema(schema = @Schema(implementation = DioRegisterCertificate.class))))})
+  @RequestMapping(path = "/ca/sign", method = RequestMethod.POST)
+  @PreAuthorize(Constants.OAUTH2_SCOPE_KEY_ADMIN)
+  default ResponseEntity<String> signCertificate(@NotNull @RequestBody RequestCACertificateSign createRequest) throws JoseException {
+    return getDelegate().signCertificate(createRequest);
   }
 }
 

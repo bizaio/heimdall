@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Tag(name = Constants.TAG_BANKING_DATA_RECIPIENT_NAME,
     description = Constants.TAG_BANKING_DATA_RECIPIENT_DESCRIPTION)
-@RequestMapping("/v1/jwks")
+@RequestMapping("/v1")
 public interface RegisterApi {
 
   default RegisterApiDelegate getDelegate() {
@@ -38,9 +38,19 @@ public interface RegisterApi {
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a JWKS containing all Active Register Public Java Web Keys in JWKS format", content = @Content(
           schema = @Schema(implementation = String.class)))})
-  @RequestMapping(method = RequestMethod.GET)
-  default ResponseEntity<RawJson> getJwks() {
+  @RequestMapping(path = "/jwks", method = RequestMethod.GET)
+  default ResponseEntity<String> getJwks() {
     return getDelegate().getJwks();
   }
+  
+  @Operation(summary = "Get Register Certificate Authoirty", description = "Get Register Certificate Authority")
+  @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
+      description = "Returns the public key of the Register Certificate Authority", content = @Content(
+          schema = @Schema(implementation = String.class)))})
+  @RequestMapping(path = "/ca", method = RequestMethod.GET)
+  default ResponseEntity<String> getCertificateAuthority() {
+    return getDelegate().getCertificateAuthority();
+  }
+
 }
 

@@ -18,7 +18,11 @@ public interface RegisterApiDelegate {
     return Optional.empty();
   }
   
-  default ResponseEntity<RawJson> getJwks() {
+  default ResponseEntity<String> getJwks() {
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
+  default ResponseEntity<String> getCertificateAuthority() {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 }
