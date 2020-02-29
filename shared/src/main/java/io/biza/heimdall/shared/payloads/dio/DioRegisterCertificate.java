@@ -1,6 +1,5 @@
 package io.biza.heimdall.shared.payloads.dio;
 
-import java.net.URI;
 import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,9 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.biza.heimdall.payload.enumerations.JWKStatus;
-import io.biza.heimdall.payload.enumerations.RegisterAuthType;
-import io.biza.heimdall.payload.holder.RegisterDataHolderAuth;
-import io.biza.heimdall.payload.holder.RegisterDataHolderAuth.RegisterDataHolderAuthBuilder;
 import io.biza.heimdall.shared.payloads.converters.JWKJsonDeserializer;
 import io.biza.heimdall.shared.payloads.converters.JWKJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;

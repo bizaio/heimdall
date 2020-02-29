@@ -1,27 +1,19 @@
 package io.biza.heimdall.register.api.impl;
 
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import io.biza.babelfish.cdr.models.payloads.banking.account.BankingAccountV1;
-import io.biza.babelfish.cdr.models.responses.ResponseBankingAccountListV1;
-import io.biza.babelfish.cdr.models.responses.container.ResponseBankingAccountListDataV1;
 import io.biza.heimdall.payload.holder.RegisterDataHolderBrand;
 import io.biza.heimdall.payload.responses.RequestGetDataHolderBrands;
 import io.biza.heimdall.payload.responses.ResponseRegisterDataHolderBrandList;
 import io.biza.heimdall.register.api.delegate.BankingDataHolderApiDelegate;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
-import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
 import io.biza.heimdall.shared.persistence.specifications.DataHolderBrandSpecifications;
 import io.biza.heimdall.shared.util.RegisterContainerAttributes;
 import lombok.extern.slf4j.Slf4j;

@@ -18,9 +18,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import io.biza.heimdall.payload.enumerations.CertificateStatus;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
 import io.biza.heimdall.shared.persistence.model.RegisterCertificateAuthorityData;
-import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
 
 @Repository
 public interface RegisterCertificateAuthorityRepository extends JpaRepository<RegisterCertificateAuthorityData, UUID> {

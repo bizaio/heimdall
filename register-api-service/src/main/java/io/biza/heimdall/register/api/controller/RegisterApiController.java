@@ -3,9 +3,7 @@ package io.biza.heimdall.register.api.controller;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import io.biza.heimdall.register.api.BankingDataRecipientApi;
 import io.biza.heimdall.register.api.RegisterApi;
-import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.register.api.delegate.RegisterApiDelegate;
 
 @Controller

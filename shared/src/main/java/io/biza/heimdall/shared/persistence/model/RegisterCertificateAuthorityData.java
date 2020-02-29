@@ -32,7 +32,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import io.biza.heimdall.payload.enumerations.CertificateStatus;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
 import lombok.ToString;
 
 @Builder

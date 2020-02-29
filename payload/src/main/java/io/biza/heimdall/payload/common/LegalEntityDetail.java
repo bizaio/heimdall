@@ -12,7 +12,6 @@ import io.biza.babelfish.cdr.converters.LocalDateToStringConverter;
 import io.biza.babelfish.cdr.converters.LocaleToCountryStringConverter;
 import io.biza.babelfish.cdr.converters.StringToLocalDateConverter;
 import io.biza.babelfish.cdr.enumerations.CommonOrganisationType;
-import io.biza.heimdall.payload.enumerations.IndustryType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
