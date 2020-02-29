@@ -43,7 +43,7 @@ public interface RegisterApi {
     return getDelegate().getJwks();
   }
   
-  @Operation(summary = "Get Register Certificate Authoirty", description = "Get Register Certificate Authority")
+  @Operation(summary = "Get Register Certificate Authority", description = "Get Register Certificate Authority")
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns the public key of the Register Certificate Authority", content = @Content(
           schema = @Schema(implementation = String.class)))})

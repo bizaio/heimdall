@@ -1,5 +1,7 @@
 package io.biza.heimdall.register;
 
+import java.nio.file.Paths;
+import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +19,14 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class HeimdallRegisterApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(HeimdallRegisterApplication.class, args);
+    SpringApplication application = new SpringApplication(HeimdallRegisterApplication.class);
+    
+    if(Paths.get("heimdall.jks").toFile().exists()) {
+      Properties properties = new Properties();
+      application.setAdditionalProfiles("ssl");
+    }
+    
+    application.run(args);
   }
 
   @Bean

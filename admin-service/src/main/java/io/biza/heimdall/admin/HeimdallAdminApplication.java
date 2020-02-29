@@ -1,23 +1,35 @@
 package io.biza.heimdall.admin;
 
+import java.nio.file.Paths;
+import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import com.jayway.jsonpath.internal.Path;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @ComponentScan({"io.biza.heimdall.shared.component", "io.biza.heimdall.shared.loaders",
     "io.biza.heimdall.admin"})
+@Slf4j
 public class HeimdallAdminApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(HeimdallAdminApplication.class, args);
+    SpringApplication application = new SpringApplication(HeimdallAdminApplication.class);
+    
+    if(Paths.get("heimdall.jks").toFile().exists()) {
+      LOG.warn("Detected local keystore, triggering ssl enablement");
+      application.setAdditionalProfiles("ssl");
+    }
+    
+    application.run(args);
   }
 
   @Bean

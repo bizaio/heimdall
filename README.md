@@ -13,10 +13,10 @@ Heimdall is currently developed and maintained by [Biza.io](https://www.biza.io)
   - All defined Register Endpoints implemented
   - CRUD for Add/Remove/Update of Data Holder and Data Recipients
   - Software Statement Assertion signing support
+  - MTLS Certificate Issuance using a Private CA
 
 We are currently working on adding the following:
    - Testing! Lots of Testing!
-   - MTLS Certificate issuance
 
 ## Quick Start
 

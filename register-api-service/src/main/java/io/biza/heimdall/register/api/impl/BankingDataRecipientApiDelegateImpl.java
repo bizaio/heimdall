@@ -100,7 +100,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
      * If jwks isn't initialised we can't do anything
      */
     List<RegisterJWKData> jwkList = jwkRepository.findByStatusIn(List.of(JWKStatus.ACTIVE));
-    if (jwkList == null || jwkList.size() < 0) {
+    if (jwkList == null || jwkList.size() < 1) {
       LOG.error(
           "Attempted to retrieve an SSA when there are no initialised and active JWKs to sign it with");
       return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);

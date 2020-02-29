@@ -207,7 +207,7 @@
                             <requiresUnpack>
                                 <dependency>
                                     <groupId>io.biza</groupId>
-                                    <artifactId>deepthought</artifactId>
+                                    <artifactId>heimdall-shared</artifactId>
                                 </dependency>
                             </requiresUnpack>
                         </configuration>
@@ -219,7 +219,7 @@
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
                 <version>${springdoc-openapi-maven-plugin.version}</version>
                 <configuration>
-                    <apiDocsUrl>http://localhost:8080/dio-register/v3/api-docs</apiDocsUrl>
+                    <apiDocsUrl>http://localhost:9102/dio-register/v3/api-docs</apiDocsUrl>
                 </configuration>
                 <executions>
                     <execution>

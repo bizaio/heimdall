@@ -1,9 +1,9 @@
 deepthought:
   version: 1.0.0
-
 server:
-   servlet:
-      context-path: /dio-register
+  port: 9102
+  servlet:
+    context-path: /dio-register
 
 spring:
    security:

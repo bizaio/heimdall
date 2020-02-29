@@ -1,9 +1,10 @@
 deepthought:
   version: 1.0.0
 server:
-  port: 8081
+  port: 9101
   servlet:
     context-path: /dio-register
+    
 spring:
    security:
       oauth2:

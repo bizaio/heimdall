@@ -9,4 +9,8 @@ public class Constants {
   public static final int CA_VALIDITY_YEARS = 10;
   public static final String CA_DN = "CN=Heimdall Development Register CA";
   public static final String CA_SIGNING_ALGORITHM = "SHA256WithRSA";
+  
+  public static final String LOCAL_KEYSTORE_PASSWORD = "solongandthanksforallthefish";
+  public static final String LOCAL_KEYSTORE_PATH = "heimdall.jks";
+  
 }

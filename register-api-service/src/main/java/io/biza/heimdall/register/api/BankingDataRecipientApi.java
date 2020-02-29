@@ -36,14 +36,12 @@ public interface BankingDataRecipientApi {
 
   @Operation(summary = "Get Data Recipients", description = "Get Data Recipients from the Register",
       parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
-          description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
-      security = {@SecurityRequirement(name = "cdr-register",
-          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
+          description = "Version of the API end point requested by the client. Must be set to a positive integer.")}
+      )
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a Response containing the Data Recipients", content = @Content(
           schema = @Schema(implementation = ResponseRegisterDataRecipientList.class)))})
   @RequestMapping(method = RequestMethod.GET)
-  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<ResponseRegisterDataRecipientList> getBankingDataRecipients() {
     return getDelegate().getBankingDataRecipients();
   }
@@ -51,14 +49,12 @@ public interface BankingDataRecipientApi {
   @Operation(summary = "Get Data Recipient Statuses",
       description = "Get a list of Data Recipient Statuses",
       parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
-          description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
-      security = {@SecurityRequirement(name = "cdr-register",
-          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
+          description = "Version of the API end point requested by the client. Must be set to a positive integer.")}
+      )
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a response containing a set of Data Recipient statuses",
       content = @Content(schema = @Schema(implementation = DataRecipientsStatusList.class)))})
   @RequestMapping(path = "/status", method = RequestMethod.GET)
-  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<DataRecipientsStatusList> getBankingDataRecipientStatuses() {
     return getDelegate().getBankingDataRecipientStatuses();
   }
@@ -86,15 +82,13 @@ public interface BankingDataRecipientApi {
   @Operation(summary = "Get the status for software products",
       description = "Get the statuses for software products from the CDR Register",
       parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
-          description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
-      security = {@SecurityRequirement(name = "cdr-register",
-          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
+          description = "Version of the API end point requested by the client. Must be set to a positive integer.")}
+      )
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
       description = "Returns a list of software products from the Register",
       content = @Content(schema = @Schema(implementation = SoftwareProductsStatusList.class)))})
   @RequestMapping(path = "/brands/software-products/status",
       method = RequestMethod.GET)
-  @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<SoftwareProductsStatusList> getSoftwareProductStatuses() {
     return getDelegate().getSoftwareProductStatuses();
   }
