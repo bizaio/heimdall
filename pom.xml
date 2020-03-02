@@ -65,7 +65,8 @@
     <modules>
         <module>payload</module>
         <module>shared</module>
-        <module>admin-service</module>
+	<module>admin-service</module>
+	<module>auth-service</module>
         <module>register-api-service</module>
     </modules>
 

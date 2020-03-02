@@ -1,0 +1,22 @@
+heimdall:
+  version: 1.0.0
+  hostname: localhost
+  token_length_hours: 24
+server:
+  port: 9103
+  servlet:
+    context-path: /
+    
+spring:
+   datasource:
+     url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
+     driverClassName: org.h2.Driver
+   jpa:
+     database: H2
+     database-platform: org.hibernate.dialect.H2Dialect
+     hibernate:
+       ddl-auto: update
+   jackson:
+     default-property-inclusion: non_empty
+
+   
