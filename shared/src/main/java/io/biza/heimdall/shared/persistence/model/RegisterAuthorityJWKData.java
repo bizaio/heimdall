@@ -26,12 +26,12 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
+import io.biza.heimdall.payload.enumerations.JWKStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.CertificateStatus;
 import lombok.ToString;
 
 @Builder
@@ -42,8 +42,8 @@ import lombok.ToString;
 @Entity
 @ToString
 @Valid
-@Table(name = "REGISTER_CERTIFICATE_AUTHORITY")
-public class RegisterCertificateAuthorityData {
+@Table(name = "REGISTER_JWK")
+public class RegisterAuthorityJWKData {
 
   @Id
   @Column(name = "ID", insertable = false, updatable = false)
@@ -51,21 +51,29 @@ public class RegisterCertificateAuthorityData {
   @Type(type = "uuid-char")
   UUID id;
   
-  @Column(name = "PRIVATE_KEY")
+  @Column(name = "JAVA_FACTORY")
   @NotNull
-  @Lob
-  String privateKey;
+  String javaFactory;
+  
+  @Column(name = "JOSE_ALGORITHM")
+  @NotNull
+  String joseAlgorithm;
   
   @Column(name = "PUBLIC_KEY")
   @NotNull
   @Lob
   String publicKey;
   
+  @Column(name = "PRIVATE_KEY")
+  @NotNull
+  @Lob
+  String privateKey;
+  
   @Column(name = "STATUS")
   @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  CertificateStatus status = CertificateStatus.ACTIVE;
+  JWKStatus status = JWKStatus.ACTIVE;
   
   
 }

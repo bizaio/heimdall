@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Tag(name = Constants.TAG_BANKING_DATA_RECIPIENT_NAME,
     description = Constants.TAG_BANKING_DATA_RECIPIENT_DESCRIPTION)
-@RequestMapping("/v1")
 public interface RegisterApi {
 
   default RegisterApiDelegate getDelegate() {

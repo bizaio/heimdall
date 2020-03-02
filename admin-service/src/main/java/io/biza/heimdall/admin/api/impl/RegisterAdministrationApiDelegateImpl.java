@@ -16,7 +16,6 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import javax.security.auth.x500.X500Principal;
 import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
@@ -28,9 +27,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.jose4j.jwk.JsonWebKey.OutputControlLevel;
-import org.jose4j.jwk.RsaJsonWebKey;
-import org.jose4j.jwk.RsaJwkGenerator;
+import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,10 +43,10 @@ import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.payloads.dio.DioRegisterJWK;
 import io.biza.heimdall.shared.payloads.requests.dio.RequestCACertificateSign;
 import io.biza.heimdall.shared.payloads.requests.dio.RequestJwkCreate;
-import io.biza.heimdall.shared.persistence.model.RegisterCertificateAuthorityData;
-import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
-import io.biza.heimdall.shared.persistence.repository.RegisterCertificateAuthorityRepository;
-import io.biza.heimdall.shared.persistence.repository.RegisterJWKRepository;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Validated
@@ -58,29 +55,47 @@ import lombok.extern.slf4j.Slf4j;
 public class RegisterAdministrationApiDelegateImpl implements RegisterAdministrationApiDelegate {
 
   @Autowired
-  RegisterJWKRepository jwkRepository;
+  RegisterAuthorityJWKRepository jwkRepository;
 
   @Autowired
-  RegisterCertificateAuthorityRepository caRepository;
+  RegisterAuthorityTLSRepository caRepository;
 
   @Autowired
   private HeimdallMapper mapper;
 
+  public final String JAVA_ALGORITHM = "RSASSA-PSS";
+  public final String JOSE4J_ALGORITHM = AlgorithmIdentifiers.RSA_PSS_USING_SHA256;
+
   @Override
   public ResponseEntity<DioRegisterJWK> createJwk(RequestJwkCreate jwkRequest)
       throws JoseException {
-    UUID keyIdentifier = UUID.randomUUID();
-    RsaJsonWebKey webKey = RsaJwkGenerator.generateJwk(2048);
-    webKey.setKeyId(keyIdentifier.toString());
-    RegisterJWKData registerJwkData = jwkRepository.save(RegisterJWKData.builder().id(keyIdentifier)
-        .jwk(webKey.toJson(OutputControlLevel.INCLUDE_PRIVATE)).status(JWKStatus.ACTIVE).build());
-    return ResponseEntity.ok(mapper.map(registerJwkData, DioRegisterJWK.class));
+
+    try {
+      KeyPairGenerator keyGen = KeyPairGenerator.getInstance(JAVA_ALGORITHM);
+      keyGen.initialize(2048);
+      KeyPair keyPair = keyGen.generateKeyPair();
+
+      /**
+       * Setup JWK Data
+       */
+      RegisterAuthorityJWKData jwkData = jwkRepository.save(RegisterAuthorityJWKData.builder()
+          .privateKey(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()))
+          .publicKey(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()))
+          .javaFactory(JAVA_ALGORITHM).joseAlgorithm(JOSE4J_ALGORITHM).status(JWKStatus.ACTIVE)
+          .build());
+
+      return ResponseEntity.ok(mapper.map(jwkData, DioRegisterJWK.class));
+
+    } catch (NoSuchAlgorithmException e) {
+      LOG.error("Invalid algorithm of {} specified, cannot proceed", JAVA_ALGORITHM);
+      return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
   }
 
   @Override
   public ResponseEntity<String> signCertificate(RequestCACertificateSign createRequest) {
-    List<RegisterCertificateAuthorityData> caData =
-        caRepository.findByStatusIn(List.of(CertificateStatus.ACTIVE));
+    RegisterAuthorityTLSData caData =
+        caRepository.findFirstByStatusIn(List.of(CertificateStatus.ACTIVE));
 
     /**
      * Bouncycastle Registration
@@ -88,16 +103,16 @@ public class RegisterAdministrationApiDelegateImpl implements RegisterAdministra
     Provider bcProvider = new BouncyCastleProvider();
     Security.addProvider(bcProvider);
 
-    if (caData != null && caData.size() > 0) {
+    if (caData != null) {
 
       PKCS8EncodedKeySpec privateKeySpec =
-          new PKCS8EncodedKeySpec(Base64.getDecoder().decode(caData.get(0).privateKey()));
+          new PKCS8EncodedKeySpec(Base64.getDecoder().decode(caData.privateKey()));
       try {
         PrivateKey caPrivateKey =
             KeyFactory.getInstance(Constants.CA_ALGORITHM).generatePrivate(privateKeySpec);
 
         Certificate caCertificate =
-            Certificate.getInstance(Base64.getDecoder().decode(caData.get(0).publicKey()));
+            Certificate.getInstance(Base64.getDecoder().decode(caData.publicKey()));
 
         /**
          * Private key generation
@@ -129,10 +144,14 @@ public class RegisterAdministrationApiDelegateImpl implements RegisterAdministra
         X509v3CertificateBuilder certificateBuilder =
             new JcaX509v3CertificateBuilder(issuer, new BigInteger(Long.toString(timeNow)),
                 startDate, expiryTime.getTime(), subject, keyPair.getPublic());
-        if(createRequest.certificateType().equals(CertificateType.CLIENT)) {
-          certificateBuilder.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(new KeyPurposeId[]{ KeyPurposeId.id_kp_clientAuth }).getEncoded());
-        } else if(createRequest.certificateType().equals(CertificateType.SERVER)) {
-          certificateBuilder.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(new KeyPurposeId[]{ KeyPurposeId.id_kp_serverAuth }).getEncoded());
+        if (createRequest.certificateType().equals(CertificateType.CLIENT)) {
+          certificateBuilder.addExtension(Extension.extendedKeyUsage, true,
+              new ExtendedKeyUsage(new KeyPurposeId[] {KeyPurposeId.id_kp_clientAuth})
+                  .getEncoded());
+        } else if (createRequest.certificateType().equals(CertificateType.SERVER)) {
+          certificateBuilder.addExtension(Extension.extendedKeyUsage, true,
+              new ExtendedKeyUsage(new KeyPurposeId[] {KeyPurposeId.id_kp_serverAuth})
+                  .getEncoded());
         }
         ContentSigner contentSigner = new JcaContentSignerBuilder(Constants.CA_SIGNING_ALGORITHM)
             .setProvider(bcProvider).build(keyPair.getPrivate());

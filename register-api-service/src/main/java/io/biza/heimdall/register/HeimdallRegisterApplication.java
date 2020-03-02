@@ -1,7 +1,6 @@
 package io.biza.heimdall.register;
 
 import java.nio.file.Paths;
-import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +21,6 @@ public class HeimdallRegisterApplication {
     SpringApplication application = new SpringApplication(HeimdallRegisterApplication.class);
     
     if(Paths.get("heimdall.jks").toFile().exists()) {
-      Properties properties = new Properties();
       application.setAdditionalProfiles("ssl");
     }
     
@@ -30,7 +28,7 @@ public class HeimdallRegisterApplication {
   }
 
   @Bean
-  public OpenAPI customOpenAPI(@Value("${deepthought.version}") String appVersion) {
+  public OpenAPI customOpenAPI(@Value("${heimdall.version}") String appVersion) {
     /**
      * OpenID Connect is available in OAS annotations but not yet in swagger-ui :(
      * https://github.com/swagger-api/swagger-ui/issues/3517
@@ -42,10 +40,10 @@ public class HeimdallRegisterApplication {
         .components(new Components().addSecuritySchemes(Constants.SECURITY_SCHEME_NAME,
             new SecurityScheme().type(SecurityScheme.Type.OPENIDCONNECT)
                 .openIdConnectUrl(Constants.OPENID_CONNECT_URL)))
-        .info(new Info().title("Deep Thought Administration API").version(appVersion).description(
-            "This is the Deep Thought Administration API. You can find out more about Deep Thought at [https://github.com/bizaio/deepthought](https://github.com/bizaio/deepthought) or on the [DataRight.io Slack, #oss](https://join.slack.com/t/datarightio/shared_invite/enQtNzAyNTI2MjA2MzU1LTU1NGE4MmQ2N2JiZWI2ODA5MTQ2N2Q0NTRmYmM0OWRlM2U5YzA3NzU5NDYyODlhNjRmNzU3ZDZmNTI0MDE3NjY).")
+        .info(new Info().title("Heimdall Register API").version(appVersion).description(
+            "This is the Heimdall Register API. You can find out more about Heimdall at [https://github.com/bizaio/heimdall](https://github.com/bizaio/heimdall) or on the [DataRight.io Slack, #oss](https://join.slack.com/t/datarightio/shared_invite/enQtNzAyNTI2MjA2MzU1LTU1NGE4MmQ2N2JiZWI2ODA5MTQ2N2Q0NTRmYmM0OWRlM2U5YzA3NzU5NDYyODlhNjRmNzU3ZDZmNTI0MDE3NjY).")
             .license(new License().name("GPL 3.0")
-                .url("https://github.com/bizaio/deepthought/blob/develop/LICENSE")));
+                .url("https://github.com/bizaio/heimdall/blob/develop/LICENSE")));
   }
 
 }

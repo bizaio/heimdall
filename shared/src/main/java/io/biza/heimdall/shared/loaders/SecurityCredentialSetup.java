@@ -36,39 +36,92 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.jose4j.jws.AlgorithmIdentifiers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import io.biza.heimdall.payload.enumerations.CertificateStatus;
+import io.biza.heimdall.payload.enumerations.JWKStatus;
 import io.biza.heimdall.shared.Constants;
-import io.biza.heimdall.shared.persistence.model.RegisterCertificateAuthorityData;
-import io.biza.heimdall.shared.persistence.repository.RegisterCertificateAuthorityRepository;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 @Order(1)
-public class CertificateAuthorityGenerator {
-  private RegisterCertificateAuthorityRepository caRepository;
+public class SecurityCredentialSetup {
+  private RegisterAuthorityTLSRepository caRepository;
+  private RegisterAuthorityJWKRepository jwkRepository;
+
 
   @Autowired
-  public CertificateAuthorityGenerator(RegisterCertificateAuthorityRepository caRepository) {
+  public SecurityCredentialSetup(RegisterAuthorityTLSRepository caRepository,
+      RegisterAuthorityJWKRepository jwkRepository) {
     this.caRepository = caRepository;
+    this.jwkRepository = jwkRepository;
+    createRegisterJwk();
     createCertificateAuthority();
   }
 
-  private void createCertificateAuthority() {
-    List<RegisterCertificateAuthorityData> certificates =
-        caRepository.findByStatusIn(List.of(CertificateStatus.ACTIVE));
+  private void createRegisterJwk() {
+    RegisterAuthorityJWKData jwk = jwkRepository.findFirstByStatusIn(List.of(JWKStatus.ACTIVE));
 
-    if (certificates != null && certificates.size() > 0) {
+    if (jwk != null) {
+      LOG.info("JWKS Authority already initialised, skipping JWK generation");
+      LOG.info("JWK key identifier is {}", jwk.id());
+      LOG.debug("JWK Authority details is output below");
+      LOG.debug("\n\n-----BEGIN PRIVATE KEY-----\n" + jwk.privateKey()
+          + "\n-----END PRIVATE KEY-----\n-----BEGIN PUBLIC KEY-----\n" + jwk.publicKey()
+          + "\n-----END PUBLIC KEY-----\n\n");
+      return;
+    }
+
+    /**
+     * Generate a new keypair
+     */
+    KeyPairGenerator keyGen;
+    try {
+      keyGen = KeyPairGenerator.getInstance(Constants.JAVA_ALGORITHM);
+      keyGen.initialize(2048);
+      KeyPair keyPair = keyGen.generateKeyPair();
+
+      /**
+       * Setup JWK Data
+       */
+
+
+      RegisterAuthorityJWKData jwkData = jwkRepository.save(RegisterAuthorityJWKData.builder()
+          .privateKey(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()))
+          .publicKey(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()))
+          .javaFactory(Constants.JAVA_ALGORITHM).joseAlgorithm(Constants.JOSE4J_ALGORITHM).status(JWKStatus.ACTIVE)
+          .build());
+
+      LOG.warn("JWKS Authority initialisation has been completed!");
+      LOG.debug("Private and Public keys of JWKS output below");
+      LOG.debug("\n\n-----BEGIN PRIVATE KEY-----\n" + jwkData.privateKey()
+          + "\n-----END PRIVATE KEY-----\n-----BEGIN PUBLIC KEY-----\n" + jwkData.publicKey()
+          + "\n-----END PUBLIC KEY-----\n\n");
+    } catch (NoSuchAlgorithmException e) {
+      LOG.error("Invalid algorithm of {} specified, cannot proceed", Constants.JAVA_ALGORITHM);
+    }
+
+  }
+
+  private void createCertificateAuthority() {
+    RegisterAuthorityTLSData caCertificate =
+        caRepository.findFirstByStatusIn(List.of(CertificateStatus.ACTIVE));
+
+    if (caCertificate != null) {
       LOG.info("Certificate Authority already initialised, skipping CA generation");
-      LOG.info("PEM of Certificate Authority is output to STDOUT below");
-      System.out.println("-----BEGIN RSA PRIVATE KEY-----");
-      System.out.println(certificates.get(0).privateKey().replaceAll(".{80}(?=.)", "$0\n"));
-      System.out.println("-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----");
-      System.out.println(certificates.get(0).publicKey().replaceAll(".{80}(?=.)", "$0\n"));
-      System.out.println("-----END CERTIFICATE-----");
+      LOG.debug("PEM of Certificate Authority is output below");
+      LOG.debug("\n\n-----BEGIN RSA PRIVATE KEY-----\n"
+          + caCertificate.privateKey().replaceAll(".{80}(?=.)", "$0\n")
+          + "\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\n"
+          + caCertificate.publicKey().replaceAll(".{80}(?=.)", "$0\n")
+          + "\n-----END CERTIFICATE-----\n\n");
       return;
     }
 
@@ -124,20 +177,20 @@ public class CertificateAuthorityGenerator {
       /**
        * (Insecurely!!!!) Save it to the database
        */
-      RegisterCertificateAuthorityData caCertData = RegisterCertificateAuthorityData.builder()
+      RegisterAuthorityTLSData caCertData = RegisterAuthorityTLSData.builder()
           .privateKey(new String(Base64.getEncoder().encode(keyPair.getPrivate().getEncoded())))
           .publicKey(new String(Base64.getEncoder().encode(selfSignedCert.getEncoded())))
           .status(CertificateStatus.ACTIVE).build();
-      RegisterCertificateAuthorityData savedCaCertData = caRepository.save(caCertData);
+      RegisterAuthorityTLSData savedCaCertData = caRepository.save(caCertData);
 
       LOG.warn("Certificate authority initialisation has been completed!");
-      LOG.info("PEM of Certificate Authority is output to STDOUT below");
-      System.out.println("-----BEGIN RSA PRIVATE KEY-----");
-      System.out.println(savedCaCertData.privateKey().replaceAll(".{80}(?=.)", "$0\n"));
-      System.out.println("-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----");
-      System.out.println(savedCaCertData.publicKey().replaceAll(".{80}(?=.)", "$0\n"));
-      System.out.println("-----END CERTIFICATE-----");
-      
+      LOG.debug("PEM of Certificate Authority is output as follows");
+      LOG.debug("\n\n-----BEGIN RSA PRIVATE KEY-----\n"
+          + savedCaCertData.privateKey().replaceAll(".{80}(?=.)", "$0\n")
+          + "\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\n"
+          + savedCaCertData.publicKey().replaceAll(".{80}(?=.)", "$0\n")
+          + "\n-----END CERTIFICATE-----\n\n");
+
     } catch (NoSuchAlgorithmException e) {
       LOG.error("Invalid algorithm of {} specified, cannot initialise certificate authority!",
           Constants.CA_ALGORITHM);

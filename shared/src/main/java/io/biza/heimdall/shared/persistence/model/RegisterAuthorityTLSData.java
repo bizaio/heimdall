@@ -18,6 +18,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -29,7 +31,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
+import io.biza.heimdall.payload.enumerations.CertificateStatus;
 import lombok.ToString;
 
 @Builder
@@ -40,24 +42,32 @@ import lombok.ToString;
 @Entity
 @ToString
 @Valid
-@Table(name = "REGISTER_JWK")
-public class RegisterJWKData {
+@Table(name = "REGISTER_AUTHORITY_TLS_CA")
+public class RegisterAuthorityTLSData {
 
   @Id
-  @Column(name = "ID", insertable = true)
+  @Column(name = "ID", insertable = false, updatable = false)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
   
-  @Column(name = "JWK")
+  @Column(name = "PRIVATE_KEY")
   @NotNull
   @Lob
-  String jwk;
+  String privateKey;
+  
+  @Column(name = "PUBLIC_KEY")
+  @NotNull
+  @Lob
+  String publicKey;
   
   @Column(name = "STATUS")
   @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  JWKStatus status = JWKStatus.ACTIVE;
+  CertificateStatus status = CertificateStatus.ACTIVE;
+  
+  
   
   
 }

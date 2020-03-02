@@ -15,14 +15,14 @@ package io.biza.heimdall.shared.persistence.mapper;
 
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioRegisterJWK;
-import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
 import ma.glasnost.orika.MapperFactory;
 
 public class RegisterJWKDataMapper implements OrikaFactoryConfigurerInterface {
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(RegisterJWKData.class, DioRegisterJWK.class)
+    orikaMapperFactory.classMap(RegisterAuthorityJWKData.class, DioRegisterJWK.class)
     .byDefault()
     .register();
   }

@@ -36,8 +36,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import io.biza.heimdall.payload.enumerations.CertificateStatus;
 import io.biza.heimdall.shared.Constants;
-import io.biza.heimdall.shared.persistence.model.RegisterCertificateAuthorityData;
-import io.biza.heimdall.shared.persistence.repository.RegisterCertificateAuthorityRepository;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HeimdallCertificateInitialision implements ApplicationRunner {
 
   @Autowired
-  RegisterCertificateAuthorityRepository caRepository;
+  RegisterAuthorityTLSRepository caRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(HeimdallCertificateInitialision.class, args);
@@ -80,8 +80,8 @@ public class HeimdallCertificateInitialision implements ApplicationRunner {
     char[] pwdArray = Constants.LOCAL_KEYSTORE_PASSWORD.toCharArray();
     ks.load(null, pwdArray);
 
-    List<RegisterCertificateAuthorityData> caData =
-        caRepository.findByStatusIn(List.of(CertificateStatus.ACTIVE));
+    RegisterAuthorityTLSData caData =
+        caRepository.findFirstByStatusIn(List.of(CertificateStatus.ACTIVE));
 
     /**
      * Bouncycastle Registration
@@ -90,12 +90,12 @@ public class HeimdallCertificateInitialision implements ApplicationRunner {
     Security.addProvider(bcProvider);
 
     PKCS8EncodedKeySpec privateKeySpec =
-        new PKCS8EncodedKeySpec(Base64.getDecoder().decode(caData.get(0).privateKey()));
+        new PKCS8EncodedKeySpec(Base64.getDecoder().decode(caData.privateKey()));
     PrivateKey caPrivateKey =
         KeyFactory.getInstance(Constants.CA_ALGORITHM).generatePrivate(privateKeySpec);
 
     Certificate caCertificate =
-        Certificate.getInstance(Base64.getDecoder().decode(caData.get(0).publicKey()));
+        Certificate.getInstance(Base64.getDecoder().decode(caData.publicKey()));
 
     /**
      * Private key generation

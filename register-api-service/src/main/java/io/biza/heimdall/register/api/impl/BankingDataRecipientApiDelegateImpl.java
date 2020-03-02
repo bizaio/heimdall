@@ -1,8 +1,13 @@
 package io.biza.heimdall.register.api.impl;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.jose4j.jwk.PublicJsonWebKey;
@@ -27,10 +32,10 @@ import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
-import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
-import io.biza.heimdall.shared.persistence.repository.RegisterJWKRepository;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
 import io.biza.heimdall.shared.util.RawJson;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +49,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
   DataRecipientRepository dataRecipientRepository;
 
   @Autowired
-  RegisterJWKRepository jwkRepository;
+  RegisterAuthorityJWKRepository jwkRepository;
 
   @Autowired
   SoftwareProductRepository productRepository;
@@ -73,83 +78,90 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
   }
 
   @Override
-  public ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId,
-      UUID productId) {
+  public ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId, UUID productId) {
 
     PublicJsonWebKey registerJwk;
 
     /**
      * If jwks isn't initialised we can't do anything
      */
-    List<RegisterJWKData> jwkList = jwkRepository.findByStatusIn(List.of(JWKStatus.ACTIVE));
-    if (jwkList == null || jwkList.size() < 1) {
+    RegisterAuthorityJWKData jwkData = jwkRepository.findFirstByStatusIn(List.of(JWKStatus.ACTIVE));
+    if (jwkData == null) {
       LOG.error(
           "Attempted to retrieve an SSA when there are no initialised and active JWKs to sign it with");
       return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
     } else {
-      Random randomKeyIndex = new Random();
-      RegisterJWKData jwkData = jwkList.get(randomKeyIndex.nextInt(jwkList.size()));
-      try {
-        registerJwk = PublicJsonWebKey.Factory.newPublicJwk(jwkData.jwk());
 
-      } catch (JoseException e) {
-        LOG.error("Encountered a JOSE Exception while loading register json web key {}", e.toString());
-        return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+
+      Optional<SoftwareProductData> softwareProductOptional =
+          productRepository.findByIdAndDataRecipientBrandId(productId, brandId);
+
+      if (softwareProductOptional.isPresent()) {
+
+        SoftwareProductData softwareProduct = softwareProductOptional.get();
+
+        /**
+         * Build claim set
+         */
+        JwtClaims ssaClaims = new JwtClaims();
+        ssaClaims.setIssuer(Constants.REGISTER_ISSUER);
+        ssaClaims.setExpirationTimeMinutesInTheFuture(60 * Constants.REGISTER_SSA_LENGTH_HOURS);
+        ssaClaims.setClaim("org_id", softwareProduct.dataRecipientBrand().id().toString());
+        ssaClaims.setClaim("org_name", softwareProduct.dataRecipientBrand().brandName());
+        ssaClaims.setClaim("client_name", softwareProduct.name());
+        ssaClaims.setClaim("client_description", softwareProduct.description());
+        ssaClaims.setClaim("client_uri", softwareProduct.uri());
+        ssaClaims.setClaim("redirect_uris",
+            softwareProduct.redirectUris().stream().collect(Collectors.toList()));
+        ssaClaims.setIssuedAtToNow();
+        ssaClaims.setGeneratedJwtId();
+        ssaClaims.setClaim("logo_uri", softwareProduct.logoUri());
+        ssaClaims.setClaim("tos_uri", softwareProduct.tosUri());
+        ssaClaims.setClaim("policy_uri", softwareProduct.policyUri());
+        ssaClaims.setClaim("jwks_uri", softwareProduct.jwksUri());
+        ssaClaims.setClaim("revocation_uri", softwareProduct.revocationUri());
+        ssaClaims.setClaim("software_id", softwareProduct.id().toString());
+        ssaClaims.setClaim("software_roles", softwareProduct.softwareRole());
+        ssaClaims.setClaim("scope", softwareProduct.scopes().stream().map(RegisterScope::toString)
+            .collect(Collectors.joining(" ")));
+
+        /**
+         * Perform signing
+         */
+        try {
+          JsonWebSignature jws = new JsonWebSignature();
+          jws.setPayload(ssaClaims.toJson());
+          jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_PSS_USING_SHA256);
+          KeyFactory keyFactory = KeyFactory.getInstance(jwkData.javaFactory());
+          PKCS8EncodedKeySpec privateKeySpec =
+              new PKCS8EncodedKeySpec(Base64.getDecoder().decode(jwkData.privateKey()));
+          PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+
+          jws.setKey(privateKey);
+          jws.setKeyIdHeaderValue(jwkData.id().toString());
+
+          String jwsResult = jws.getCompactSerialization();
+          return ResponseEntity.ok(RawJson.from(jwsResult));
+        } catch (JoseException e) {
+          LOG.error(
+              "Encountered JOSE Signing Error despite having a Register key, something went wrong in crypto land: {}",
+              e.toString());
+          return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (NoSuchAlgorithmException e) {
+          LOG.error("Encountered an algorithm in the database I no longer know how to process? {}",
+              e.toString());
+          return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (InvalidKeySpecException e) {
+          LOG.error("Encountered error during private key import into key specification: {}",
+              e.toString());
+          return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        }
+
+      } else {
+        LOG.warn("Attempted to produce SSA for non existent brand {} and product of {}", brandId,
+            productId);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
-    }
-
-    Optional<SoftwareProductData> softwareProductOptional =
-        productRepository.findByIdAndDataRecipientBrandId(productId, brandId);
-
-    if (softwareProductOptional.isPresent()) {
-
-      SoftwareProductData softwareProduct = softwareProductOptional.get();
-
-      /**
-       * Build claim set
-       */
-      JwtClaims ssaClaims = new JwtClaims();
-      ssaClaims.setIssuer(Constants.REGISTER_ISSUER);
-      ssaClaims.setExpirationTimeMinutesInTheFuture(60 * Constants.REGISTER_SSA_LENGTH_HOURS);
-      ssaClaims.setClaim("org_id", softwareProduct.dataRecipientBrand().id().toString());
-      ssaClaims.setClaim("org_name", softwareProduct.dataRecipientBrand().brandName());
-      ssaClaims.setClaim("client_name", softwareProduct.name());
-      ssaClaims.setClaim("client_description", softwareProduct.description());
-      ssaClaims.setClaim("client_uri", softwareProduct.uri());
-      ssaClaims.setClaim("redirect_uris",
-          softwareProduct.redirectUris().stream().collect(Collectors.toList()));
-      ssaClaims.setIssuedAtToNow();
-      ssaClaims.setGeneratedJwtId();
-      ssaClaims.setClaim("logo_uri", softwareProduct.logoUri());
-      ssaClaims.setClaim("tos_uri", softwareProduct.tosUri());
-      ssaClaims.setClaim("policy_uri", softwareProduct.policyUri());
-      ssaClaims.setClaim("jwks_uri", softwareProduct.jwksUri());
-      ssaClaims.setClaim("revocation_uri", softwareProduct.revocationUri());
-      ssaClaims.setClaim("software_id", softwareProduct.id().toString());
-      ssaClaims.setClaim("software_roles", softwareProduct.softwareRole());
-      ssaClaims.setClaim("scope", softwareProduct.scopes().stream().map(RegisterScope::toString)
-          .collect(Collectors.joining(" ")));
-      
-      /**
-       * Perform signing
-       */
-      JsonWebSignature jws = new JsonWebSignature();
-      jws.setPayload(ssaClaims.toJson());
-      jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_PSS_USING_SHA256);
-      jws.setKey(registerJwk.getPrivateKey());
-      jws.setKeyIdHeaderValue(registerJwk.getKeyId());
-      try {
-        String jwsResult = jws.getCompactSerialization();
-        return ResponseEntity.ok(RawJson.from(jwsResult));
-      } catch (JoseException e) {
-        LOG.error("Encountered JOSE Signing Error despite having a Register key, something went wrong in crypto land: {}", e.toString());
-        return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-      }
-      
-    } else {
-      LOG.warn("Attempted to produce SSA for non existent brand {} and product of {}", brandId,
-          productId);
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
   }

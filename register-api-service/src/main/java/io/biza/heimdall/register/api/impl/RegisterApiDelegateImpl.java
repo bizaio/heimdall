@@ -1,8 +1,15 @@
 package io.biza.heimdall.register.api.impl;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.List;
-import org.jose4j.jwk.JsonWebKey;
 import org.jose4j.jwk.JsonWebKeySet;
+import org.jose4j.jwk.PublicJsonWebKey;
 import org.jose4j.jwk.JsonWebKey.OutputControlLevel;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +21,10 @@ import org.springframework.validation.annotation.Validated;
 import io.biza.heimdall.payload.enumerations.CertificateStatus;
 import io.biza.heimdall.payload.enumerations.JWKStatus;
 import io.biza.heimdall.register.api.delegate.RegisterApiDelegate;
-import io.biza.heimdall.shared.persistence.model.RegisterCertificateAuthorityData;
-import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
-import io.biza.heimdall.shared.persistence.repository.RegisterCertificateAuthorityRepository;
-import io.biza.heimdall.shared.persistence.repository.RegisterJWKRepository;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
+import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Validated
@@ -26,22 +33,32 @@ import lombok.extern.slf4j.Slf4j;
 public class RegisterApiDelegateImpl implements RegisterApiDelegate {
 
   @Autowired
-  RegisterJWKRepository jwkRepository;
+  RegisterAuthorityJWKRepository jwkRepository;
   
   @Autowired
-  RegisterCertificateAuthorityRepository caRepository;
+  RegisterAuthorityTLSRepository caRepository;
 
   @Override
   public ResponseEntity<String> getJwks() {
     
-    List<RegisterJWKData> registerData = jwkRepository.findByStatusIn(List.of(JWKStatus.ACTIVE));
+    List<RegisterAuthorityJWKData> registerData = jwkRepository.findByStatusIn(List.of(JWKStatus.ACTIVE));
     
     JsonWebKeySet jsonWebKeySet = new JsonWebKeySet();
+    
+
     registerData.forEach(jwk -> {
       try {
-        jsonWebKeySet.addJsonWebKey(JsonWebKey.Factory.newJwk(jwk.jwk()));
-      } catch (JoseException e) {
-        LOG.error("Received error while parsing JWK from Database");
+        KeyFactory keyFactory = KeyFactory.getInstance(jwk.javaFactory());
+        X509EncodedKeySpec publicKeySpec =
+            new X509EncodedKeySpec(Base64.getDecoder().decode(jwk.publicKey()));
+        PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+        
+        PublicJsonWebKey webKey = PublicJsonWebKey.Factory.newPublicJwk(publicKey);
+        webKey.setAlgorithm(jwk.joseAlgorithm());
+        webKey.setKeyId(jwk.id().toString());
+        jsonWebKeySet.addJsonWebKey(webKey);
+      } catch (JoseException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+        LOG.error("Received error while parsing JWK from Database: {}", e.getMessage());
       }
     });
     
@@ -51,10 +68,10 @@ public class RegisterApiDelegateImpl implements RegisterApiDelegate {
   
   @Override
   public ResponseEntity<String> getCertificateAuthority() {
-    List<RegisterCertificateAuthorityData> caData = caRepository.findByStatusIn(List.of(CertificateStatus.ACTIVE));
+    RegisterAuthorityTLSData caData = caRepository.findFirstByStatusIn(List.of(CertificateStatus.ACTIVE));
     
-    if(caData != null && caData.size() > 0) {
-      String publicCertificate = new StringBuilder().append("-----BEGIN CERTIFICATE-----\n").append(caData.get(0).publicKey().replaceAll(".{80}(?=.)", "$0\n")).append("\n-----END CERTIFICATE-----\n").toString();
+    if(caData != null) {
+      String publicCertificate = new StringBuilder().append("-----BEGIN CERTIFICATE-----\n").append(caData.publicKey().replaceAll(".{80}(?=.)", "$0\n")).append("\n-----END CERTIFICATE-----\n").toString();
       return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(publicCertificate);
     } else {
       LOG.error("Unable to provide CA public key when CA is not initialised");

@@ -54,5 +54,10 @@
             <artifactId>babelfish-cdr</artifactId>
             <version>${babelfish-cdr.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.biza</groupId>
+            <artifactId>electronic-thumb-oidc</artifactId>
+            <version>${electronic-thumb.version}</version>
+        </dependency>
     </dependencies>
 </project>

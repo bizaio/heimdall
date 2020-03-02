@@ -1,5 +1,7 @@
 package io.biza.heimdall.register;
 
+import java.util.List;
+
 public class Constants {
   
   public static final String OPENID_CONNECT_URL =
@@ -38,6 +40,7 @@ public class Constants {
    */
   public final static String REGISTER_ISSUER = "dio-register";
   public final static long REGISTER_SSA_LENGTH_HOURS = 1;
+  public final static List<String> REGISTER_SCOPE_LIST = List.of(SECURITY_SCOPE_REGISTER_BANK_READ);
   
 
 }

@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
-import io.biza.heimdall.shared.persistence.model.RegisterJWKData;
+import io.biza.heimdall.payload.enumerations.CertificateStatus;
+import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
 
 @Repository
-public interface RegisterJWKRepository extends JpaRepository<RegisterJWKData, UUID> {
-  List<RegisterJWKData> findByStatusIn(List<JWKStatus> status);
+public interface RegisterAuthorityTLSRepository extends JpaRepository<RegisterAuthorityTLSData, UUID> {
+  RegisterAuthorityTLSData findFirstByStatusIn(List<CertificateStatus> status);
 }

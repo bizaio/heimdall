@@ -1,9 +1,10 @@
-deepthought:
+heimdall:
   version: 1.0.0
+  hostname: localhost
 server:
   port: 9101
   servlet:
-    context-path: /dio-register
+    context-path: /
     
 spring:
    security:
