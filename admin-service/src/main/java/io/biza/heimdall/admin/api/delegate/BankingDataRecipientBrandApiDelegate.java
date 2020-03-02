@@ -13,25 +13,26 @@ public interface BankingDataRecipientBrandApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
- 
-  default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(UUID recipientId, DioDataRecipientBrand brand) throws ValidationListException{
+
+  default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(UUID recipientId,
+      DioDataRecipientBrand brand) throws ValidationListException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<List<DioDataRecipientBrand>> listRecipientBrands(UUID recipientId){
+  default ResponseEntity<List<DioDataRecipientBrand>> listRecipientBrands(UUID recipientId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioDataRecipientBrand> getRecipientBrand(UUID recipientId, UUID brandId){
+  default ResponseEntity<DioDataRecipientBrand> getRecipientBrand(UUID recipientId, UUID brandId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   default ResponseEntity<DioDataRecipientBrand> updateRecipientBrand(UUID recipientId, UUID brandId,
-      DioDataRecipientBrand recipient){
+      DioDataRecipientBrand recipient) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<Void> deleteRecipientBrand(UUID recipientId, UUID brandId){
+  default ResponseEntity<Void> deleteRecipientBrand(UUID recipientId, UUID brandId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

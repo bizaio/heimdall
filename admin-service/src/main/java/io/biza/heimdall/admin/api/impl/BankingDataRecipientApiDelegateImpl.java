@@ -25,7 +25,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
 
   @Autowired
   private HeimdallMapper mapper;
-  
+
   @Override
   public ResponseEntity<DioDataRecipient> createRecipient(DioDataRecipient recipient) {
     DataRecipientData dataRecipientData = mapper.map(recipient, DataRecipientData.class);
@@ -46,8 +46,8 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
     Optional<DataRecipientData> data = recipientRepository.findById(recipientId);
 
     if (data.isPresent()) {
-      LOG.info("Retrieving a single data recipient with id of {} and got content of {}", recipientId,
-          data.get());
+      LOG.info("Retrieving a single data recipient with id of {} and got content of {}",
+          recipientId, data.get());
       return ResponseEntity.ok(mapper.map(data.get(), DioDataRecipient.class));
     } else {
       LOG.warn("Attempted to retrieve a single data recipient and could not find with id of {}",
@@ -66,7 +66,8 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
       mapper.map(updateData, data);
       DataRecipientData updatedData = recipientRepository.save(data);
 
-      LOG.info("Updating a single data recipient of id {} and now set to {}", recipientId, updatedData);
+      LOG.info("Updating a single data recipient of id {} and now set to {}", recipientId,
+          updatedData);
 
       return ResponseEntity.ok(mapper.map(updatedData, DioDataRecipient.class));
     } else {

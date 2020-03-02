@@ -23,8 +23,7 @@ public interface BankingDataRecipientApiDelegate {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<RawJson> getSoftwareStatementAssertion(
-      UUID brandId, UUID productId) {
+  default ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId, UUID productId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

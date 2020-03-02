@@ -13,25 +13,25 @@ public interface BankingDataRecipientApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
- 
-  default ResponseEntity<DioDataRecipient> createRecipient(DioDataRecipient recipient){
+
+  default ResponseEntity<DioDataRecipient> createRecipient(DioDataRecipient recipient) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<List<DioDataRecipient>> listRecipients(){
+  default ResponseEntity<List<DioDataRecipient>> listRecipients() {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioDataRecipient> getRecipient(UUID recipientId){
+  default ResponseEntity<DioDataRecipient> getRecipient(UUID recipientId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   default ResponseEntity<DioDataRecipient> updateRecipient(UUID recipientId,
-      @NotNull DioDataRecipient recipient){
+      @NotNull DioDataRecipient recipient) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<Void> deleteRecipient(UUID recipientId){
+  default ResponseEntity<Void> deleteRecipient(UUID recipientId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = Constants.TAG_BANKING_DATA_HOLDER_NAME, description = Constants.TAG_BANKING_DATA_HOLDER_DESCRIPTION)
+@Tag(name = Constants.TAG_BANKING_DATA_HOLDER_NAME,
+    description = Constants.TAG_BANKING_DATA_HOLDER_DESCRIPTION)
 @RequestMapping("/v1/banking/data-holders")
 public interface BankingDataHolderApi {
 
@@ -31,25 +32,24 @@ public interface BankingDataHolderApi {
   }
 
   @Operation(summary = "Get Holder Brands",
-      description = "Get Data Holder Brands from the Register", parameters = {
-          @Parameter(name = "x-v", in = ParameterIn.HEADER,
-              description = "Version of the API end point requested by the client. Must be set to a positive integer.")
-  },
-  security = {@SecurityRequirement(name = "cdr-register",
-      scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
+      description = "Get Data Holder Brands from the Register",
+      parameters = {@Parameter(name = "x-v", in = ParameterIn.HEADER,
+          description = "Version of the API end point requested by the client. Must be set to a positive integer.")},
+      security = {@SecurityRequirement(name = "cdr-register",
+          scopes = Constants.SECURITY_SCOPE_REGISTER_BANK_READ)})
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-      description = "Returns a Response containing the Data Holder Brands",
-      content = @Content(schema = @Schema(implementation = ResponseRegisterDataHolderBrandList.class)))})
+      description = "Returns a Response containing the Data Holder Brands", content = @Content(
+          schema = @Schema(implementation = ResponseRegisterDataHolderBrandList.class)))})
   @RequestMapping(path = "/brands", method = RequestMethod.GET)
   @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<ResponseRegisterDataHolderBrandList> getBankingDataHolderBrands(
-      @Valid @RequestParam(name = "updated-since",
-      required = false) OffsetDateTime updatedSince,
-  @Valid @RequestParam(name = "page", required = false,
-      defaultValue = "1") @Min(1) Integer page,
-  @Valid @RequestParam(name = "page-size", required = false,
-      defaultValue = "25") Integer pageSize ) {
-    return getDelegate().getBankingDataHolderBrands(RequestGetDataHolderBrands.builder().updatedSince(updatedSince).page(page).pageSize(pageSize).build());
+      @Valid @RequestParam(name = "updated-since", required = false) OffsetDateTime updatedSince,
+      @Valid @RequestParam(name = "page", required = false,
+          defaultValue = "1") @Min(1) Integer page,
+      @Valid @RequestParam(name = "page-size", required = false,
+          defaultValue = "25") Integer pageSize) {
+    return getDelegate().getBankingDataHolderBrands(RequestGetDataHolderBrands.builder()
+        .updatedSince(updatedSince).page(page).pageSize(pageSize).build());
   }
 
 }

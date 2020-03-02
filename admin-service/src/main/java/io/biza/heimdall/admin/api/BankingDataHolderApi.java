@@ -46,7 +46,7 @@ public interface BankingDataHolderApi {
   default ResponseEntity<List<DioDataHolder>> listHolders() {
     return getDelegate().listHolders();
   }
-  
+
   @Operation(summary = "Get a single Holder", description = "Returns a single holder entry",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_HOLDER_READ})})
@@ -71,13 +71,14 @@ public interface BankingDataHolderApi {
           description = Constants.RESPONSE_SUCCESSFUL_CREATE,
           content = @Content(schema = @Schema(implementation = DioDataHolder.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
-  default ResponseEntity<DioDataHolder> createHolder(
-      @NotNull @RequestBody DioDataHolder holder) throws ValidationListException {
+  default ResponseEntity<DioDataHolder> createHolder(@NotNull @RequestBody DioDataHolder holder)
+      throws ValidationListException {
     return getDelegate().createHolder(holder);
   }
 
@@ -90,8 +91,9 @@ public interface BankingDataHolderApi {
           description = Constants.RESPONSE_SUCCESSFUL_UPDATE,
           content = @Content(schema = @Schema(implementation = DioDataHolder.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PutMapping(path = "/{holderId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)

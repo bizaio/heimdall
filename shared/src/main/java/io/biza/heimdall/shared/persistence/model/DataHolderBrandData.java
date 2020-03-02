@@ -61,7 +61,7 @@ public class DataHolderBrandData {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
-  
+    
   @Column(name = "BRAND_NAME")
   @NotNull
   String brandName;
@@ -69,7 +69,7 @@ public class DataHolderBrandData {
   @ManyToOne
   @JoinColumn(name = "DATA_HOLDER_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_HOLDER_BRAND_DATA_HOLDER_FK"))
   DataHolderData dataHolder;
-  
+    
   @Column(name = "LOGO_URI")
   @NotNull
   URI logoUri;

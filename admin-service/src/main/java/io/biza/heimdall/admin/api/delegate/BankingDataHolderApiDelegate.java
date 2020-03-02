@@ -13,25 +13,24 @@ public interface BankingDataHolderApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
- 
-  default ResponseEntity<DioDataHolder> createHolder(DioDataHolder holder){
+
+  default ResponseEntity<DioDataHolder> createHolder(DioDataHolder holder) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<List<DioDataHolder>> listHolders(){
+  default ResponseEntity<List<DioDataHolder>> listHolders() {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioDataHolder> getHolder(UUID holderId){
+  default ResponseEntity<DioDataHolder> getHolder(UUID holderId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioDataHolder> updateHolder(UUID holderId,
-      @NotNull DioDataHolder holder){
+  default ResponseEntity<DioDataHolder> updateHolder(UUID holderId, @NotNull DioDataHolder holder) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<Void> deleteHolder(UUID holderId){
+  default ResponseEntity<Void> deleteHolder(UUID holderId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

@@ -14,25 +14,29 @@ public interface BankingDataRecipientBrandSoftwareProductApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
- 
-  default ResponseEntity<DioSoftwareProduct> createRecipientBrandSoftwareProduct(UUID recipientId, UUID brandId, DioSoftwareProduct softwareProduct) throws ValidationListException{
+
+  default ResponseEntity<DioSoftwareProduct> createRecipientBrandSoftwareProduct(UUID recipientId,
+      UUID brandId, DioSoftwareProduct softwareProduct) throws ValidationListException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<List<DioSoftwareProduct>> listRecipientBrandSoftwareProducts(UUID recipientId, UUID brandId){
+  default ResponseEntity<List<DioSoftwareProduct>> listRecipientBrandSoftwareProducts(
+      UUID recipientId, UUID brandId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioSoftwareProduct> getRecipientBrandSoftwareProduct(UUID recipientId, UUID brandId, UUID softwareProductId){
+  default ResponseEntity<DioSoftwareProduct> getRecipientBrandSoftwareProduct(UUID recipientId,
+      UUID brandId, UUID softwareProductId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioSoftwareProduct> updateRecipientBrandSoftwareProduct(UUID recipientId, UUID brandId, UUID softwareProductId,
-      @NotNull DioSoftwareProduct recipient){
+  default ResponseEntity<DioSoftwareProduct> updateRecipientBrandSoftwareProduct(UUID recipientId,
+      UUID brandId, UUID softwareProductId, @NotNull DioSoftwareProduct recipient) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<Void> deleteRecipientBrandSoftwareProduct(UUID recipientId, UUID brandId, UUID softwareProductId){
+  default ResponseEntity<Void> deleteRecipientBrandSoftwareProduct(UUID recipientId, UUID brandId,
+      UUID softwareProductId) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

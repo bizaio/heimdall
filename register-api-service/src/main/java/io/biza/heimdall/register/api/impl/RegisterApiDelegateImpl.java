@@ -4,7 +4,6 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.List;
@@ -34,17 +33,18 @@ public class RegisterApiDelegateImpl implements RegisterApiDelegate {
 
   @Autowired
   RegisterAuthorityJWKRepository jwkRepository;
-  
+
   @Autowired
   RegisterAuthorityTLSRepository caRepository;
 
   @Override
   public ResponseEntity<String> getJwks() {
-    
-    List<RegisterAuthorityJWKData> registerData = jwkRepository.findByStatusIn(List.of(JWKStatus.ACTIVE));
-    
+
+    List<RegisterAuthorityJWKData> registerData =
+        jwkRepository.findByStatusIn(List.of(JWKStatus.ACTIVE));
+
     JsonWebKeySet jsonWebKeySet = new JsonWebKeySet();
-    
+
 
     registerData.forEach(jwk -> {
       try {
@@ -52,7 +52,7 @@ public class RegisterApiDelegateImpl implements RegisterApiDelegate {
         X509EncodedKeySpec publicKeySpec =
             new X509EncodedKeySpec(Base64.getDecoder().decode(jwk.publicKey()));
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
-        
+
         PublicJsonWebKey webKey = PublicJsonWebKey.Factory.newPublicJwk(publicKey);
         webKey.setAlgorithm(jwk.joseAlgorithm());
         webKey.setKeyId(jwk.id().toString());
@@ -61,24 +61,28 @@ public class RegisterApiDelegateImpl implements RegisterApiDelegate {
         LOG.error("Received error while parsing JWK from Database: {}", e.getMessage());
       }
     });
-    
-    return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(jsonWebKeySet.toJson(OutputControlLevel.PUBLIC_ONLY));
-    
+
+    return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
+        .body(jsonWebKeySet.toJson(OutputControlLevel.PUBLIC_ONLY));
+
   }
-  
+
   @Override
   public ResponseEntity<String> getCertificateAuthority() {
-    RegisterAuthorityTLSData caData = caRepository.findFirstByStatusIn(List.of(CertificateStatus.ACTIVE));
-    
-    if(caData != null) {
-      String publicCertificate = new StringBuilder().append("-----BEGIN CERTIFICATE-----\n").append(caData.publicKey().replaceAll(".{80}(?=.)", "$0\n")).append("\n-----END CERTIFICATE-----\n").toString();
+    RegisterAuthorityTLSData caData =
+        caRepository.findFirstByStatusIn(List.of(CertificateStatus.ACTIVE));
+
+    if (caData != null) {
+      String publicCertificate = new StringBuilder().append("-----BEGIN CERTIFICATE-----\n")
+          .append(caData.publicKey().replaceAll(".{80}(?=.)", "$0\n"))
+          .append("\n-----END CERTIFICATE-----\n").toString();
       return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(publicCertificate);
     } else {
       LOG.error("Unable to provide CA public key when CA is not initialised");
       return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
     }
-    
-    
+
+
   }
 
 }

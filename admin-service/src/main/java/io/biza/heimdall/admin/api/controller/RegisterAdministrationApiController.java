@@ -12,7 +12,8 @@ public class RegisterAdministrationApiController implements RegisterAdministrati
   private final RegisterAdministrationApiDelegate delegate;
 
 
-  public RegisterAdministrationApiController(@Autowired(required = false) RegisterAdministrationApiDelegate delegate) {
+  public RegisterAdministrationApiController(
+      @Autowired(required = false) RegisterAdministrationApiDelegate delegate) {
     this.delegate = Optional.ofNullable(delegate).orElse(new RegisterAdministrationApiDelegate() {
 
     });

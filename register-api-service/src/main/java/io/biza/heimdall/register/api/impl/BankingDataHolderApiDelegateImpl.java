@@ -45,7 +45,8 @@ public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDel
     ResponseRegisterDataHolderBrandList listResponse = ResponseRegisterDataHolderBrandList.builder()
         .meta(RegisterContainerAttributes.toMetaPaginated(dataHolderBrandData))
         .links(RegisterContainerAttributes.toLinksPaginated(dataHolderBrandData))
-        .data(mapper.mapAsList(dataHolderBrandData.getContent(), RegisterDataHolderBrand.class)).build();
+        .data(mapper.mapAsList(dataHolderBrandData.getContent(), RegisterDataHolderBrand.class))
+        .build();
     LOG.debug("List response came back with: {}", listResponse);
     return ResponseEntity.ok(listResponse);
   }

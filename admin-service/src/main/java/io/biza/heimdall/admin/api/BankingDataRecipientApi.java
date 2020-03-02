@@ -27,7 +27,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = Constants.TAG_DATA_RECIPIENT_NAME, description = Constants.TAG_DATA_RECIPIENT_DESCRIPTION)
+@Tag(name = Constants.TAG_DATA_RECIPIENT_NAME,
+    description = Constants.TAG_DATA_RECIPIENT_DESCRIPTION)
 @RequestMapping("/v1/data-recipient")
 public interface BankingDataRecipientApi {
 
@@ -46,7 +47,7 @@ public interface BankingDataRecipientApi {
   default ResponseEntity<List<DioDataRecipient>> listRecipientes() {
     return getDelegate().listRecipients();
   }
-  
+
   @Operation(summary = "Get a single Recipient", description = "Returns a single recipient entry",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_READ})})
@@ -71,8 +72,9 @@ public interface BankingDataRecipientApi {
           description = Constants.RESPONSE_SUCCESSFUL_CREATE,
           content = @Content(schema = @Schema(implementation = DioDataRecipient.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
@@ -90,8 +92,9 @@ public interface BankingDataRecipientApi {
           description = Constants.RESPONSE_SUCCESSFUL_UPDATE,
           content = @Content(schema = @Schema(implementation = DioDataRecipient.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PutMapping(path = "/{recipientId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)

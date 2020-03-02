@@ -1,6 +1,7 @@
 heimdall:
   version: 1.0.0
   hostname: localhost
+  token_length_hours: 24
 server:
   port: 9101
   servlet:

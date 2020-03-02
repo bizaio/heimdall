@@ -27,7 +27,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = Constants.TAG_DATA_RECIPIENT_NAME, description = Constants.TAG_DATA_RECIPIENT_DESCRIPTION)
+@Tag(name = Constants.TAG_DATA_RECIPIENT_NAME,
+    description = Constants.TAG_DATA_RECIPIENT_DESCRIPTION)
 @RequestMapping("/v1/data-recipient/{recipientId}/brand")
 public interface BankingDataRecipientBrandApi {
 
@@ -43,11 +44,13 @@ public interface BankingDataRecipientBrandApi {
           array = @ArraySchema(schema = @Schema(implementation = DioDataRecipientBrand.class))))})
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
-  default ResponseEntity<List<DioDataRecipientBrand>> listRecipientBrandes(@NotNull @Valid @PathVariable("recipientId") UUID recipientId) {
+  default ResponseEntity<List<DioDataRecipientBrand>> listRecipientBrandes(
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId) {
     return getDelegate().listRecipientBrands(recipientId);
   }
-  
-  @Operation(summary = "Get a single Recipient Brand", description = "Returns a single recipient brand entry",
+
+  @Operation(summary = "Get a single Recipient Brand",
+      description = "Returns a single recipient brand entry",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_READ})})
   @ApiResponses(value = {
@@ -64,7 +67,8 @@ public interface BankingDataRecipientBrandApi {
     return getDelegate().getRecipientBrand(recipientId, brandId);
   }
 
-  @Operation(summary = "Create a Recipient Brand", description = "Creates and Returns a new Recipient Brand",
+  @Operation(summary = "Create a Recipient Brand",
+      description = "Creates and Returns a new Recipient Brand",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_WRITE})})
   @ApiResponses(value = {
@@ -72,16 +76,18 @@ public interface BankingDataRecipientBrandApi {
           description = Constants.RESPONSE_SUCCESSFUL_CREATE,
           content = @Content(schema = @Schema(implementation = DioDataRecipientBrand.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
-  default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(@NotNull @Valid @PathVariable("recipientId") UUID recipientId,
+  default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
       @NotNull @RequestBody DioDataRecipientBrand brand) throws ValidationListException {
     return getDelegate().createRecipientBrand(recipientId, brand);
   }
-  
+
   @Operation(summary = "Update a single Recipient Brand",
       description = "Updates and Returns an existing Recipient Brand",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
@@ -91,13 +97,15 @@ public interface BankingDataRecipientBrandApi {
           description = Constants.RESPONSE_SUCCESSFUL_UPDATE,
           content = @Content(schema = @Schema(implementation = DioDataRecipientBrand.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PutMapping(path = "/{brandId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<DioDataRecipientBrand> updateRecipientBrand(
-      @NotNull @Valid @PathVariable("recipientId") UUID recipientId, @NotNull @Valid @PathVariable("brandId") UUID brandId,
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
+      @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @RequestBody DioDataRecipientBrand recipient) throws ValidationListException {
     return getDelegate().updateRecipientBrand(recipientId, brandId, recipient);
   }

@@ -12,7 +12,8 @@ public class BankingDataRecipientApiController implements BankingDataRecipientAp
   private final BankingDataRecipientApiDelegate delegate;
 
 
-  public BankingDataRecipientApiController(@Autowired(required = false) BankingDataRecipientApiDelegate delegate) {
+  public BankingDataRecipientApiController(
+      @Autowired(required = false) BankingDataRecipientApiDelegate delegate) {
     this.delegate = Optional.ofNullable(delegate).orElse(new BankingDataRecipientApiDelegate() {
 
     });

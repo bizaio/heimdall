@@ -12,7 +12,8 @@ public class BankingDataHolderApiController implements BankingDataHolderApi {
   private final BankingDataHolderApiDelegate delegate;
 
 
-  public BankingDataHolderApiController(@Autowired(required = false) BankingDataHolderApiDelegate delegate) {
+  public BankingDataHolderApiController(
+      @Autowired(required = false) BankingDataHolderApiDelegate delegate) {
     this.delegate = Optional.ofNullable(delegate).orElse(new BankingDataHolderApiDelegate() {
 
     });

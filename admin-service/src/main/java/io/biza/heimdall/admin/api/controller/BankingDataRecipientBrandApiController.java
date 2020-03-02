@@ -12,10 +12,12 @@ public class BankingDataRecipientBrandApiController implements BankingDataRecipi
   private final BankingDataRecipientBrandApiDelegate delegate;
 
 
-  public BankingDataRecipientBrandApiController(@Autowired(required = false) BankingDataRecipientBrandApiDelegate delegate) {
-    this.delegate = Optional.ofNullable(delegate).orElse(new BankingDataRecipientBrandApiDelegate() {
+  public BankingDataRecipientBrandApiController(
+      @Autowired(required = false) BankingDataRecipientBrandApiDelegate delegate) {
+    this.delegate =
+        Optional.ofNullable(delegate).orElse(new BankingDataRecipientBrandApiDelegate() {
 
-    });
+        });
   }
 
   @Override

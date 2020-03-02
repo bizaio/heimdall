@@ -69,7 +69,13 @@ public class DataHolderData {
   IndustryType industry;
   
   @OneToMany(mappedBy = "dataHolder", cascade = CascadeType.ALL)
+  @ToString.Exclude
   Set<DataHolderBrandData> dataHolderBrands;
+  
+  @OneToMany(mappedBy = "dataHolder", cascade = CascadeType.ALL)
+  @ToString.Exclude
+  Set<DataHolderClientData> dataHolderClients;
+
   
   @PrePersist
   public void prePersist() {
@@ -78,6 +84,12 @@ public class DataHolderData {
         one.dataHolder(this);
       }
     }
+    if (dataHolderClients() != null) {
+      for (DataHolderClientData one : dataHolderClients) {
+        one.dataHolder(this);
+      }
+    }
+
     if (legalEntity() != null) {
       legalEntity.dataHolder(this);
     }

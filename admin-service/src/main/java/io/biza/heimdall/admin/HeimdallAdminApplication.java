@@ -21,12 +21,12 @@ public class HeimdallAdminApplication {
 
   public static void main(String[] args) {
     SpringApplication application = new SpringApplication(HeimdallAdminApplication.class);
-    
-    if(Paths.get("heimdall.jks").toFile().exists()) {
+
+    if (Paths.get("heimdall.jks").toFile().exists()) {
       LOG.warn("Detected local keystore, triggering ssl enablement");
       application.setAdditionalProfiles("ssl");
     }
-    
+
     application.run(args);
   }
 

@@ -19,11 +19,11 @@ public class HeimdallRegisterApplication {
 
   public static void main(String[] args) {
     SpringApplication application = new SpringApplication(HeimdallRegisterApplication.class);
-    
-    if(Paths.get("heimdall.jks").toFile().exists()) {
+
+    if (Paths.get("heimdall.jks").toFile().exists()) {
       application.setAdditionalProfiles("ssl");
     }
-    
+
     application.run(args);
   }
 

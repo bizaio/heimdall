@@ -112,8 +112,8 @@ public interface BankingDataRecipientBrandSoftwareProductApi {
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @Valid @PathVariable("softwareProductId") UUID softwareProductId,
       @NotNull @RequestBody DioSoftwareProduct recipient) throws ValidationListException {
-    return getDelegate().updateRecipientBrandSoftwareProduct(recipientId, brandId, softwareProductId,
-        recipient);
+    return getDelegate().updateRecipientBrandSoftwareProduct(recipientId, brandId,
+        softwareProductId, recipient);
   }
 
   @Operation(summary = "Delete a single Recipient Software Product",
@@ -133,7 +133,8 @@ public interface BankingDataRecipientBrandSoftwareProductApi {
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @Valid @PathVariable("softwareProductId") UUID softwareProductId) {
-    return getDelegate().deleteRecipientBrandSoftwareProduct(recipientId, brandId, softwareProductId);
+    return getDelegate().deleteRecipientBrandSoftwareProduct(recipientId, brandId,
+        softwareProductId);
   }
 
 }

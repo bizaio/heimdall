@@ -1,10 +1,10 @@
 package io.biza.heimdall.admin;
 
 public class Constants {
-  
+
   public static final String OPENID_CONNECT_URL =
       "http://localhost:9090/auth/realms/master/.well-known/openid-configuration";
-  
+
   /**
    * Tag definitions
    */
@@ -14,13 +14,14 @@ public class Constants {
   public final static String TAG_DATA_RECIPIENT_DESCRIPTION = "Data Recipient API";
   public final static String TAG_DATA_REGISTER_ADMIN_NAME = "register-admin";
   public final static String TAG_DATA_REGISTER_ADMIN_DESCRIPTION = "Register Administration API";
-  
+
   /**
    * Error Descriptions
    */
   public final static String ERROR_INVALID_HOLDER = "Invalid Holder Identifier Specified";
   public final static String ERROR_INVALID_RECIPIENT = "Invalid Recipient Identifier Specified";
-  public final static String ERROR_INVALID_BRAND = "Invalid Recipient and Brand identifier combinations specified";
+  public final static String ERROR_INVALID_BRAND =
+      "Invalid Recipient and Brand identifier combinations specified";
 
 
   /**
@@ -43,7 +44,7 @@ public class Constants {
   public final static String OAUTH2_SCOPE_KEY_ADMIN =
       "hasAuthority('SCOPE_" + SECURITY_SCOPE_KEY_ADMIN + "')";
 
-  
+
 
   /**
    * Response codes as strings
@@ -53,14 +54,13 @@ public class Constants {
   public final static String RESPONSE_CODE_NOT_FOUND = "404";
   public final static String RESPONSE_CODE_NO_CONTENT = "204";
   public final static String RESPONSE_CODE_UNPROCESSABLE_ENTITY = "422";
-  
+
   /**
    * Response descriptions
    */
   public final static String RESPONSE_SUCCESSFUL_LIST =
       "Successful Response containing list of requested objects";
-  public final static String RESPONSE_SUCCESSFUL_READ =
-      "Success";
+  public final static String RESPONSE_SUCCESSFUL_READ = "Success";
   public final static String RESPONSE_SUCCESSFUL_CREATE =
       "Successfully created new object with content returned";
   public final static String RESPONSE_SUCCESSFUL_DELETE =

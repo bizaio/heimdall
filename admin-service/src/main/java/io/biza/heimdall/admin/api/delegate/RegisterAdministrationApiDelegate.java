@@ -13,8 +13,9 @@ public interface RegisterAdministrationApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
- 
-  default ResponseEntity<DioRegisterJWK> createJwk(RequestJwkCreate createRequest) throws JoseException{
+
+  default ResponseEntity<DioRegisterJWK> createJwk(RequestJwkCreate createRequest)
+      throws JoseException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

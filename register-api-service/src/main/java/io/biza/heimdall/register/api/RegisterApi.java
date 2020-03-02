@@ -22,17 +22,18 @@ public interface RegisterApi {
 
   @Operation(summary = "Get Register JWKS", description = "Get Register JWKS")
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-      description = "Returns a JWKS containing all Active Register Public Java Web Keys in JWKS format", content = @Content(
-          schema = @Schema(implementation = String.class)))})
+      description = "Returns a JWKS containing all Active Register Public Java Web Keys in JWKS format",
+      content = @Content(schema = @Schema(implementation = String.class)))})
   @RequestMapping(path = "/jwks", method = RequestMethod.GET)
   default ResponseEntity<String> getJwks() {
     return getDelegate().getJwks();
   }
-  
-  @Operation(summary = "Get Register Certificate Authority", description = "Get Register Certificate Authority")
+
+  @Operation(summary = "Get Register Certificate Authority",
+      description = "Get Register Certificate Authority")
   @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-      description = "Returns the public key of the Register Certificate Authority", content = @Content(
-          schema = @Schema(implementation = String.class)))})
+      description = "Returns the public key of the Register Certificate Authority",
+      content = @Content(schema = @Schema(implementation = String.class)))})
   @RequestMapping(path = "/ca", method = RequestMethod.GET)
   default ResponseEntity<String> getCertificateAuthority() {
     return getDelegate().getCertificateAuthority();

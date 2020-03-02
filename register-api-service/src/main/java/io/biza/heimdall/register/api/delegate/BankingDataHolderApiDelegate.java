@@ -11,7 +11,7 @@ public interface BankingDataHolderApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
-  
+
   default ResponseEntity<ResponseRegisterDataHolderBrandList> getBankingDataHolderBrands(
       RequestGetDataHolderBrands build) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

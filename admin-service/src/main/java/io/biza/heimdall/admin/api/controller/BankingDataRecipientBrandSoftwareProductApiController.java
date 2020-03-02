@@ -7,15 +7,18 @@ import io.biza.heimdall.admin.api.BankingDataRecipientBrandSoftwareProductApi;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandSoftwareProductApiDelegate;
 
 @Controller
-public class BankingDataRecipientBrandSoftwareProductApiController implements BankingDataRecipientBrandSoftwareProductApi {
+public class BankingDataRecipientBrandSoftwareProductApiController
+    implements BankingDataRecipientBrandSoftwareProductApi {
 
   private final BankingDataRecipientBrandSoftwareProductApiDelegate delegate;
 
 
-  public BankingDataRecipientBrandSoftwareProductApiController(@Autowired(required = false) BankingDataRecipientBrandSoftwareProductApiDelegate delegate) {
-    this.delegate = Optional.ofNullable(delegate).orElse(new BankingDataRecipientBrandSoftwareProductApiDelegate() {
+  public BankingDataRecipientBrandSoftwareProductApiController(
+      @Autowired(required = false) BankingDataRecipientBrandSoftwareProductApiDelegate delegate) {
+    this.delegate = Optional.ofNullable(delegate)
+        .orElse(new BankingDataRecipientBrandSoftwareProductApiDelegate() {
 
-    });
+        });
   }
 
   @Override

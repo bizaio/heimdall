@@ -43,11 +43,13 @@ public interface BankingDataHolderBrandApi {
           array = @ArraySchema(schema = @Schema(implementation = DioDataHolderBrand.class))))})
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_READ)
-  default ResponseEntity<List<DioDataHolderBrand>> listHolderBrandes(@NotNull @Valid @PathVariable("holderId") UUID holderId) {
+  default ResponseEntity<List<DioDataHolderBrand>> listHolderBrandes(
+      @NotNull @Valid @PathVariable("holderId") UUID holderId) {
     return getDelegate().listHolderBrands(holderId);
   }
-  
-  @Operation(summary = "Get a single Holder Brand", description = "Returns a single holder brand entry",
+
+  @Operation(summary = "Get a single Holder Brand",
+      description = "Returns a single holder brand entry",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_HOLDER_READ})})
   @ApiResponses(value = {
@@ -64,7 +66,8 @@ public interface BankingDataHolderBrandApi {
     return getDelegate().getHolderBrand(holderId, brandId);
   }
 
-  @Operation(summary = "Create a Holder Brand", description = "Creates and Returns a new Holder Brand",
+  @Operation(summary = "Create a Holder Brand",
+      description = "Creates and Returns a new Holder Brand",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_HOLDER_WRITE})})
   @ApiResponses(value = {
@@ -72,12 +75,14 @@ public interface BankingDataHolderBrandApi {
           description = Constants.RESPONSE_SUCCESSFUL_CREATE,
           content = @Content(schema = @Schema(implementation = DioDataHolderBrand.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
-  default ResponseEntity<DioDataHolderBrand> createHolderBrand(@NotNull @Valid @PathVariable("holderId") UUID holderId,
+  default ResponseEntity<DioDataHolderBrand> createHolderBrand(
+      @NotNull @Valid @PathVariable("holderId") UUID holderId,
       @NotNull @RequestBody DioDataHolderBrand brand) throws ValidationListException {
     return getDelegate().createHolderBrand(holderId, brand);
   }
@@ -91,13 +96,15 @@ public interface BankingDataHolderBrandApi {
           description = Constants.RESPONSE_SUCCESSFUL_UPDATE,
           content = @Content(schema = @Schema(implementation = DioDataHolderBrand.class))),
       @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR, content = @Content(
-              array = @ArraySchema(schema = @Schema(implementation = ValidationListException.class))))})
+          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+          content = @Content(array = @ArraySchema(
+              schema = @Schema(implementation = ValidationListException.class))))})
   @PutMapping(path = "/{brandId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<DioDataHolderBrand> updateHolderBrand(
-      @NotNull @Valid @PathVariable("holderId") UUID holderId, @NotNull @Valid @PathVariable("brandId") UUID brandId,
+      @NotNull @Valid @PathVariable("holderId") UUID holderId,
+      @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @RequestBody DioDataHolderBrand holder) throws ValidationListException {
     return getDelegate().updateHolderBrand(holderId, brandId, holder);
   }

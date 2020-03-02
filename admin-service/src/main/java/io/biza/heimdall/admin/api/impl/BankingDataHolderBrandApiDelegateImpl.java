@@ -74,19 +74,22 @@ public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderB
     Optional<DataHolderBrandData> data = brandRepository.findByIdAndDataHolderId(brandId, holderId);
 
     if (data.isPresent()) {
-      LOG.info("Retrieving a single data holder brand with holder of {} and brand of {} and got content of {}", holderId, brandId,
-          data.get());
+      LOG.info(
+          "Retrieving a single data holder brand with holder of {} and brand of {} and got content of {}",
+          holderId, brandId, data.get());
       return ResponseEntity.ok(mapper.map(data.get(), DioDataHolderBrand.class));
     } else {
-      LOG.warn("Attempted to retrieve a single holder {} with brand of {} and couldn't find it", 
+      LOG.warn("Attempted to retrieve a single holder {} with brand of {} and couldn't find it",
           holderId, brandId);
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }  }
+    }
+  }
 
   @Override
   public ResponseEntity<DioDataHolderBrand> updateHolderBrand(UUID holderId, UUID brandId,
       DioDataHolderBrand updateData) {
-    Optional<DataHolderBrandData> optionalData = brandRepository.findByIdAndDataHolderId(brandId, holderId);
+    Optional<DataHolderBrandData> optionalData =
+        brandRepository.findByIdAndDataHolderId(brandId, holderId);
 
     if (optionalData.isPresent()) {
       DataHolderBrandData data = optionalData.get();
@@ -94,11 +97,13 @@ public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderB
       data.dataHolder(optionalData.get().dataHolder());
       DataHolderBrandData updatedData = brandRepository.save(data);
 
-      LOG.info("Updating a single data holder brand of holder {} and brand {} and now set to {}", holderId, brandId, updatedData);
+      LOG.info("Updating a single data holder brand of holder {} and brand {} and now set to {}",
+          holderId, brandId, updatedData);
 
       return ResponseEntity.ok(mapper.map(updatedData, DioDataHolderBrand.class));
     } else {
-      LOG.warn("Attempted to retrieve a single data holder brand and could not find with holder of {} and brand of {}",
+      LOG.warn(
+          "Attempted to retrieve a single data holder brand and could not find with holder of {} and brand of {}",
           holderId, brandId);
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -113,7 +118,8 @@ public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderB
       brandRepository.delete(data.get());
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } else {
-      LOG.warn("Attempted to retrieve a single data holder brand and could not find with holder of {} and brand of {}",
+      LOG.warn(
+          "Attempted to retrieve a single data holder brand and could not find with holder of {} and brand of {}",
           holderId);
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

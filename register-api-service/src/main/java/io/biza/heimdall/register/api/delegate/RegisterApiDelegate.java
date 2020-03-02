@@ -9,7 +9,7 @@ public interface RegisterApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
     return Optional.empty();
   }
-  
+
   default ResponseEntity<String> getJwks() {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }

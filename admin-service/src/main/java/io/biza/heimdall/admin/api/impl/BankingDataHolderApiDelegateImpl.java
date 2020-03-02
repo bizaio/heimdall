@@ -57,8 +57,7 @@ public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDel
   }
 
   @Override
-  public ResponseEntity<DioDataHolder> updateHolder(UUID holderId,
-      DioDataHolder updateData) {
+  public ResponseEntity<DioDataHolder> updateHolder(UUID holderId, DioDataHolder updateData) {
     Optional<DataHolderData> optionalData = holderRepository.findById(holderId);
 
     if (optionalData.isPresent()) {

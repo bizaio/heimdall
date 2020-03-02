@@ -24,7 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 @Controller
 @Slf4j
-public class BankingDataRecipientBrandApiDelegateImpl implements BankingDataRecipientBrandApiDelegate {
+public class BankingDataRecipientBrandApiDelegateImpl
+    implements BankingDataRecipientBrandApiDelegate {
 
   @Autowired
   DataRecipientBrandRepository brandRepository;
@@ -65,28 +66,33 @@ public class BankingDataRecipientBrandApiDelegateImpl implements BankingDataReci
     }
 
     LOG.debug("Listing all data recipients and received {}", recipient.get().dataRecipientBrands());
-    return ResponseEntity.ok(mapper.mapAsList(
-        Optional.of(recipient.get().dataRecipientBrands()).orElse(Set.of()), DioDataRecipientBrand.class));
+    return ResponseEntity
+        .ok(mapper.mapAsList(Optional.of(recipient.get().dataRecipientBrands()).orElse(Set.of()),
+            DioDataRecipientBrand.class));
   }
 
   @Override
   public ResponseEntity<DioDataRecipientBrand> getRecipientBrand(UUID recipientId, UUID brandId) {
-    Optional<DataRecipientBrandData> data = brandRepository.findByIdAndDataRecipientId(brandId, recipientId);
+    Optional<DataRecipientBrandData> data =
+        brandRepository.findByIdAndDataRecipientId(brandId, recipientId);
 
     if (data.isPresent()) {
-      LOG.info("Retrieving a single data recipient brand with recipient of {} and brand of {} and got content of {}", recipientId, brandId,
-          data.get());
+      LOG.info(
+          "Retrieving a single data recipient brand with recipient of {} and brand of {} and got content of {}",
+          recipientId, brandId, data.get());
       return ResponseEntity.ok(mapper.map(data.get(), DioDataRecipientBrand.class));
     } else {
-      LOG.warn("Attempted to retrieve a single recipient {} with brand of {} and couldn't find it", 
+      LOG.warn("Attempted to retrieve a single recipient {} with brand of {} and couldn't find it",
           recipientId, brandId);
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }  }
+    }
+  }
 
   @Override
   public ResponseEntity<DioDataRecipientBrand> updateRecipientBrand(UUID recipientId, UUID brandId,
       DioDataRecipientBrand updateData) {
-    Optional<DataRecipientBrandData> optionalData = brandRepository.findByIdAndDataRecipientId(brandId, recipientId);
+    Optional<DataRecipientBrandData> optionalData =
+        brandRepository.findByIdAndDataRecipientId(brandId, recipientId);
 
     if (optionalData.isPresent()) {
       DataRecipientBrandData data = optionalData.get();
@@ -94,11 +100,14 @@ public class BankingDataRecipientBrandApiDelegateImpl implements BankingDataReci
       data.dataRecipient(optionalData.get().dataRecipient());
       DataRecipientBrandData updatedData = brandRepository.save(data);
 
-      LOG.info("Updating a single data recipient brand of recipient {} and brand {} and now set to {}", recipientId, brandId, updatedData);
+      LOG.info(
+          "Updating a single data recipient brand of recipient {} and brand {} and now set to {}",
+          recipientId, brandId, updatedData);
 
       return ResponseEntity.ok(mapper.map(updatedData, DioDataRecipientBrand.class));
     } else {
-      LOG.warn("Attempted to retrieve a single data recipient brand and could not find with recipient of {} and brand of {}",
+      LOG.warn(
+          "Attempted to retrieve a single data recipient brand and could not find with recipient of {} and brand of {}",
           recipientId, brandId);
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -106,14 +115,16 @@ public class BankingDataRecipientBrandApiDelegateImpl implements BankingDataReci
 
   @Override
   public ResponseEntity<Void> deleteRecipientBrand(UUID recipientId, UUID brandId) {
-    Optional<DataRecipientBrandData> data = brandRepository.findByIdAndDataRecipientId(brandId, recipientId);
+    Optional<DataRecipientBrandData> data =
+        brandRepository.findByIdAndDataRecipientId(brandId, recipientId);
 
     if (data.isPresent()) {
       LOG.info("Deleting a single data recipient brand with id of {}", recipientId);
       brandRepository.delete(data.get());
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } else {
-      LOG.warn("Attempted to retrieve a single data recipient brand and could not find with recipient of {} and brand of {}",
+      LOG.warn(
+          "Attempted to retrieve a single data recipient brand and could not find with recipient of {} and brand of {}",
           recipientId);
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
