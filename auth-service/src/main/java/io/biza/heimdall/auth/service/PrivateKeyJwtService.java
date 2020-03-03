@@ -1,21 +1,26 @@
 package io.biza.heimdall.auth.service;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Validator;
+import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
 import io.biza.babelfish.oidc.requests.RequestTokenPrivateKeyJwt;
+import io.biza.babelfish.oidc.util.SigningUtil;
 import io.biza.heimdall.auth.exceptions.CryptoException;
 import io.biza.heimdall.auth.exceptions.InvalidClientException;
 import io.biza.heimdall.auth.exceptions.InvalidRequestException;
 import io.biza.heimdall.auth.exceptions.InvalidScopeException;
 import io.biza.heimdall.auth.exceptions.NotInitialisedException;
+import io.biza.heimdall.auth.util.EndpointUtil;
 import io.biza.heimdall.auth.Constants;
 import io.biza.heimdall.shared.enumerations.HeimdallTokenType;
 import io.biza.heimdall.shared.persistence.model.ClientData;
@@ -32,15 +37,16 @@ public class PrivateKeyJwtService {
 
   @Autowired
   ClientRepository clientRepository;
-  
+
   @Value("${heimdall.token_length_hours}")
   private Integer tokenLength;
-  
+
   @Autowired
   TokenIssuanceService issuanceToken;
 
   public ResponseEntity<TokenResponse> tokenLogin(RequestTokenPrivateKeyJwt request)
-      throws InvalidRequestException, InvalidClientException, InvalidScopeException, NotInitialisedException, CryptoException {
+      throws InvalidRequestException, InvalidClientException, InvalidScopeException,
+      NotInitialisedException, CryptoException {
     /**
      * The Validator must pass
      */
@@ -68,7 +74,7 @@ public class PrivateKeyJwtService {
       throw new InvalidClientException();
     }
     ClientData holderClient = optionalHolderClient.get();
-    
+
     /**
      * Requested scopes exceed the available scopes
      */
@@ -77,12 +83,15 @@ public class PrivateKeyJwtService {
     }
 
     /**
-     * Client Secret doesn't pass
+     * Process the supplied assertion
      */
-    /**
-     * if (!holder.get().clientSecret().equals(request.clientSecret())) { throw new
-     * InvalidClientException(); }
-     */
+    try {
+      SigningUtil.verify(request.clientAssertion(), holderClient.softwareProduct().jwksUri(),
+          holderClient.id().toString(), EndpointUtil.issuerUri().toString());
+    } catch (JoseException | IOException | InvalidJwtException | InterruptedException e) {
+      LOG.error("Encountered signing verification error", e);
+      throw new CryptoException();
+    }
 
     /**
      * Setup Token Data record

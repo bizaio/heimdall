@@ -41,7 +41,7 @@ public class TokenIssuanceService {
     tokenClaims.setClaim("typ", "Bearer");
 
     return ResponseEntity.ok(TokenResponse.builder()
-        .accessToken(signingService.signData(tokenClaims.toJson())).expiresAt(savedToken.expiry())
+        .accessToken(signingService.signData(tokenClaims)).expiresAt(savedToken.expiry())
         .scope(savedToken.scopes()).tokenType(OAuth2AccessTokenType.BEARER).build());
   }
 
