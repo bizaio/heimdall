@@ -5,9 +5,9 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import io.biza.heimdall.payload.responses.DataRecipientsStatusList;
-import io.biza.heimdall.payload.responses.ResponseRegisterDataRecipientList;
-import io.biza.heimdall.payload.responses.SoftwareProductsStatusList;
+import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusList;
+import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientList;
+import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
 import io.biza.heimdall.shared.util.RawJson;
 
 public interface BankingDataRecipientApiDelegate {

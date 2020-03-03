@@ -1,6 +1,7 @@
 package io.biza.heimdall.auth.api;
 
-import io.biza.heimdall.auth.Constants;
+import io.biza.babelfish.oidc.payloads.TokenResponse;
+import io.biza.babelfish.oidc.requests.ProviderDiscoveryMetadata;
 import io.biza.heimdall.auth.api.delegate.CertificateAuthorityApiDelegate;
 import io.biza.heimdall.auth.api.delegate.DiscoveryApiDelegate;
 import io.biza.heimdall.auth.api.delegate.TokenApiDelegate;
@@ -10,8 +11,7 @@ import io.biza.heimdall.auth.exceptions.InvalidRequestException;
 import io.biza.heimdall.auth.exceptions.InvalidScopeException;
 import io.biza.heimdall.auth.exceptions.NotInitialisedException;
 import io.biza.heimdall.auth.exceptions.UnsupportedGrantTypeException;
-import io.biza.thumb.oidc.payloads.ProviderDiscoveryMetadata;
-import io.biza.thumb.oidc.payloads.TokenResponse;
+import io.biza.heimdall.auth.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

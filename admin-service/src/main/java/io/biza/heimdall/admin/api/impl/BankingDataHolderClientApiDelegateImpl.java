@@ -15,9 +15,9 @@ import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
-import io.biza.heimdall.shared.persistence.model.DataHolderClientData;
+import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
-import io.biza.heimdall.shared.persistence.repository.DataHolderClientRepository;
+import io.biza.heimdall.shared.persistence.repository.ClientRepository;
 import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BankingDataHolderClientApiDelegateImpl implements BankingDataHolderClientApiDelegate {
 
   @Autowired
-  DataHolderClientRepository clientRepository;
+  ClientRepository clientRepository;
 
   @Autowired
   DataHolderRepository holderRepository;
@@ -47,9 +47,10 @@ public class BankingDataHolderClientApiDelegateImpl implements BankingDataHolder
       throw ValidationListException.builder().type(HeimdallExceptionType.INVALID_HOLDER)
           .explanation(Constants.ERROR_INVALID_HOLDER).build();
     }
-    DataHolderClientData dataHolderData = mapper.map(client, DataHolderClientData.class);
+    ClientData dataHolderData = mapper.map(client, ClientData.class);
+    dataHolderData.id(UUID.randomUUID());
     dataHolderData.dataHolder(holder.get());
-    DataHolderClientData savedClient = clientRepository.save(dataHolderData);
+    ClientData savedClient = clientRepository.save(dataHolderData);
     LOG.debug("Created a new data holder with content of: {}", savedClient);
     return ResponseEntity.ok(mapper.map(savedClient, DioDataHolderClient.class));
   }
@@ -64,14 +65,14 @@ public class BankingDataHolderClientApiDelegateImpl implements BankingDataHolder
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    LOG.debug("Listing all data holders and received {}", holder.get().dataHolderClients());
+    LOG.debug("Listing all data holders and received {}", holder.get().clients());
     return ResponseEntity.ok(mapper.mapAsList(
-        Optional.of(holder.get().dataHolderClients()).orElse(Set.of()), DioDataHolderClient.class));
+        Optional.of(holder.get().clients()).orElse(Set.of()), DioDataHolderClient.class));
   }
 
   @Override
   public ResponseEntity<DioDataHolderClient> getHolderClient(UUID holderId, UUID clientId) {
-    Optional<DataHolderClientData> data =
+    Optional<ClientData> data =
         clientRepository.findByIdAndDataHolderId(clientId, holderId);
 
     if (data.isPresent()) {
@@ -89,14 +90,14 @@ public class BankingDataHolderClientApiDelegateImpl implements BankingDataHolder
   @Override
   public ResponseEntity<DioDataHolderClient> updateHolderClient(UUID holderId, UUID clientId,
       DioDataHolderClient updateData) {
-    Optional<DataHolderClientData> optionalData =
+    Optional<ClientData> optionalData =
         clientRepository.findByIdAndDataHolderId(clientId, holderId);
 
     if (optionalData.isPresent()) {
-      DataHolderClientData data = optionalData.get();
+      ClientData data = optionalData.get();
       mapper.map(updateData, data);
       data.dataHolder(optionalData.get().dataHolder());
-      DataHolderClientData updatedData = clientRepository.save(data);
+      ClientData updatedData = clientRepository.save(data);
 
       LOG.info("Updating a single data holder client of holder {} and client {} and now set to {}",
           holderId, clientId, updatedData);
@@ -112,7 +113,7 @@ public class BankingDataHolderClientApiDelegateImpl implements BankingDataHolder
 
   @Override
   public ResponseEntity<Void> deleteHolderClient(UUID holderId, UUID clientId) {
-    Optional<DataHolderClientData> data =
+    Optional<ClientData> data =
         clientRepository.findByIdAndDataHolderId(clientId, holderId);
 
     if (data.isPresent()) {

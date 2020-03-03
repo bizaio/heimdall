@@ -37,12 +37,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import io.biza.babelfish.cdr.enumerations.register.DataHolderStatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.DataHolderStatusType;
 import lombok.ToString;
 
 @Builder
@@ -68,6 +68,7 @@ public class DataHolderBrandData {
   
   @ManyToOne
   @JoinColumn(name = "DATA_HOLDER_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_HOLDER_BRAND_DATA_HOLDER_FK"))
+  @ToString.Exclude
   DataHolderData dataHolder;
     
   @Column(name = "LOGO_URI")

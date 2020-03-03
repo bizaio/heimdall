@@ -33,7 +33,8 @@ build/
 # File based database
 localdb/
 # Local keystore
-heimdall.jks
+*.jks
+*.p12
 
 # maven versons backup
 *.versionsBackup

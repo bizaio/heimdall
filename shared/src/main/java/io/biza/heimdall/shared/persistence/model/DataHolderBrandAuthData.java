@@ -32,12 +32,12 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
+import io.biza.babelfish.cdr.enumerations.register.RegisterAuthType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.RegisterAuthType;
 import lombok.ToString;
 
 @Builder

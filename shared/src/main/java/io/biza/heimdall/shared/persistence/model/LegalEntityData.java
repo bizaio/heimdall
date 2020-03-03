@@ -62,10 +62,12 @@ public class LegalEntityData {
   
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "DATA_HOLDER_ID", foreignKey = @ForeignKey(name = "LEGAL_ENTITY_DATA_HOLDER_ID_FK"))
+  @ToString.Exclude
   DataHolderData dataHolder;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "DATA_RECIPIENT_ID", foreignKey = @ForeignKey(name = "LEGAL_ENTITY_DATA_RECIPIENT_ID_FK"))
+  @ToString.Exclude
   DataRecipientData dataRecipient;
   
   @Column(name = "LEGAL_NAME")

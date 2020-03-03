@@ -13,7 +13,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.holder.RegisterDataHolderAuth;
+import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderAuth;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
 import ma.glasnost.orika.MapperFactory;

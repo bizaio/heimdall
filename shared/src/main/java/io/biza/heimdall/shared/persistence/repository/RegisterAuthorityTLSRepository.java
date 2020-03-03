@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import io.biza.heimdall.payload.enumerations.CertificateStatus;
+import io.biza.babelfish.cdr.enumerations.register.CertificateStatus;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
 
 @Repository

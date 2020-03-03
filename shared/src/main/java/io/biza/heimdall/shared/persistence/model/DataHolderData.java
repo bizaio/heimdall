@@ -31,12 +31,12 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
+import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.IndustryType;
 import lombok.ToString;
 
 @Builder
@@ -74,7 +74,7 @@ public class DataHolderData {
   
   @OneToMany(mappedBy = "dataHolder", cascade = CascadeType.ALL)
   @ToString.Exclude
-  Set<DataHolderClientData> dataHolderClients;
+  Set<ClientData> clients;
 
   
   @PrePersist
@@ -84,8 +84,8 @@ public class DataHolderData {
         one.dataHolder(this);
       }
     }
-    if (dataHolderClients() != null) {
-      for (DataHolderClientData one : dataHolderClients) {
+    if (clients() != null) {
+      for (ClientData one : clients) {
         one.dataHolder(this);
       }
     }

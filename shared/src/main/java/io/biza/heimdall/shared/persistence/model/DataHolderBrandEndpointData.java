@@ -31,12 +31,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
+import io.biza.babelfish.cdr.enumerations.register.CDRVersionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.CDRVersionType;
 import lombok.ToString;
 
 @Builder

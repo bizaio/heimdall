@@ -1,9 +1,9 @@
 package io.biza.heimdall.register.api;
 
-import io.biza.heimdall.payload.registration.SoftwareStatementAssertion;
-import io.biza.heimdall.payload.responses.DataRecipientsStatusList;
-import io.biza.heimdall.payload.responses.ResponseRegisterDataRecipientList;
-import io.biza.heimdall.payload.responses.SoftwareProductsStatusList;
+import io.biza.babelfish.cdr.models.payloads.register.registration.SoftwareStatementAssertion;
+import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusList;
+import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientList;
+import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.util.RawJson;

@@ -135,8 +135,8 @@
         </dependency>
         <dependency>
             <groupId>io.biza</groupId>
-            <artifactId>electronic-thumb-oidc</artifactId>
-            <version>${electronic-thumb.version}</version>
+            <artifactId>babelfish-oidc</artifactId>
+            <version>${babelfish-oidc.version}</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -31,18 +32,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
+import io.biza.babelfish.cdr.enumerations.register.RegisterScope;
+import io.biza.babelfish.cdr.enumerations.register.RegisterSoftwareRole;
+import io.biza.babelfish.cdr.enumerations.register.SoftwareProductStatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.RegisterScope;
-import io.biza.heimdall.payload.enumerations.RegisterSoftwareRole;
-import io.biza.heimdall.payload.enumerations.SoftwareProductStatusType;
 import lombok.ToString;
 
 @Builder
@@ -64,7 +66,12 @@ public class SoftwareProductData {
   
   @ManyToOne
   @JoinColumn(name = "DATA_RECIPIENT_BRAND_ID", nullable = false, foreignKey = @ForeignKey(name = "SOFTWARE_PRODUCT_DATA_RECIPIENT_BRAND_FK"))
+  @ToString.Exclude
   DataRecipientBrandData dataRecipientBrand;
+  
+  @OneToMany(mappedBy = "softwareProduct", cascade = CascadeType.ALL)
+  @ToString.Exclude
+  Set<ClientData> clients;
   
   @Column(name = "STATUS")
   @Enumerated(EnumType.STRING)

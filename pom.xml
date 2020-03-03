@@ -27,10 +27,9 @@
         <springdoc-openapi-ui.version>1.2.25</springdoc-openapi-ui.version>
         <springdoc-openapi-maven-plugin.version>0.2</springdoc-openapi-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
-        <babelfish-cdr.version>1.2.4</babelfish-cdr.version>
-        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <babelfish-cdr.version>1.2.5-SNAPSHOT</babelfish-cdr.version>
         <lombok.version>1.18.10</lombok.version>
-        <junit-jupiter.version>5.6.0-M1</junit-jupiter.version>
+        <junit-jupiter.version>5.6.0</junit-jupiter.version>
         <hibernate-validator.version>[6.1.0,)</hibernate-validator.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <javax.el-api.version>3.0.0</javax.el-api.version>
@@ -54,7 +53,9 @@
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <skip.npm>true</skip.npm>
         <jose4j.version>0.7.0</jose4j.version>
+        <babelfish-oidc.version>1.2.5-SNAPSHOT</babelfish-oidc.version>
         <electronic-thumb.version>0.0.1-SNAPSHOT</electronic-thumb.version>
+        <build-helper-maven-plugin>3.0.0</build-helper-maven-plugin>
     </properties>
 
     <scm>
@@ -63,10 +64,9 @@
         <developerConnection>scm:git:git@github.com:bizaio/heimdall.git</developerConnection>
     </scm>
     <modules>
-        <module>payload</module>
         <module>shared</module>
-	<module>admin-service</module>
-	<module>auth-service</module>
+        <module>admin-service</module>
+        <module>auth-service</module>
         <module>register-api-service</module>
     </modules>
 
@@ -121,6 +121,18 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <profiles>
         <profile>
             <id>release</id>

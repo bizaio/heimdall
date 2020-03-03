@@ -9,18 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import io.biza.heimdall.auth.Constants;
+import io.biza.babelfish.oidc.payloads.TokenResponse;
+import io.biza.babelfish.oidc.requests.RequestTokenClientCredentials;
 import io.biza.heimdall.auth.exceptions.CryptoException;
 import io.biza.heimdall.auth.exceptions.InvalidClientException;
 import io.biza.heimdall.auth.exceptions.InvalidRequestException;
 import io.biza.heimdall.auth.exceptions.InvalidScopeException;
 import io.biza.heimdall.auth.exceptions.NotInitialisedException;
+import io.biza.heimdall.auth.Constants;
 import io.biza.heimdall.shared.enumerations.HeimdallTokenType;
-import io.biza.heimdall.shared.persistence.model.DataHolderClientData;
+import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.TokenData;
-import io.biza.heimdall.shared.persistence.repository.DataHolderClientRepository;
-import io.biza.thumb.oidc.payloads.TokenResponse;
-import io.biza.thumb.oidc.requests.RequestTokenClientCredentials;
+import io.biza.heimdall.shared.persistence.repository.ClientRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,7 +34,7 @@ public class ClientCredentialService {
   private Integer tokenLength;
 
   @Autowired
-  DataHolderClientRepository clientRepository;
+  ClientRepository clientRepository;
 
   @Autowired
   TokenIssuanceService issuanceToken;
@@ -46,6 +46,7 @@ public class ClientCredentialService {
      * The Validator must pass
      */
     if (validator.validate(request).size() > 0) {
+      LOG.warn("Input request did not pass initial validation");
       throw new InvalidRequestException();
     }
 
@@ -56,23 +57,28 @@ public class ClientCredentialService {
     try {
       clientId = UUID.fromString(request.clientId());
     } catch (IllegalArgumentException e) {
-      throw new InvalidRequestException();
+      LOG.warn("Client Identifier provided ({}) is not a UUID and therefore invalid",
+          request.clientId());
+      throw new InvalidClientException();
     }
 
-    Optional<DataHolderClientData> optionalHolderClient = clientRepository.findById(clientId);
+    Optional<ClientData> optionalHolderClient = clientRepository.findById(clientId);
 
     /**
      * Holder doesn't exist so client can't be valid
      */
     if (!optionalHolderClient.isPresent()) {
+      LOG.warn("Client Identifier ({}) cannot be found and is therefore invalid", clientId);
       throw new InvalidClientException();
     }
-    DataHolderClientData holderClient = optionalHolderClient.get();
+    ClientData holderClient = optionalHolderClient.get();
 
     /**
      * Requested scopes exceed the available scopes
      */
-    if (!List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(request.scopes())) {
+    if (request.scopes() != null
+        && !List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(request.scopes())) {
+      LOG.warn("Requested scopes includes scopes we don't support: {}", request.scopes());
       throw new InvalidScopeException();
     }
 
@@ -80,6 +86,7 @@ public class ClientCredentialService {
      * Client Secret doesn't pass
      */
     if (!holderClient.clientSecret().equals(request.clientSecret())) {
+      LOG.error("Client Secret for ({}) is incorrect", clientId);
       throw new InvalidClientException();
     }
 
@@ -87,8 +94,10 @@ public class ClientCredentialService {
      * Setup Token Data record
      */
     TokenData token = TokenData.builder().audience(holderClient.id().toString())
-        .authenticationTime(OffsetDateTime.now()).dataHolderClient(holderClient)
-        .expiry(OffsetDateTime.now().plusHours(tokenLength.longValue())).scopes(request.scopes())
+        .authenticationTime(OffsetDateTime.now()).client(holderClient)
+        .expiry(OffsetDateTime.now().plusHours(tokenLength.longValue()))
+        .scopes(request.scopes() == null ? List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ)
+            : request.scopes())
         .tokenType(HeimdallTokenType.ACCESS_TOKEN).build();
 
     return issuanceToken.createAccessToken(token);

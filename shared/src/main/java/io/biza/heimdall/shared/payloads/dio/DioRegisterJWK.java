@@ -6,7 +6,7 @@ import org.jose4j.jwk.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
+import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
 import io.biza.heimdall.shared.payloads.converters.JWKJsonDeserializer;
 import io.biza.heimdall.shared.payloads.converters.JWKJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;

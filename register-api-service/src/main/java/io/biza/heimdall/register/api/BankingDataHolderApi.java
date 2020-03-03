@@ -1,7 +1,7 @@
 package io.biza.heimdall.register.api;
 
-import io.biza.heimdall.payload.responses.RequestGetDataHolderBrands;
-import io.biza.heimdall.payload.responses.ResponseRegisterDataHolderBrandList;
+import io.biza.babelfish.cdr.models.responses.register.RequestGetDataHolderBrands;
+import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandList;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataHolderApiDelegate;
 import io.swagger.v3.oas.annotations.Operation;

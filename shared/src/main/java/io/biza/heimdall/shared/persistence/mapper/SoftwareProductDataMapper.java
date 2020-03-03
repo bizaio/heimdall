@@ -13,8 +13,8 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.recipient.SoftwareProductMetaData;
-import io.biza.heimdall.payload.recipient.SoftwareProductStatus;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductMetaData;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductStatus;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;

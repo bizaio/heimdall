@@ -45,8 +45,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.DataHolderStatusType;
-import io.biza.heimdall.payload.enumerations.DataRecipientStatusType;
+import io.biza.babelfish.cdr.enumerations.register.DataHolderStatusType;
+import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.biza.heimdall.shared.enumerations.HeimdallTokenType;
 import lombok.ToString;
 
@@ -68,8 +68,9 @@ public class TokenData {
   UUID id;
   
   @ManyToOne
-  @JoinColumn(name = "DATA_HOLDER_CLIENT_ID", nullable = false, foreignKey = @ForeignKey(name = "TOKEN_DATA_HOLDER_CLIENT_ID_FK"))
-  DataHolderClientData dataHolderClient;
+  @JoinColumn(name = "CLIENT_ID", nullable = true, foreignKey = @ForeignKey(name = "TOKEN_CLIENT_ID_FK"))
+  @ToString.Exclude
+  ClientData client;
 
   @Column(name = "TOKEN_TYPE")
   @Enumerated(EnumType.STRING)

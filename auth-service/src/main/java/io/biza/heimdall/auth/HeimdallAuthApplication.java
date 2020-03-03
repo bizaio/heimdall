@@ -1,31 +1,42 @@
 package io.biza.heimdall.auth;
 
 import java.nio.file.Paths;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
+import io.biza.heimdall.auth.service.HeimdallCertificateInitialision;
+import io.biza.heimdall.auth.Constants;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @ComponentScan({"io.biza.heimdall.shared.component.mapper",
     "io.biza.heimdall.shared.component.persistence", "io.biza.heimdall.shared.loaders",
     "io.biza.heimdall.auth"})
+@Slf4j
 public class HeimdallAuthApplication {
 
   public static void main(String[] args) {
-    SpringApplication application = new SpringApplication(HeimdallAuthApplication.class);
-
-    if (Paths.get("heimdall.jks").toFile().exists()) {
-      application.setAdditionalProfiles("ssl");
-    }
-
+    SpringApplicationBuilder application =
+        new SpringApplicationBuilder(HeimdallAuthApplication.class);
     application.run(args);
+
   }
 
   @Bean

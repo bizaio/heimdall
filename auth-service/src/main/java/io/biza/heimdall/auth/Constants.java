@@ -17,7 +17,7 @@ public class Constants {
   public final static String TAG_CA_DESCRIPTION = "CA Endpoints";
   public final static String TAG_TOKEN_NAME = "token";
   public final static String TAG_TOKEN_DESCRIPTION = "Token Authorisation Endpoints";
-
+  
   /**
    * Response codes as strings
    */

@@ -5,13 +5,13 @@ import org.jose4j.jwt.NumericDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import io.biza.babelfish.oidc.enumerations.OAuth2AccessTokenType;
+import io.biza.babelfish.oidc.payloads.TokenResponse;
 import io.biza.heimdall.auth.exceptions.CryptoException;
 import io.biza.heimdall.auth.exceptions.NotInitialisedException;
 import io.biza.heimdall.auth.util.EndpointUtil;
 import io.biza.heimdall.shared.persistence.model.TokenData;
 import io.biza.heimdall.shared.persistence.repository.TokenRepository;
-import io.biza.thumb.oidc.enumerations.OAuth2AccessTokenType;
-import io.biza.thumb.oidc.payloads.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

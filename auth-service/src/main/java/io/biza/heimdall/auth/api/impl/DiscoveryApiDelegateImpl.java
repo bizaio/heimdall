@@ -17,20 +17,21 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import io.biza.heimdall.auth.Constants;
+import io.biza.babelfish.cdr.enumerations.register.CertificateStatus;
+import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
+import io.biza.babelfish.oidc.enumerations.JWSSigningAlgorithmType;
+import io.biza.babelfish.oidc.enumerations.OAuth2ResponseType;
+import io.biza.babelfish.oidc.enumerations.OIDCAuthMethod;
+import io.biza.babelfish.oidc.enumerations.OIDCGrantType;
+import io.biza.babelfish.oidc.enumerations.OIDCSubjectType;
+import io.biza.babelfish.oidc.requests.ProviderDiscoveryMetadata;
 import io.biza.heimdall.auth.api.delegate.DiscoveryApiDelegate;
+import io.biza.heimdall.auth.Constants;
 import io.biza.heimdall.auth.util.EndpointUtil;
-import io.biza.heimdall.payload.enumerations.CertificateStatus;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
 import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
-import io.biza.thumb.oidc.enumerations.JWSSigningAlgorithmType;
-import io.biza.thumb.oidc.enumerations.OAuth2ResponseType;
-import io.biza.thumb.oidc.enumerations.OIDCAuthMethod;
-import io.biza.thumb.oidc.enumerations.OIDCGrantType;
-import io.biza.thumb.oidc.enumerations.OIDCSubjectType;
-import io.biza.thumb.oidc.payloads.ProviderDiscoveryMetadata;
+import io.biza.heimdall.shared.util.RawJson;
 import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,7 +64,7 @@ public class DiscoveryApiDelegateImpl implements DiscoveryApiDelegate {
   }
 
   @Override
-  public ResponseEntity<String> getJwks() {
+  public ResponseEntity<RawJson> getJwks() {
 
     List<RegisterAuthorityJWKData> registerData =
         jwkRepository.findByStatusIn(List.of(JWKStatus.ACTIVE));
@@ -87,8 +88,7 @@ public class DiscoveryApiDelegateImpl implements DiscoveryApiDelegate {
       }
     });
 
-    return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
-        .body(jsonWebKeySet.toJson(OutputControlLevel.PUBLIC_ONLY));
+    return ResponseEntity.ok(RawJson.from(jsonWebKeySet.toJson(OutputControlLevel.PUBLIC_ONLY)));
 
   }
 }

@@ -40,8 +40,8 @@ import org.jose4j.jws.AlgorithmIdentifiers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import io.biza.heimdall.payload.enumerations.CertificateStatus;
-import io.biza.heimdall.payload.enumerations.JWKStatus;
+import io.biza.babelfish.cdr.enumerations.register.CertificateStatus;
+import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
 import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
@@ -100,9 +100,8 @@ public class SecurityCredentialSetup {
           .build());
 
       LOG.warn("JWKS Authority initialisation has been completed!");
-      LOG.debug("Private and Public keys of JWKS output below");
-      LOG.debug("\n\n-----BEGIN PRIVATE KEY-----\n" + jwkData.privateKey()
-          + "\n-----END PRIVATE KEY-----\n-----BEGIN PUBLIC KEY-----\n" + jwkData.publicKey()
+      LOG.debug("Public key of JWKS output below");
+      LOG.debug("-----BEGIN PUBLIC KEY-----\n" + jwkData.publicKey()
           + "\n-----END PUBLIC KEY-----\n\n");
     } catch (NoSuchAlgorithmException e) {
       LOG.error("Invalid algorithm of {} specified, cannot proceed", Constants.JAVA_ALGORITHM);
@@ -116,10 +115,8 @@ public class SecurityCredentialSetup {
 
     if (caCertificate != null) {
       LOG.info("Certificate Authority already initialised, skipping CA generation");
-      LOG.debug("PEM of Certificate Authority is output below");
-      LOG.debug("\n\n-----BEGIN RSA PRIVATE KEY-----\n"
-          + caCertificate.privateKey().replaceAll(".{80}(?=.)", "$0\n")
-          + "\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\n"
+      LOG.debug("Public Certificate of Certificate Authority is output below");
+      LOG.debug("\n-----BEGIN CERTIFICATE-----\n"
           + caCertificate.publicKey().replaceAll(".{80}(?=.)", "$0\n")
           + "\n-----END CERTIFICATE-----\n\n");
       return;

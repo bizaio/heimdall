@@ -1,6 +1,7 @@
 package io.biza.heimdall.auth.api;
 
-import io.biza.heimdall.auth.Constants;
+import io.biza.babelfish.oidc.payloads.TokenResponse;
+import io.biza.babelfish.oidc.requests.ProviderDiscoveryMetadata;
 import io.biza.heimdall.auth.api.delegate.DiscoveryApiDelegate;
 import io.biza.heimdall.auth.api.delegate.TokenApiDelegate;
 import io.biza.heimdall.auth.exceptions.CryptoException;
@@ -9,8 +10,8 @@ import io.biza.heimdall.auth.exceptions.InvalidRequestException;
 import io.biza.heimdall.auth.exceptions.InvalidScopeException;
 import io.biza.heimdall.auth.exceptions.NotInitialisedException;
 import io.biza.heimdall.auth.exceptions.UnsupportedGrantTypeException;
-import io.biza.thumb.oidc.payloads.ProviderDiscoveryMetadata;
-import io.biza.thumb.oidc.payloads.TokenResponse;
+import io.biza.heimdall.auth.Constants;
+import io.biza.heimdall.shared.util.RawJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Tag(name = Constants.TAG_DISCOVERY_NAME,
     description = Constants.TAG_DISCOVERY_DESCRIPTION)
+@RequestMapping("/")
 public interface DiscoveryApi {
 
   default DiscoveryApiDelegate getDelegate() {
@@ -47,7 +49,7 @@ public interface DiscoveryApi {
       description = "Returns a JWKS containing all Active Register Public Java Web Keys in JWKS format",
       content = @Content(schema = @Schema(implementation = String.class)))})
   @RequestMapping(path = "/jwks", method = RequestMethod.GET)
-  default ResponseEntity<String> getJwks() {
+  default ResponseEntity<RawJson> getJwks() {
     return getDelegate().getJwks();
   }
 

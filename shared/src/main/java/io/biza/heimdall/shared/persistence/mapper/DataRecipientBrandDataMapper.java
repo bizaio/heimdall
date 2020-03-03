@@ -13,7 +13,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.recipient.DataRecipientBrandMetaData;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientBrandMetaData;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;

@@ -33,12 +33,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
+import io.biza.babelfish.cdr.enumerations.register.DataRecipientBrandStatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.DataRecipientBrandStatusType;
 import lombok.ToString;
 
 @Builder
@@ -60,6 +60,7 @@ public class DataRecipientBrandData {
   
   @ManyToOne
   @JoinColumn(name = "DATA_RECIPIENT_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_RECIPIENT_BRAND_ID_FK"))
+  @ToString.Exclude
   DataRecipientData dataRecipient;
   
   @Column(name = "BRAND_NAME")

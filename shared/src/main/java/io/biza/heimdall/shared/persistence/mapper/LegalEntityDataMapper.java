@@ -13,7 +13,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.payload.common.LegalEntityDetail;
+import io.biza.babelfish.cdr.models.payloads.register.common.LegalEntityDetail;
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioLegalEntity;
 import io.biza.heimdall.shared.persistence.model.LegalEntityData;

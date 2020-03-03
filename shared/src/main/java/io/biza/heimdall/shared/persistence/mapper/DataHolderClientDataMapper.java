@@ -15,14 +15,14 @@ package io.biza.heimdall.shared.persistence.mapper;
 
 import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
-import io.biza.heimdall.shared.persistence.model.DataHolderClientData;
+import io.biza.heimdall.shared.persistence.model.ClientData;
 import ma.glasnost.orika.MapperFactory;
 
 public class DataHolderClientDataMapper implements OrikaFactoryConfigurerInterface {
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(DataHolderClientData.class, DioDataHolderClient.class)
+    orikaMapperFactory.classMap(ClientData.class, DioDataHolderClient.class)
     .fieldAToB("id", "id")
     .exclude("dataHolder")
     .byDefault()

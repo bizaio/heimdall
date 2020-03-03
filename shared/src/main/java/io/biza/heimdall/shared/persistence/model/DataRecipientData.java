@@ -33,13 +33,13 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
+import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import io.biza.heimdall.payload.enumerations.DataRecipientStatusType;
-import io.biza.heimdall.payload.enumerations.IndustryType;
 import lombok.ToString;
 
 @Builder

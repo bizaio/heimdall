@@ -7,26 +7,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class EndpointUtil {
 
   public static URI issuerUri() {
-    String hostName = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getHost();
-    int hostPort = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getPort();
-    String hostScheme = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getScheme();
-    return URI.create(String.join("", List.of(hostScheme, "://", hostName, "/")));
+    return URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
   }
 
   public static URI tokenEndpoint() {
-    String hostName = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getHost();
-    int hostPort = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getPort();
-    String hostScheme = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getScheme();
-    return URI.create(String.join("",
-        List.of(hostScheme, "://", hostName, ":", String.valueOf(hostPort), "/oauth2/token")));
+    return URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().toUriString() + "/oidc/token");
   }
 
 
   public static URI jwksUri() {
-    String hostName = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getHost();
-    int hostPort = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getPort();
-    String hostScheme = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getScheme();
-    return URI.create(String.join("",
-        List.of(hostScheme, "://", hostName, ":", String.valueOf(hostPort), "/jwks")));
+    return URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().toUriString() + "/jwks");
   }
 }

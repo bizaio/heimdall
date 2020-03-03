@@ -4,8 +4,8 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import io.biza.heimdall.payload.responses.RequestGetDataHolderBrands;
-import io.biza.heimdall.payload.responses.ResponseRegisterDataHolderBrandList;
+import io.biza.babelfish.cdr.models.responses.register.RequestGetDataHolderBrands;
+import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandList;
 
 public interface BankingDataHolderApiDelegate {
   default Optional<NativeWebRequest> getRequest() {

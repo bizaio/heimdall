@@ -14,9 +14,9 @@ package io.biza.heimdall.register.api.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import io.biza.babelfish.oidc.enumerations.OAuth2ErrorCode;
+import io.biza.babelfish.oidc.requests.OAuth2ErrorResponse;
 import io.biza.heimdall.register.Constants;
-import io.biza.thumb.oidc.enumerations.OAuth2ErrorCode;
-import io.biza.thumb.oidc.payloads.OAuth2ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 
