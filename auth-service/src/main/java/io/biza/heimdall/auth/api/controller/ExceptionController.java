@@ -16,8 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import io.biza.babelfish.oidc.enumerations.OAuth2ErrorCode;
 import io.biza.babelfish.oidc.requests.OAuth2ErrorResponse;
+import io.biza.heimdall.auth.exceptions.CryptoException;
 import io.biza.heimdall.auth.exceptions.InvalidClientException;
 import io.biza.heimdall.auth.exceptions.InvalidGrantException;
 import io.biza.heimdall.auth.exceptions.InvalidRequestException;
@@ -31,21 +33,38 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 @Slf4j
 public class ExceptionController {
-
+  
   @ExceptionHandler(InvalidClientException.class)
   public ResponseEntity<Object> handleInvalidClientException(HttpServletRequest req,
       InvalidClientException ex) {
-    
+
     return ResponseEntity.badRequest()
         .body(OAuth2ErrorResponse.builder().error(OAuth2ErrorCode.INVALID_CLIENT)
             .errorDescription(Constants.OAUTH2_INVALID_CLIENT_MESSAGE)
             .errorUri(Constants.OAUTH2_ERROR_RESPONSE_URI).build());
   }
-  
+
+  @ExceptionHandler(CryptoException.class)
+  public ResponseEntity<Object> handleInvalidClientException(HttpServletRequest req,
+      CryptoException ex) {
+
+    if (ex.invalidJwt() != null) {
+      return ResponseEntity.badRequest()
+          .body(OAuth2ErrorResponse.builder().error(OAuth2ErrorCode.INVALID_GRANT)
+              .errorDescription(ex.invalidJwt().getMessage())
+              .errorUri(Constants.OAUTH2_INVALID_JWT_RESPONSE_URI).build());
+
+    } else {
+      return ResponseEntity.badRequest()
+          .body(OAuth2ErrorResponse.builder().error(OAuth2ErrorCode.SERVER_ERROR)
+              .errorDescription(Constants.OAUTH2_SERVER_ERROR_MESSAGE).build());
+    }
+  }
+
   @ExceptionHandler(NullPointerException.class)
   public ResponseEntity<Object> handleInvalidGrantException(HttpServletRequest req,
       NullPointerException ex) {
-    
+
     LOG.error("Encountered uncaught NullPointerException", ex);
     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
   }
@@ -69,12 +88,13 @@ public class ExceptionController {
             .errorDescription(Constants.OAUTH2_INVALID_REQUEST_MESSAGE)
             .errorUri(Constants.OAUTH2_ERROR_RESPONSE_URI).build());
   }
-  
+
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-  public ResponseEntity<Object> handleInvalidMediaType(HttpServletRequest req, HttpMediaTypeNotSupportedException ex) {
-    
-    LOG.error("Received unsupported media type exception",ex);
-    
+  public ResponseEntity<Object> handleInvalidMediaType(HttpServletRequest req,
+      HttpMediaTypeNotSupportedException ex) {
+
+    LOG.error("Received unsupported media type exception", ex);
+
     return ResponseEntity.badRequest()
         .body(OAuth2ErrorResponse.builder().error(OAuth2ErrorCode.INVALID_REQUEST)
             .errorDescription(Constants.OAUTH2_INVALID_REQUEST_MESSAGE)

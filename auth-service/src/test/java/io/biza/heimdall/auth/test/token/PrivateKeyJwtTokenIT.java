@@ -8,6 +8,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -21,6 +23,7 @@ import org.jose4j.base64url.Base64;
 import org.jose4j.jwk.JsonWebKeySet;
 import org.jose4j.jwk.PublicJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
+import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.Test;
 import com.sun.net.httpserver.HttpServer;
@@ -29,12 +32,15 @@ import io.biza.babelfish.oidc.enumerations.OAuth2GrantType;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
 import io.biza.babelfish.oidc.requests.RequestTokenClientCredentials;
 import io.biza.babelfish.oidc.requests.RequestTokenPrivateKeyJwt;
+import io.biza.babelfish.oidc.util.JWKSWebServerUtil;
+import io.biza.babelfish.oidc.util.SigningUtil;
 import io.biza.heimdall.auth.test.SpringTestEnvironment;
-import io.biza.heimdall.auth.util.JWKSWebServerUtil;
 import io.biza.heimdall.shared.TestDataConstants;
 import io.biza.thumb.oidc.ClientConfig;
 import io.biza.thumb.oidc.OIDCClient;
+import io.biza.thumb.oidc.exceptions.DiscoveryFailureException;
 import io.biza.thumb.oidc.exceptions.TokenAuthorisationFailureException;
+import io.biza.thumb.oidc.util.ResolverUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -52,6 +58,12 @@ public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
   public void testPrivateKeyJwtToken() {
     OIDCClient client = new OIDCClient(
         ClientConfig.builder().issuer(getIssuerUri()).sslContext(trustAllCerts()).build());
+    
+    try {
+      client.discoveryClient().getDiscoveryDocument(true);
+    } catch (DiscoveryFailureException e) {
+      fail("Discovery failure: ", e);
+    }
 
     try {
       /**
@@ -96,10 +108,32 @@ public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
 
       try {
         TokenResponse token = client.tokenClient().getTokens(
-            RequestTokenPrivateKeyJwt.builder().clientId(TestDataConstants.CLIENT_ID).build());
+            RequestTokenPrivateKeyJwt.builder().clientId(TestDataConstants.RECIPIENT_CLIENT_ID).build());
         httpServer.stop(1);
 
         LOG.info("Token retrieval returned: {}", token.toString());
+        
+        try {
+          LOG.info("Retrieving issuers jwks from {}", client.config().discoveryMetadata().jwksUri());
+          HttpRequest request = HttpRequest.newBuilder().GET().uri(client.config().discoveryMetadata().jwksUri())
+              .setHeader("User-Agent", "Biza.io Babelfish OIDC").build();
+          HttpResponse<String> jwksContent =
+              client.httpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+          JsonWebKeySet jwks = new JsonWebKeySet(jwksContent.body());
+
+          SigningUtil.verify(token.accessToken(), jwks, client.config().issuer().toString(), TestDataConstants.RECIPIENT_CLIENT_ID);
+        } catch (JoseException e) {
+          LOG.error("Encountered Generic Jose4j Exception", e);
+          fail("Generic Jose4j Exception", e);
+        } catch (InvalidJwtException e) {
+          LOG.warn("Generic Jose4j Exception", e);
+          fail("Generic Jose4j Exception", e);
+        } catch (IOException | InterruptedException e) {
+          LOG.error("Encountered generic signing verification error", e);
+          fail("Encountered generic signing verification error", e);
+        }
+        
       } catch (TokenAuthorisationFailureException e) {
         LOG.error("Failed to perform private key jwt retrieval", e);
         if (e.oauth2() != null) {

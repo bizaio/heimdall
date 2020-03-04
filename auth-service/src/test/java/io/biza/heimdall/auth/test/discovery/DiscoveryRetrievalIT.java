@@ -13,6 +13,7 @@ import io.biza.heimdall.auth.test.Constants;
 import io.biza.heimdall.auth.test.SpringTestEnvironment;
 import io.biza.thumb.oidc.ClientConfig;
 import io.biza.thumb.oidc.OIDCClient;
+import io.biza.thumb.oidc.exceptions.DiscoveryFailureException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,10 +31,13 @@ public class DiscoveryRetrievalIT extends SpringTestEnvironment {
 
     OIDCClient client = new OIDCClient(
         ClientConfig.builder().issuer(getIssuerUri()).sslContext(trustAllCerts()).build());
-    ProviderDiscoveryMetadata meta = client.discoveryClient().getDiscoveryDocument(true);
-    assertNotNull(meta);
-    LOG.info(meta.toString());
-
+    try {
+      ProviderDiscoveryMetadata meta = client.discoveryClient().getDiscoveryDocument(true);
+      assertNotNull(meta);
+      LOG.info(meta.toString());
+    } catch (DiscoveryFailureException e) {
+      fail("Discovery failure: ", e);
+    }
   }
 
 }

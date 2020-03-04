@@ -3,23 +3,16 @@ heimdall:
   hostname: localhost
   token_length_hours: 24
 server:
-  port: 9101
+  port: 9103
   servlet:
-    context-path: /dio-register
+    context-path: /dio-auth
   ssl:
     key-store-password: solongandthanksforallthefish
     key-alias: heimdall-service
     key-password: solongandthanksforallthefish
-    key-store: heimdall.jks
-    enabled: true    
-    
+    key-store: heimdall-test.jks
+    enabled: true  
 spring:
-   security:
-      oauth2:
-        resourceserver:
-          jwt:
-            jws-algorithm: PS256
-            jwk-set-uri: https://pastebin.com/raw/bvRjgqvV
    datasource:
      url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
      driverClassName: org.h2.Driver
@@ -30,5 +23,4 @@ spring:
        ddl-auto: update
    jackson:
      default-property-inclusion: non_empty
-
    

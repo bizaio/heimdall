@@ -34,10 +34,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import io.biza.babelfish.cdr.enumerations.register.DataHolderStatusType;
+import io.biza.babelfish.cdr.enumerations.register.IndustryType;
+import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,23 +64,37 @@ public class ClientData {
   @Type(type = "uuid-char")
   UUID id;
   
+  @Column(name = "CREDENTIAL_TYPE")
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  DioClientCredentialType credentialType;
+  
   @ManyToOne
-  @JoinColumn(name = "DATA_HOLDER_ID", nullable = false, foreignKey = @ForeignKey(name = "CLIENT_DATA_HOLDER_FK"))
+  @JoinColumn(name = "DATA_HOLDER_ID", foreignKey = @ForeignKey(name = "CLIENT_DATA_HOLDER_FK"))
   @ToString.Exclude
   DataHolderData dataHolder;
   
   @ManyToOne
-  @JoinColumn(name = "SOFTWARE_PRODUCT_ID", nullable = false, foreignKey = @ForeignKey(name = "CLIENT_SOFTWARE_PRODUCT_FK"))
+  @JoinColumn(name = "SOFTWARE_PRODUCT_ID", foreignKey = @ForeignKey(name = "CLIENT_SOFTWARE_PRODUCT_FK"))
   @ToString.Exclude
   SoftwareProductData softwareProduct;
   
-  @OneToMany(mappedBy = "dataHolderClient", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
   @ToString.Exclude
   Set<TokenData> tokens;
 
   @Column(name = "CLIENT_SECRET")
-  @NotNull
   String clientSecret;
+  
+  @AssertTrue
+  private Boolean isClientSecretRequiredAndPopulated() {
+    return credentialType.equals(DioClientCredentialType.CLIENT_CREDENTIALS_SECRET) && clientSecret != null;
+  }
+  
+  @AssertTrue
+  private Boolean isHolderOrProductPopulated() {
+    return (dataHolder != null && softwareProduct == null) || (dataHolder == null && softwareProduct != null);
+  }
     
   @PrePersist
   public void prePersist() {

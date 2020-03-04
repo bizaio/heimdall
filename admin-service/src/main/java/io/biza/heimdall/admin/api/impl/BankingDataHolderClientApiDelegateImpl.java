@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderClientApiDelegate;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
+import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
 import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;

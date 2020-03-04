@@ -82,6 +82,7 @@ public class LegalEntityData {
 
   @Column(name = "REGISTERED_COUNTRY")
   @Convert(converter = LocaleDataConverter.class)
+  @NotNull
   @Builder.Default
   Locale registeredCountry = new Locale(Constants.DEFAULT_LANGUAGE, Constants.DEFAULT_LOCALE);
   
@@ -99,6 +100,7 @@ public class LegalEntityData {
   
   @Column(name = "ORGANISATION_TYPE")
   @Enumerated(EnumType.STRING)
+  @NotNull
   CommonOrganisationType organisationType;
   
   @PrePersist

@@ -32,6 +32,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientBrandStatusType;
 import lombok.AllArgsConstructor;
@@ -61,6 +62,7 @@ public class DataRecipientBrandData {
   @ManyToOne
   @JoinColumn(name = "DATA_RECIPIENT_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_RECIPIENT_BRAND_ID_FK"))
   @ToString.Exclude
+  @NotNull
   DataRecipientData dataRecipient;
   
   @Column(name = "BRAND_NAME")
@@ -81,7 +83,9 @@ public class DataRecipientBrandData {
   public void prePersist() {
     if(dataRecipient() != null) {
       Set<DataRecipientBrandData> brands = new HashSet<DataRecipientBrandData>();
-      brands.addAll(dataRecipient.dataRecipientBrands());
+      if(dataRecipient.dataRecipientBrands() != null) {
+        brands.addAll(dataRecipient.dataRecipientBrands());
+      }
       brands.add(this);
       dataRecipient.dataRecipientBrands(brands);
     }

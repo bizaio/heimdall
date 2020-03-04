@@ -74,11 +74,19 @@ public class PrivateKeyJwtService {
       throw new InvalidClientException();
     }
     ClientData holderClient = optionalHolderClient.get();
+    
+    /**
+     * Client Secret doesn't pass
+     */
+    if (holderClient.clientSecret() != null && !holderClient.clientSecret().equals(request.clientSecret())) {
+      LOG.error("Client Secret for ({}) is incorrect", clientId);
+      throw new InvalidClientException();
+    }
 
     /**
      * Requested scopes exceed the available scopes
      */
-    if (!List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(request.scopes())) {
+    if (request.scopes() != null && !List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(request.scopes())) {
       throw new InvalidScopeException();
     }
 
@@ -87,10 +95,16 @@ public class PrivateKeyJwtService {
      */
     try {
       SigningUtil.verify(request.clientAssertion(), holderClient.softwareProduct().jwksUri(),
-          holderClient.id().toString(), EndpointUtil.issuerUri().toString());
-    } catch (JoseException | IOException | InvalidJwtException | InterruptedException e) {
-      LOG.error("Encountered signing verification error", e);
-      throw new CryptoException();
+          holderClient.id().toString(), EndpointUtil.tokenEndpoint().toString());
+    } catch (JoseException e) {
+      LOG.error("Encountered Generic Jose4j Exception", e);
+      throw CryptoException.builder().jose(e).build();
+    } catch (InvalidJwtException e) {
+      LOG.warn("Supplied JWT did not pass signing", e);
+      throw CryptoException.builder().invalidJwt(e).build();
+    } catch (IOException | InterruptedException e) {
+      LOG.error("Encountered generic signing verification error", e);
+      throw CryptoException.builder().build();
     }
 
     /**

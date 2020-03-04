@@ -39,6 +39,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -48,6 +49,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.cdr.enumerations.register.CertificateStatus;
 import io.biza.heimdall.shared.Constants;
+import io.biza.heimdall.shared.loaders.SecurityCredentialSetup;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
 import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +60,9 @@ public class HeimdallCertificateInitialision implements InitializingBean {
 
   @Autowired
   RegisterAuthorityTLSRepository caRepository;
+  
+  @Autowired
+  SecurityCredentialSetup credentialsSetup;
   
   @Value("${server.ssl.key-store-password}")
   public String KEYSTORE_PASSWORD;
@@ -70,6 +75,9 @@ public class HeimdallCertificateInitialision implements InitializingBean {
   
   @Override
   public void afterPropertiesSet() throws Exception {
+    
+    // Forcibly initialise credentials
+    credentialsSetup.initialiseSecurityCredentials();
 
     // By the time this runner happens the loader should have initialised
     if (new File(KEYSTORE_PATH).exists()) {
@@ -84,6 +92,11 @@ public class HeimdallCertificateInitialision implements InitializingBean {
 
     RegisterAuthorityTLSData caData =
         caRepository.findFirstByStatusIn(List.of(CertificateStatus.ACTIVE));
+    
+    if(caData == null) {
+      LOG.error("CA Data is not initialised, cannot proceed!");
+      return;
+    }
 
     /**
      * Bouncycastle Registration

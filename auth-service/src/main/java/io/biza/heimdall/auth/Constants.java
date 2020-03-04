@@ -43,10 +43,12 @@ public class Constants {
    */
   public final static URI OAUTH2_ERROR_RESPONSE_URI =
       URI.create("https://tools.ietf.org/html/rfc6749#section-5.2");
+  public final static URI OAUTH2_INVALID_JWT_RESPONSE_URI = URI.create("https://tools.ietf.org/html/rfc7523#page-7");
   public final static String OAUTH2_INVALID_REQUEST_MESSAGE =
       "The request is missing a required parameter, includes an unsupported parameter value (other than grant type), repeats a parameter, includes multiple credentials, utilizes more than one mechanism for authenticating the client, or is otherwise malformed.";
   public final static String OAUTH2_INVALID_CLIENT_MESSAGE =
       "Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method).";
+  public final static String OAUTH2_SERVER_ERROR_MESSAGE = "Client authentication failed due to unknown server error, contact the authorisation servers administator";
   public final static String OAUTH2_INVALID_GRANT_MESSAGE =
       "The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.";
   public final static String OAUTH2_UNAUTHORIZED_CLIENT_MESSAGE =

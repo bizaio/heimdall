@@ -36,6 +36,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.register.RegisterScope;
 import io.biza.babelfish.cdr.enumerations.register.RegisterSoftwareRole;
@@ -67,6 +68,7 @@ public class SoftwareProductData {
   @ManyToOne
   @JoinColumn(name = "DATA_RECIPIENT_BRAND_ID", nullable = false, foreignKey = @ForeignKey(name = "SOFTWARE_PRODUCT_DATA_RECIPIENT_BRAND_FK"))
   @ToString.Exclude
+  @NotNull
   DataRecipientBrandData dataRecipientBrand;
   
   @OneToMany(mappedBy = "softwareProduct", cascade = CascadeType.ALL)
@@ -122,7 +124,9 @@ public class SoftwareProductData {
   public void prePersist() {
     if (dataRecipientBrand() != null) {
       Set<SoftwareProductData> products = new HashSet<SoftwareProductData>();
-      products.addAll(dataRecipientBrand.softwareProducts());
+      if(dataRecipientBrand.softwareProducts() != null) {
+        products.addAll(dataRecipientBrand.softwareProducts());
+      }
       products.add(this);
       dataRecipientBrand.softwareProducts(products);
     }

@@ -11,18 +11,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.shared.persistence.repository;
+package io.biza.heimdall.shared.enumerations;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
-import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
-import io.biza.heimdall.shared.persistence.model.ClientData;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@Repository
-public interface ClientRepository extends JpaRepository<ClientData, UUID>, JpaSpecificationExecutor<ClientData> {
-  public Optional<ClientData> findByIdAndDataHolderId(UUID clientId, UUID holderId);
+@Schema(description = "Heimdall Client Credentialing Method", enumAsRef = true)
+public enum DioClientCredentialType {
+  CLIENT_CREDENTIALS_ASSERTION, CLIENT_CREDENTIALS_SECRET
 }

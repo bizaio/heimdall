@@ -17,6 +17,7 @@ import io.biza.heimdall.auth.exceptions.InvalidRequestException;
 import io.biza.heimdall.auth.exceptions.InvalidScopeException;
 import io.biza.heimdall.auth.exceptions.NotInitialisedException;
 import io.biza.heimdall.auth.Constants;
+import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
 import io.biza.heimdall.shared.enumerations.HeimdallTokenType;
 import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.TokenData;
@@ -72,6 +73,14 @@ public class ClientCredentialService {
       throw new InvalidClientException();
     }
     ClientData holderClient = optionalHolderClient.get();
+    
+    /**
+     * This method only handles client credentials using a secret
+     */
+    if(!holderClient.credentialType().equals(DioClientCredentialType.CLIENT_CREDENTIALS_SECRET)) {
+      LOG.warn("Client Identifier ({}) attempted to authenticate using CLIENT_CREDENTIALS_SECRET but it is not setup as this type", clientId);
+      throw new InvalidClientException();
+    }
 
     /**
      * Requested scopes exceed the available scopes
