@@ -21,7 +21,7 @@ spring:
             jws-algorithm: PS256
             jwk-set-uri: https://localhost:9103/dio-auth/jwks
    datasource:
-     url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
+     url: jdbc:h2:mem:heimdalltest
      driverClassName: org.h2.Driver
    jpa:
      database: H2
