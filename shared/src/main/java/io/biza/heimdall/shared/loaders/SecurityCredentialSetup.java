@@ -47,6 +47,7 @@ import org.jose4j.jwk.PublicJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
@@ -62,18 +63,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class SecurityCredentialSetup implements ApplicationListener<ApplicationReadyEvent> {
+public class SecurityCredentialSetup {
   @Autowired
   private RegisterAuthorityTLSRepository caRepository;
   @Autowired
   private RegisterAuthorityJWKRepository jwkRepository;
 
-
-
-  @Override
-  public void onApplicationEvent(final ApplicationReadyEvent event) {
-    initialiseSecurityCredentials();
-  }
+  @Value("${heimdall.show_private_keys:false}")
+  Boolean showPrivateKeys;
 
   public void initialiseSecurityCredentials() {
     createRegisterJwk();
@@ -89,12 +86,12 @@ public class SecurityCredentialSetup implements ApplicationListener<ApplicationR
       LOG.debug("JWK Authority details is output below");
 
       try {
-        
+
         KeyFactory keyFactory = KeyFactory.getInstance(jwkData.javaFactory());
         X509EncodedKeySpec publicKeySpec =
             new X509EncodedKeySpec(Base64.getDecoder().decode(jwkData.publicKey()));
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
-        
+
         PKCS8EncodedKeySpec privateKeySpec =
             new PKCS8EncodedKeySpec(Base64.getDecoder().decode(jwkData.privateKey()));
         PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
@@ -103,13 +100,15 @@ public class SecurityCredentialSetup implements ApplicationListener<ApplicationR
         webKey.setAlgorithm(jwkData.joseAlgorithm());
         webKey.setKeyId(jwkData.id().toString());
         webKey.setPrivateKey(privateKey);
-        
-        LOG.debug(
-            "\n\n-----BEGIN PRIVATE KEY-----\n{}\n-----END RSA PRIVATE KEY-----\n-----BEGIN PUBLIC KEY-----\n{}\n-----END PUBLIC KEY-----\n",
-            Base64.getEncoder().encodeToString(webKey.getPrivateKey().getEncoded())
-                .replaceAll(".{80}(?=.)", "$0\n"),
-            Base64.getEncoder().encodeToString(webKey.getKey().getEncoded())
-                .replaceAll(".{80}(?=.)", "$0\n"));
+
+        if (showPrivateKeys) {
+          LOG.debug("\n\n-----BEGIN PRIVATE KEY-----\n{}\n-----END RSA PRIVATE KEY-----\n",
+              Base64.getEncoder().encodeToString(webKey.getPrivateKey().getEncoded())
+                  .replaceAll(".{80}(?=.)", "$0\n"));
+        }
+
+        LOG.debug("\n\n-----BEGIN PUBLIC KEY-----\n{}\n-----END PUBLIC KEY-----\n", Base64.getEncoder()
+            .encodeToString(webKey.getKey().getEncoded()).replaceAll(".{80}(?=.)", "$0\n"));
 
       } catch (NoSuchAlgorithmException | InvalidKeySpecException | JoseException e) {
         LOG.error("Encountered error while serialising the existing jwk", e);
@@ -130,9 +129,11 @@ public class SecurityCredentialSetup implements ApplicationListener<ApplicationR
       /**
        * Setup JWK Data
        */
-      
-      LOG.info("Private key pair in format of {} and algorithm of {}", keyPair.getPrivate().getFormat(), keyPair.getPrivate().getAlgorithm());
-      LOG.info("Public key pair in format of {} and algorithm of {}", keyPair.getPublic().getFormat(), keyPair.getPublic().getAlgorithm());
+
+      LOG.info("Private key pair in format of {} and algorithm of {}",
+          keyPair.getPrivate().getFormat(), keyPair.getPrivate().getAlgorithm());
+      LOG.info("Public key pair in format of {} and algorithm of {}",
+          keyPair.getPublic().getFormat(), keyPair.getPublic().getAlgorithm());
 
 
       RegisterAuthorityJWKData newJwkData = jwkRepository.save(RegisterAuthorityJWKData.builder()
@@ -143,10 +144,15 @@ public class SecurityCredentialSetup implements ApplicationListener<ApplicationR
 
       LOG.warn("JWKS Authority initialisation has been completed!");
       LOG.debug("JWK Authority details is output below");
-      LOG.debug(
-          "\n\n-----BEGIN PRIVATE KEY-----\n{}\n-----END RSA PRIVATE KEY-----\n-----BEGIN PUBLIC KEY-----\n{}\n-----END PUBLIC KEY-----\n",
-          newJwkData.privateKey().replaceAll(".{80}(?=.)", "$0\n"),
+
+      if (showPrivateKeys) {
+        LOG.debug("\n\n-----BEGIN PRIVATE KEY-----\n{}\n-----END RSA PRIVATE KEY-----\n",
+            newJwkData.privateKey().replaceAll(".{80}(?=.)", "$0\n"));
+      }
+
+      LOG.debug("\n\n-----BEGIN PUBLIC KEY-----\n{}\n-----END PUBLIC KEY-----\n",
           newJwkData.publicKey().replaceAll(".{80}(?=.)", "$0\n"));
+
     } catch (NoSuchAlgorithmException e) {
       LOG.error("Invalid algorithm of {} specified, cannot proceed", Constants.JAVA_ALGORITHM);
     }
@@ -160,9 +166,8 @@ public class SecurityCredentialSetup implements ApplicationListener<ApplicationR
     if (caCertificate != null) {
       LOG.info("Certificate Authority already initialised, skipping CA generation");
       LOG.debug("Public Certificate of Certificate Authority is output below");
-      LOG.debug("\n-----BEGIN CERTIFICATE-----\n"
-          + caCertificate.publicKey().replaceAll(".{80}(?=.)", "$0\n")
-          + "\n-----END CERTIFICATE-----\n\n");
+      LOG.debug("\n\n-----BEGIN CERTIFICATE-----\n{}\n-----END CERTIFICATE-----\n",
+          caCertificate.publicKey().replaceAll(".{80}(?=.)", "$0\n"));
       return;
     }
 
@@ -226,11 +231,13 @@ public class SecurityCredentialSetup implements ApplicationListener<ApplicationR
 
       LOG.warn("Certificate authority initialisation has been completed!");
       LOG.debug("PEM of Certificate Authority is output as follows");
-      LOG.debug("\n\n-----BEGIN RSA PRIVATE KEY-----\n"
-          + savedCaCertData.privateKey().replaceAll(".{80}(?=.)", "$0\n")
-          + "\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\n"
-          + savedCaCertData.publicKey().replaceAll(".{80}(?=.)", "$0\n")
-          + "\n-----END CERTIFICATE-----\n\n");
+      if (showPrivateKeys) {
+        LOG.debug("\n\n-----BEGIN RSA PRIVATE KEY-----\n{}\n-----END RSA PRIVATE KEY-----\n",
+            savedCaCertData.privateKey().replaceAll(".{80}(?=.)", "$0\n"));
+      }
+
+      LOG.debug("\n\n-----BEGIN CERTIFICATE-----\n{}\n-----END CERTIFICATE-----\n",
+          savedCaCertData.publicKey().replaceAll(".{80}(?=.)", "$0\n"));
 
     } catch (NoSuchAlgorithmException e) {
       LOG.error("Invalid algorithm of {} specified, cannot initialise certificate authority!",
