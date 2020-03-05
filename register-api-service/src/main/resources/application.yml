@@ -12,7 +12,7 @@ server:
     key-password: solongandthanksforallthefish
     key-store: heimdall.jks
     enabled: true    
-    
+
 spring:
    security:
       oauth2:
