@@ -1,4 +1,4 @@
-package io.biza.deepthought.admin;
+package io.biza.heimdall.admin.test;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

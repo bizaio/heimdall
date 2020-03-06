@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import io.swagger.v3.oas.models.Components;
@@ -20,18 +21,13 @@ import lombok.extern.slf4j.Slf4j;
 public class HeimdallAdminApplication {
 
   public static void main(String[] args) {
-    SpringApplication application = new SpringApplication(HeimdallAdminApplication.class);
-
-    if (Paths.get("heimdall.jks").toFile().exists()) {
-      LOG.warn("Detected local keystore, triggering ssl enablement");
-      application.setAdditionalProfiles("ssl");
-    }
-
+    SpringApplicationBuilder application =
+        new SpringApplicationBuilder(HeimdallAdminApplication.class);
     application.run(args);
   }
 
   @Bean
-  public OpenAPI customOpenAPI(@Value("${deepthought.version}") String appVersion) {
+  public OpenAPI customOpenAPI(@Value("${heimdall.version}") String appVersion) {
     /**
      * OpenID Connect is available in OAS annotations but not yet in swagger-ui :(
      * https://github.com/swagger-api/swagger-ui/issues/3517

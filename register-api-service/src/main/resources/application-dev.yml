@@ -5,12 +5,12 @@ heimdall:
 server:
   port: 9101
   servlet:
-    context-path: /dio-register
+    context-path: /cdr-register
   ssl:
     key-store-password: solongandthanksforallthefish
     key-alias: heimdall-service
     key-password: solongandthanksforallthefish
-    key-store: heimdall.jks
+    key-store: heimdall-dev.jks
     enabled: true    
     
 spring:
@@ -21,7 +21,7 @@ spring:
             jws-algorithm: PS256
             jwk-set-uri: https://localhost:9103/dio-auth/jwks
    datasource:
-     url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
+     url: jdbc:h2:file:../localdb/heimdalldev;AUTO_SERVER=true
      driverClassName: org.h2.Driver
    jpa:
      database: H2

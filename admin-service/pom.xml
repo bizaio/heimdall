@@ -183,21 +183,56 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>reserve-tomcat-port</id>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <skip>${skipDynamicServer}</skip>
+                            <portNames>
+                                <portName>tomcat.http.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>            
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
+
                 <executions>
                     <execution>
                         <id>pre-integration-test</id>
                         <goals>
+                            <goal>stop</goal>
                             <goal>start</goal>
                         </goals>
+                        <configuration>
+                            <profiles>
+                                <profile>test</profile>
+                            </profiles>
+                            <skip>${skipDynamicServer}</skip>
+                            <arguments>
+                                <argument>--server.port=${tomcat.http.port}
+                                </argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>post-integration-test</id>
                         <goals>
                             <goal>stop</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipDynamicServer}</skip>
+                        </configuration>
                     </execution>
                     <execution>
                         <goals>
@@ -207,7 +242,8 @@
                             <requiresUnpack>
                                 <dependency>
                                     <groupId>io.biza</groupId>
-                                    <artifactId>heimdall-shared</artifactId>
+                                    <artifactId>heimdall-admin-service
+                                    </artifactId>
                                 </dependency>
                             </requiresUnpack>
                         </configuration>
@@ -251,5 +287,24 @@
             </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <spring-boot.run.profiles>test</spring-boot.run.profiles>
+                <skipDynamicServer>false</skipDynamicServer>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring-boot.run.profiles>dev</spring-boot.run.profiles>
+                <skipDynamicServer>true</skipDynamicServer>
+                <tomcat.http.port>9102</tomcat.http.port>
+            </properties>
+        </profile>
+    </profiles>
 </project>

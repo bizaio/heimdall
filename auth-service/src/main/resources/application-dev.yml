@@ -10,11 +10,11 @@ server:
     key-store-password: solongandthanksforallthefish
     key-alias: heimdall-service
     key-password: solongandthanksforallthefish
-    key-store: heimdall-test.jks
+    key-store: heimdall-dev.jks
     enabled: true  
 spring:
    datasource:
-     url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
+     url: jdbc:h2:file:../localdb/heimdalldev;AUTO_SERVER=true
      driverClassName: org.h2.Driver
    jpa:
      database: H2

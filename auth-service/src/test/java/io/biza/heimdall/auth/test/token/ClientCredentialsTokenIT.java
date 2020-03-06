@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.UUID;
 import org.jose4j.jwk.JsonWebKeySet;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -37,6 +38,9 @@ import io.biza.thumb.oidc.ClientConfig;
 import io.biza.thumb.oidc.OIDCClient;
 import io.biza.thumb.oidc.exceptions.DiscoveryFailureException;
 import io.biza.thumb.oidc.exceptions.TokenAuthorisationFailureException;
+import io.biza.thumb.oidc.exceptions.TokenProcessingFailureException;
+import io.biza.thumb.oidc.exceptions.TokenVerificationFailureException;
+import io.biza.thumb.oidc.util.HttpClientUtil;
 import io.biza.thumb.oidc.util.ResolverUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,48 +54,29 @@ import lombok.extern.slf4j.Slf4j;
 public class ClientCredentialsTokenIT extends SpringTestEnvironment {
 
   @Test
-  public void testClientCredentialsToken() {
+  public void testClientCredentialsToken() throws DiscoveryFailureException {
     OIDCClient client = new OIDCClient(
-        ClientConfig.builder().issuer(getIssuerUri()).sslContext(trustAllCerts()).build());
-    
-    try {
-      client.discoveryClient().getDiscoveryDocument(true);
-    } catch (DiscoveryFailureException e) {
-      fail("Discovery failure: ", e);
-    }
+        ClientConfig.builder().issuer(getIssuerUri()).clientId(TestDataConstants.HOLDER_CLIENT_ID)
+            .clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).build(),
+        HttpClientUtil.httpClient(false));
 
     try {
-      TokenResponse token = client.tokenClient().getTokens(
-          RequestTokenClientCredentials.builder().clientId(TestDataConstants.HOLDER_CLIENT_ID)
-              .clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).build());
-
+      TokenResponse token =
+          client.tokens(List.of(io.biza.heimdall.auth.Constants.SECURITY_SCOPE_REGISTER_BANK_READ));
       LOG.info("Token retrieval returned: {}", token.toString());
-      
-      try {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(client.config().discoveryMetadata().jwksUri())
-            .setHeader("User-Agent", "Biza.io Babelfish OIDC").build();
-        HttpResponse<String> jwksContent =
-            client.httpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-        JsonWebKeySet jwks = new JsonWebKeySet(jwksContent.body());
-
-        SigningUtil.verify(token.accessToken(), jwks, client.config().issuer().toString(), TestDataConstants.HOLDER_CLIENT_ID);
-      } catch (JoseException e) {
-        LOG.error("Encountered Generic Jose4j Exception", e);
-        fail("Generic Jose4j Exception", e);
-      } catch (InvalidJwtException e) {
-        LOG.warn("Generic Jose4j Exception", e);
-        fail("Generic Jose4j Exception", e);
-      } catch (IOException | InterruptedException e) {
-        LOG.error("Encountered generic signing verification error", e);
-        fail("Encountered generic signing verification error", e);
-      }
-      
 
     } catch (TokenAuthorisationFailureException e) {
       LOG.error("Failed to perform client credentials token retrieval", e);
-      LOG.error("Error Details are: {}", e.oauth2().toString());
-      fail(e.oauth2().toString());
+      if (e.oauth2() != null) {
+        LOG.error("Error Details are: {}", e.oauth2().toString());
+      }
+      fail(e);
+    } catch (TokenVerificationFailureException e) {
+      LOG.error("Received token but it failed verification", e);
+      fail(e);
+    } catch (TokenProcessingFailureException e) {
+      LOG.error("Received token but it was unable to be processed", e);
+      fail(e);
     }
 
 

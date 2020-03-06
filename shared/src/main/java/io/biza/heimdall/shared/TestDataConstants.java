@@ -1,9 +1,20 @@
 package io.biza.heimdall.shared;
 
+import java.net.URI;
+
 public class TestDataConstants {
 
-  public static final String HOLDER_LEGAL_NAME = "Biza Pty Ltd";
-  public static final String HOLDER_NAME = "Bizabank";
+  public static final String HOLDER_LEGAL_NAME = "Deep Thought Industries Pty Ltd";
+  public static final String HOLDER_NAME = "Deep Thought";
+  public static final int HOLDER_AUTH_PORT = 9202;
+  public static final String HOLDER_BRAND_NAME = "Bizabank";
+  public static final URI HOLDER_BRAND_LOGO_URI = URI.create("http://biza.io/logo.png");
+  public static final URI HOLDER_BRAND_INFOSEC_URI = URI.create("https://localhost:9301");
+  public static final URI HOLDER_BRAND_RESOURCE_URI = URI.create("https://localhost:9302");
+  public static final URI HOLDER_BRAND_PUBLIC_URI = URI.create("https://localhost:9303");
+  public static final URI HOLDER_BRAND_WEBSITE = URI.create("https://bizabank.com/");
+  
+  public static final String HOLDER_AUTH_JWKS_PATH = "/jwks";
   public static final String RECIPIENT_LEGAL_NAME = "Deep Thought Pty Ltd";
   public static final String RECIPIENT_NAME = "Deep Thought";
   public static final String HOLDER_CLIENT_ID = "f5392d1c-0b2f-4783-a69f-a29c450d775b";

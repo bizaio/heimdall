@@ -1,4 +1,4 @@
-package io.biza.heimdall.auth.test;
+package io.biza.heimdall.register.test;
 
 import java.net.URI;
 

@@ -1,7 +1,0 @@
-server:
-  ssl:
-    key-store-password: solongandthanksforallthefish
-    key-alias: heimdall-service
-    key-password: solongandthanksforallthefish
-    key-store: heimdall.jks
-    enabled: true

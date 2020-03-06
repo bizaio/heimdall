@@ -75,16 +75,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -137,6 +127,22 @@
             <groupId>io.biza</groupId>
             <artifactId>babelfish-oidc</artifactId>
             <version>${babelfish-oidc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.biza</groupId>
+            <artifactId>electronic-thumb-client</artifactId>
+            <version>${electronic-thumb.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <dependencyManagement>
@@ -261,25 +267,11 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-maven-plugin</artifactId>
-                <version>${springdoc-openapi-maven-plugin.version}</version>
-                <configuration>
-                    <apiDocsUrl>http://localhost:9101/v3/api-docs</apiDocsUrl>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -288,6 +280,13 @@
                 <executions>
                     <execution>
                         <phase>integration-test</phase>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <register-auth-uri>${register-auth-uri}</register-auth-uri>
+                                <register-resource-uri>${register-resource-uri}</register-resource-uri>
+                            </systemPropertyVariables>
+                        </configuration>
+
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
@@ -313,6 +312,8 @@
             <properties>
                 <spring-boot.run.profiles>dev</spring-boot.run.profiles>
                 <skipDynamicServer>true</skipDynamicServer>
+                <register-auth-uri>https://localhost:9103/dio-auth</register-auth-uri>
+                <register-resource-uri>https://localhost:9101/cdr-register</register-resource-uri>
                 <tomcat.http.port>9101</tomcat.http.port>
             </properties>
         </profile>

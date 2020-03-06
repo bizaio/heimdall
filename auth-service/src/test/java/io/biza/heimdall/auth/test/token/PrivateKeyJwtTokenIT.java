@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.jose4j.base64url.Base64;
@@ -34,12 +35,16 @@ import io.biza.babelfish.oidc.requests.RequestTokenClientCredentials;
 import io.biza.babelfish.oidc.requests.RequestTokenPrivateKeyJwt;
 import io.biza.babelfish.oidc.util.JWKSWebServerUtil;
 import io.biza.babelfish.oidc.util.SigningUtil;
+import io.biza.heimdall.auth.test.Constants;
 import io.biza.heimdall.auth.test.SpringTestEnvironment;
 import io.biza.heimdall.shared.TestDataConstants;
 import io.biza.thumb.oidc.ClientConfig;
 import io.biza.thumb.oidc.OIDCClient;
 import io.biza.thumb.oidc.exceptions.DiscoveryFailureException;
 import io.biza.thumb.oidc.exceptions.TokenAuthorisationFailureException;
+import io.biza.thumb.oidc.exceptions.TokenProcessingFailureException;
+import io.biza.thumb.oidc.exceptions.TokenVerificationFailureException;
+import io.biza.thumb.oidc.util.HttpClientUtil;
 import io.biza.thumb.oidc.util.ResolverUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,24 +57,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
 
-  public final String ALGORITHM = "RSASSA-PSS";
-
   @Test
-  public void testPrivateKeyJwtToken() {
-    OIDCClient client = new OIDCClient(
-        ClientConfig.builder().issuer(getIssuerUri()).sslContext(trustAllCerts()).build());
-    
-    try {
-      client.discoveryClient().getDiscoveryDocument(true);
-    } catch (DiscoveryFailureException e) {
-      fail("Discovery failure: ", e);
-    }
+  public void testPrivateKeyJwtToken() throws DiscoveryFailureException, NoSuchAlgorithmException, JoseException, IOException {
 
-    try {
       /**
        * Generate a new key pair
        */
-      KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
+      KeyPairGenerator keyGen = KeyPairGenerator.getInstance(Constants.KEYPAIR_ALGORITHM);
       keyGen.initialize(2048);
       KeyPair keyPair = keyGen.generateKeyPair();
 
@@ -81,7 +75,6 @@ public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
       webKey.setAlgorithm(AlgorithmIdentifiers.RSA_PSS_USING_SHA256);
       webKey.setKeyId(UUID.randomUUID().toString());
       webKey.setPrivateKey(keyPair.getPrivate());
-      client.config().signingKeyPair(webKey);
 
       /**
        * Print the keys out
@@ -90,15 +83,17 @@ public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
       LOG.info("Generated public key is: {}", Base64.encode(webKey.getPublicKey().getEncoded()));
 
       /**
+       * Setup OIDC Client
+       */
+      OIDCClient client = new OIDCClient(
+          ClientConfig.builder().signingKeyPair(webKey).clientId(TestDataConstants.RECIPIENT_CLIENT_ID).issuer(getIssuerUri()).build(), HttpClientUtil.httpClient(false));
+
+
+      /**
        * Construct a JWKS
        */
       JsonWebKeySet jsonWebKeySet = new JsonWebKeySet();
       jsonWebKeySet.addJsonWebKey(webKey);
-
-      /**
-       * Set the signing key pair
-       */
-      client.config().signingKeyPair(webKey);
 
       /**
        * Serve the JWKS
@@ -107,55 +102,25 @@ public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
           JWKSWebServerUtil.serveJwks(TestDataConstants.RECIPIENT_PORT, jsonWebKeySet.toJson());
 
       try {
-        TokenResponse token = client.tokenClient().getTokens(
-            RequestTokenPrivateKeyJwt.builder().clientId(TestDataConstants.RECIPIENT_CLIENT_ID).build());
+        TokenResponse token = client.tokens(List.of(io.biza.heimdall.auth.Constants.SECURITY_SCOPE_REGISTER_BANK_READ));
         httpServer.stop(1);
 
         LOG.info("Token retrieval returned: {}", token.toString());
-        
-        try {
-          LOG.info("Retrieving issuers jwks from {}", client.config().discoveryMetadata().jwksUri());
-          HttpRequest request = HttpRequest.newBuilder().GET().uri(client.config().discoveryMetadata().jwksUri())
-              .setHeader("User-Agent", "Biza.io Babelfish OIDC").build();
-          HttpResponse<String> jwksContent =
-              client.httpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-          JsonWebKeySet jwks = new JsonWebKeySet(jwksContent.body());
-
-          SigningUtil.verify(token.accessToken(), jwks, client.config().issuer().toString(), TestDataConstants.RECIPIENT_CLIENT_ID);
-        } catch (JoseException e) {
-          LOG.error("Encountered Generic Jose4j Exception", e);
-          fail("Generic Jose4j Exception", e);
-        } catch (InvalidJwtException e) {
-          LOG.warn("Generic Jose4j Exception", e);
-          fail("Generic Jose4j Exception", e);
-        } catch (IOException | InterruptedException e) {
-          LOG.error("Encountered generic signing verification error", e);
-          fail("Encountered generic signing verification error", e);
-        }
-        
       } catch (TokenAuthorisationFailureException e) {
-        LOG.error("Failed to perform private key jwt retrieval", e);
-        if (e.oauth2() != null) {
+        LOG.error("Failed to perform client credentials token retrieval", e);
+        if(e.oauth2() != null) {
           LOG.error("Error Details are: {}", e.oauth2().toString());
         }
-        // Cleanup the webserver
-        httpServer.stop(5);
-        fail("Token Authorisation with Private Key JWT didn't success", e);
+        fail(e);
+      } catch (TokenVerificationFailureException e) {
+        LOG.error("Received token but was unable to verify it's signature", e);
+        fail(e);
+      } catch (TokenProcessingFailureException e) {
+        LOG.error("Failed to process data after token retrieval", e);
+        fail(e);
+      } finally {
+        httpServer.stop(1);
       }
-
-      /**
-       * Shutdown the http server
-       */
-      httpServer.stop(1);
-
-    } catch (JoseException e) {
-      fail("Encountered JOSE Exception while doing setup", e);
-    } catch (NoSuchAlgorithmException e) {
-      fail("Algorithm not found: ", e);
-    } catch (IOException e) {
-      fail("Encountered IOException while attempting to start", e);
-    }
   }
 
 }

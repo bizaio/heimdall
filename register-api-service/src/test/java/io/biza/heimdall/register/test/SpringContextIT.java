@@ -1,10 +1,10 @@
-package io.biza.deepthought.admin;
+package io.biza.heimdall.register.test;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class SpringContextIT {
+public class SpringContextIT extends SpringTestEnvironment {
 
     @Test
     public void contextCausesNoExceptions() throws Exception {

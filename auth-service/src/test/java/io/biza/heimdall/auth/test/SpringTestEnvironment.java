@@ -21,25 +21,4 @@ public class SpringTestEnvironment {
   public URI getIssuerUri() {
     return URI.create("https://localhost:" + System.getProperty("local.server.port") + "/dio-auth");
   }
-
-  public SSLContext trustAllCerts() {
-    TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
-      public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-        return null;
-      }
-      public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
-      public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
-    }};
-
-
-    try {
-      SSLContext sslContext = SSLContext.getInstance("TLS");
-      sslContext.init(null, trustAllCerts, new SecureRandom());
-      return sslContext;
-    } catch (NoSuchAlgorithmException | KeyManagementException e) {
-      LOG.error("Setup of custom SSL Context failed, results may vary from here");
-      return null;
-    }
-
-  }
 }
