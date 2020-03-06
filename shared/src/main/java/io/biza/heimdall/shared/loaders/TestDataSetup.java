@@ -56,6 +56,7 @@ import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
 import io.biza.babelfish.cdr.enumerations.register.RegisterAuthType;
+import io.biza.babelfish.cdr.enumerations.register.RegisterScope;
 import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.TestDataConstants;
 import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
@@ -112,11 +113,11 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
 
     if (!clientRepository.existsById(UUID.fromString(TestDataConstants.HOLDER_CLIENT_ID))) {
       LOG.warn("Loading Test Data Holder information");
-      DataHolderData holder =
-          holderRepository.save(DataHolderData.builder().industry(IndustryType.BANKING)
-              .legalEntity(LegalEntityData.builder().legalName(TestDataConstants.HOLDER_LEGAL_NAME)
-                  .organisationType(CommonOrganisationType.COMPANY).build())
-              .dataHolderBrands(Set.of(DataHolderBrandData.builder()
+      DataHolderData holder = holderRepository.save(DataHolderData.builder()
+          .industry(IndustryType.BANKING)
+          .legalEntity(LegalEntityData.builder().legalName(TestDataConstants.HOLDER_LEGAL_NAME)
+              .organisationType(CommonOrganisationType.COMPANY).build())
+          .dataHolderBrands(Set.of(DataHolderBrandData.builder()
               .authDetails(Set.of(DataHolderBrandAuthData.builder()
                   .authType(RegisterAuthType.HYBRIDFLOW_JWKS)
                   .jwksEndpoint(URI.create("https://localhost:" + TestDataConstants.HOLDER_AUTH_PORT
@@ -131,15 +132,15 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
                   .version(CDRVersionType.V1).websiteUri(TestDataConstants.HOLDER_BRAND_WEBSITE)
                   .build())
               .build()))
-              .name(TestDataConstants.HOLDER_NAME).build());
-      
+          .name(TestDataConstants.HOLDER_NAME).build());
+
       LOG.info("Loaded holder as {}", holder);
-      
+
       ClientData holderClient = clientRepository
           .save(ClientData.builder().id(UUID.fromString(TestDataConstants.HOLDER_CLIENT_ID))
               .credentialType(DioClientCredentialType.CLIENT_CREDENTIALS_SECRET)
               .clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).build().dataHolder(holder));
-      
+
       LOG.info("Loaded holder client as {}", holderClient);
 
     }
@@ -152,6 +153,7 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
           .industry(IndustryType.BANKING)
           .legalEntity(LegalEntityData.builder().legalName(TestDataConstants.RECIPIENT_LEGAL_NAME)
               .organisationType(CommonOrganisationType.COMPANY).build())
+          .logoUri(TestDataConstants.RECIPIENT_LOGO_URI)
           .status(DataRecipientStatusType.ACTIVE).build());
 
       LOG.info("Loaded recipient as {}", recipient);
@@ -159,14 +161,22 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
 
       DataRecipientBrandData brand = recipientBrandRepository
           .save(DataRecipientBrandData.builder().brandName(TestDataConstants.RECIPIENT_NAME)
+              .logoUri(TestDataConstants.RECIPIENT_BRAND_LOGO_URI)
               .status(DataRecipientBrandStatusType.ACTIVE).build().dataRecipient(recipient));
 
-      SoftwareProductData product =
-          productRepository
-              .save(SoftwareProductData
-                  .builder().jwksUri(URI.create("http://localhost:"
-                      + TestDataConstants.RECIPIENT_PORT + TestDataConstants.RECIPIENT_JWKS_PATH))
-                  .build().dataRecipientBrand(brand));
+      SoftwareProductData product = productRepository.save(SoftwareProductData.builder()
+          .jwksUri(URI.create("http://localhost:" + TestDataConstants.RECIPIENT_PORT
+              + TestDataConstants.RECIPIENT_JWKS_PATH))
+          .name(TestDataConstants.RECIPIENT_PRODUCT_NAME)
+          .uri(TestDataConstants.RECIPIENT_PRODUCT_WEBSITE)
+          .description(TestDataConstants.RECIPIENT_PRODUCT_DESCRIPTION)
+          .logoUri(TestDataConstants.RECIPIENT_PRODUCT_LOGO_URI)
+          .tosUri(TestDataConstants.RECIPIENT_PRODUCT_TOS)
+          .policyUri(TestDataConstants.RECIPIENT_PRODUCT_POLICY)
+          .revocationUri(TestDataConstants.RECIPIENT_PRODUCT_REVOCATION_URI).scopes(Set
+              .of(RegisterScope.BANK_ACCOUNTS_BASIC_READ, RegisterScope.BANK_ACCOUNTS_DETAIL_READ))
+          .redirectUris(TestDataConstants.RECIPIENT_PRODUCT_REDIRECT_URI)
+          .build().dataRecipientBrand(brand));
 
       LOG.info("Saved: {}", product);
 

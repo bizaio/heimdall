@@ -18,7 +18,7 @@ import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
 import io.biza.heimdall.shared.persistence.model.ClientData;
 import ma.glasnost.orika.MapperFactory;
 
-public class DataHolderClientDataMapper implements OrikaFactoryConfigurerInterface {
+public class ClientDataMapper implements OrikaFactoryConfigurerInterface {
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
