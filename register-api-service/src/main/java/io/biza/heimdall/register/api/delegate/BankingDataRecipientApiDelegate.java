@@ -8,7 +8,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusList;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientList;
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
-import io.biza.heimdall.shared.util.RawJson;
+import io.biza.babelfish.cdr.support.RawJson;
 
 public interface BankingDataRecipientApiDelegate {
   default Optional<NativeWebRequest> getRequest() {

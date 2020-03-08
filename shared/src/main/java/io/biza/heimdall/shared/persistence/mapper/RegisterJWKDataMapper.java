@@ -13,7 +13,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
-import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
+import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioRegisterJWK;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
 import ma.glasnost.orika.MapperFactory;

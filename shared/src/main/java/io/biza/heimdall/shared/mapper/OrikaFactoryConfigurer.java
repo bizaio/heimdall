@@ -14,6 +14,7 @@
 package io.biza.heimdall.shared.mapper;
 
 import java.lang.reflect.InvocationTargetException;
+import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
@@ -105,7 +106,7 @@ public class OrikaFactoryConfigurer {
       try (ScanResult mapperResult = new ClassGraph().enableAllInfo()
           .whitelistPackages("io.biza.heimdall.shared.persistence.mapper", "io.biza.heimdall.shared.payloads.mapper").scan()) {
         ClassInfoList configurerClasses =
-            mapperResult.getClassesImplementing("io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface");
+            mapperResult.getClassesImplementing("io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface");
 
         for (Class<?> clazz : configurerClasses.loadClasses()) {
           try {

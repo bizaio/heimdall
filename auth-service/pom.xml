@@ -98,8 +98,13 @@
         <dependency>
             <groupId>io.biza</groupId>
             <artifactId>babelfish-oidc</artifactId>
-            <version>${babelfish-oidc.version}</version>
+            <version>${babelfish.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.biza</groupId>
+            <artifactId>babelfish-util</artifactId>
+            <version>${babelfish.version}</version>
+        </dependency>        
         <dependency>
             <groupId>io.biza</groupId>
             <artifactId>electronic-thumb-auth</artifactId>

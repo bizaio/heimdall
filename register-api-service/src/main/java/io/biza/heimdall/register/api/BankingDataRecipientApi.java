@@ -4,9 +4,9 @@ import io.biza.babelfish.cdr.models.payloads.register.registration.SoftwareState
 import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusList;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientList;
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
+import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
-import io.biza.heimdall.shared.util.RawJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

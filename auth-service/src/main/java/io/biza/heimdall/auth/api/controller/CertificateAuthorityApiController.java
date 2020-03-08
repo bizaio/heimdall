@@ -4,9 +4,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import io.biza.heimdall.auth.api.CertificateAuthorityApi;
-import io.biza.heimdall.auth.api.TokenApi;
 import io.biza.heimdall.auth.api.delegate.CertificateAuthorityApiDelegate;
-import io.biza.heimdall.auth.api.delegate.TokenApiDelegate;
 
 @Controller
 public class CertificateAuthorityApiController implements CertificateAuthorityApi {

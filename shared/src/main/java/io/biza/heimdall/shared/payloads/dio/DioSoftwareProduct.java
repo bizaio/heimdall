@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.biza.babelfish.cdr.enumerations.register.RegisterScope;
+import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.cdr.enumerations.register.RegisterSoftwareRole;
 import io.biza.babelfish.cdr.enumerations.register.SoftwareProductStatusType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -93,6 +93,6 @@ public class DioSoftwareProduct {
   
   @JsonProperty("scopes")
   @Schema(description = "Scopes this Software Product has access to")
-  List<RegisterScope> scopes;
+  List<CDRScope> scopes;
   
 }

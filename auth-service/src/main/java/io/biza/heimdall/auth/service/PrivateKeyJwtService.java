@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
 import io.biza.babelfish.oidc.requests.RequestTokenPrivateKeyJwt;
-import io.biza.babelfish.oidc.util.SigningUtil;
 import io.biza.heimdall.auth.exceptions.CryptoException;
 import io.biza.heimdall.auth.exceptions.InvalidClientException;
 import io.biza.heimdall.auth.exceptions.InvalidRequestException;
@@ -26,6 +25,7 @@ import io.biza.heimdall.shared.enumerations.HeimdallTokenType;
 import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.TokenData;
 import io.biza.heimdall.shared.persistence.repository.ClientRepository;
+import io.biza.heimdall.shared.util.JoseSigningUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -94,7 +94,7 @@ public class PrivateKeyJwtService {
      * Process the supplied assertion
      */
     try {
-      SigningUtil.verify(request.clientAssertion(), holderClient.softwareProduct().jwksUri(),
+      JoseSigningUtil.verify(request.clientAssertion(), holderClient.softwareProduct().jwksUri(),
           holderClient.id().toString(), EndpointUtil.tokenEndpoint().toString());
     } catch (JoseException e) {
       LOG.error("Encountered Generic Jose4j Exception", e);

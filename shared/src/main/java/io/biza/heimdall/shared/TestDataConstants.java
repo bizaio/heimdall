@@ -1,7 +1,6 @@
 package io.biza.heimdall.shared;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Set;
 
 public class TestDataConstants {

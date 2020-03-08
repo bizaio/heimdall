@@ -1,7 +1,6 @@
 package io.biza.heimdall.auth.util;
 
 import java.net.URI;
-import java.util.List;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 public class EndpointUtil {

@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
-import io.biza.heimdall.shared.payloads.converters.JWKJsonDeserializer;
-import io.biza.heimdall.shared.payloads.converters.JWKJsonSerializer;
+import io.biza.heimdall.shared.payloads.converters.JsonWebKeyToStringConverter;
+import io.biza.heimdall.shared.payloads.converters.StringToJsonWebKeyConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,9 +33,9 @@ public class DioRegisterCertificate {
   @Schema(description = "Register JWK Identifier")
   UUID id;
   
-  @JsonSerialize(using = JWKJsonSerializer.class)
-  @JsonDeserialize(using = JWKJsonDeserializer.class)
-  public JsonWebKey jwk;
+  @JsonSerialize(converter = JsonWebKeyToStringConverter.class)
+  @JsonDeserialize(converter = StringToJsonWebKeyConverter.class)
+  JsonWebKey jwk;
   
   @JsonProperty("status")
   @NotNull

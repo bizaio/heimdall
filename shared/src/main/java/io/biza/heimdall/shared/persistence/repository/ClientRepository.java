@@ -13,13 +13,11 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
-import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
 import io.biza.heimdall.shared.persistence.model.ClientData;
 
 @Repository

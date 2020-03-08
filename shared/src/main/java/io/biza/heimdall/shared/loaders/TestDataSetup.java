@@ -11,56 +11,25 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.loaders;
 
-import java.math.BigInteger;
 import java.net.URI;
-import java.security.InvalidParameterException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.Provider;
-import java.security.Security;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x509.BasicConstraints;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.bouncycastle.cert.CertIOException;
-import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cert.X509v3CertificateBuilder;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.operator.ContentSigner;
-import org.bouncycastle.operator.OperatorCreationException;
-import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.jose4j.jws.AlgorithmIdentifiers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import io.biza.babelfish.cdr.enumerations.CommonOrganisationType;
+import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.cdr.enumerations.register.CDRVersionType;
-import io.biza.babelfish.cdr.enumerations.register.CertificateStatus;
 import io.biza.babelfish.cdr.enumerations.register.DataHolderStatusType;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientBrandStatusType;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
-import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
 import io.biza.babelfish.cdr.enumerations.register.RegisterAuthType;
-import io.biza.babelfish.cdr.enumerations.register.RegisterScope;
-import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.TestDataConstants;
 import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
-import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
@@ -70,8 +39,6 @@ import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.LegalEntityData;
-import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
-import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
 import io.biza.heimdall.shared.persistence.repository.ClientRepository;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
@@ -79,7 +46,6 @@ import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
 import io.biza.heimdall.shared.persistence.repository.LegalEntityRepository;
-import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -174,7 +140,7 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
           .tosUri(TestDataConstants.RECIPIENT_PRODUCT_TOS)
           .policyUri(TestDataConstants.RECIPIENT_PRODUCT_POLICY)
           .revocationUri(TestDataConstants.RECIPIENT_PRODUCT_REVOCATION_URI).scopes(Set
-              .of(RegisterScope.BANK_ACCOUNTS_BASIC_READ, RegisterScope.BANK_ACCOUNTS_DETAIL_READ))
+              .of(CDRScope.BANK_ACCOUNTS_BASIC_READ, CDRScope.BANK_ACCOUNTS_DETAIL_READ))
           .redirectUris(TestDataConstants.RECIPIENT_PRODUCT_REDIRECT_URI)
           .build().dataRecipientBrand(brand));
 

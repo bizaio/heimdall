@@ -5,7 +5,7 @@ import org.jose4j.jwt.NumericDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import io.biza.babelfish.oidc.enumerations.OAuth2AccessTokenType;
+import io.biza.babelfish.oidc.enumerations.OAuth2TokenType;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
 import io.biza.heimdall.auth.Constants;
 import io.biza.heimdall.auth.exceptions.CryptoException;
@@ -45,7 +45,7 @@ public class TokenIssuanceService {
 
     return ResponseEntity.ok(TokenResponse.builder()
         .accessToken(signingService.signData(tokenClaims)).expiresAt(savedToken.expiry())
-        .scope(savedToken.scopes()).tokenType(OAuth2AccessTokenType.BEARER).build());
+        .scope(savedToken.scopes()).tokenType(OAuth2TokenType.BEARER).build());
   }
 
 

@@ -27,7 +27,7 @@
         <springdoc-openapi-ui.version>1.2.25</springdoc-openapi-ui.version>
         <springdoc-openapi-maven-plugin.version>0.2</springdoc-openapi-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
-        <babelfish-cdr.version>1.2.5-SNAPSHOT</babelfish-cdr.version>
+        <babelfish.version>1.2.6-SNAPSHOT</babelfish.version>
         <lombok.version>1.18.10</lombok.version>
         <junit-jupiter.version>5.6.0</junit-jupiter.version>
         <hibernate-validator.version>[6.1.0,)</hibernate-validator.version>
@@ -53,7 +53,6 @@
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <skip.npm>true</skip.npm>
         <jose4j.version>0.7.0</jose4j.version>
-        <babelfish-oidc.version>1.2.5-SNAPSHOT</babelfish-oidc.version>
         <electronic-thumb.version>0.0.1-SNAPSHOT</electronic-thumb.version>
         <build-helper-maven-plugin>3.0.0</build-helper-maven-plugin>
     </properties>

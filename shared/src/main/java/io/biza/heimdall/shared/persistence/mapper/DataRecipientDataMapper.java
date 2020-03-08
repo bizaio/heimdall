@@ -15,7 +15,7 @@ package io.biza.heimdall.shared.persistence.mapper;
 
 import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientStatus;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.RegisterDataRecipient;
-import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurerInterface;
+import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import ma.glasnost.orika.MapperFactory;

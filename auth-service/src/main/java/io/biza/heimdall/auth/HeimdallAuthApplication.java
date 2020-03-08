@@ -1,23 +1,12 @@
 package io.biza.heimdall.auth;
 
-import java.nio.file.Paths;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
 import io.biza.heimdall.auth.Constants;
-import io.biza.heimdall.shared.loaders.HeimdallCertificateInitialision;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

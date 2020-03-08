@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import io.biza.babelfish.oidc.enumerations.OAuth2ErrorCode;
 import io.biza.babelfish.oidc.requests.OAuth2ErrorResponse;
 import io.biza.heimdall.auth.exceptions.CryptoException;

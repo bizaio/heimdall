@@ -20,14 +20,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
-import io.biza.babelfish.cdr.enumerations.register.RegisterScope;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientStatus;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.RegisterDataRecipient;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductStatus;
 import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusList;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientList;
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
+import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
@@ -37,7 +38,6 @@ import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
 import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
-import io.biza.heimdall.shared.util.RawJson;
 import lombok.extern.slf4j.Slf4j;
 
 @Validated
@@ -122,7 +122,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
         ssaClaims.setClaim("revocation_uri", softwareProduct.revocationUri());
         ssaClaims.setClaim("software_id", softwareProduct.id().toString());
         ssaClaims.setClaim("software_roles", softwareProduct.softwareRole());
-        ssaClaims.setClaim("scope", softwareProduct.scopes().stream().map(RegisterScope::toString)
+        ssaClaims.setClaim("scope", softwareProduct.scopes().stream().map(CDRScope::toString)
             .collect(Collectors.joining(" ")));
 
         /**

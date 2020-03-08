@@ -38,7 +38,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
-import io.biza.babelfish.cdr.enumerations.register.RegisterScope;
+import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.cdr.enumerations.register.RegisterSoftwareRole;
 import io.biza.babelfish.cdr.enumerations.register.SoftwareProductStatusType;
 import lombok.AllArgsConstructor;
@@ -114,11 +114,11 @@ public class SoftwareProductData {
   @Builder.Default
   RegisterSoftwareRole softwareRole = RegisterSoftwareRole.DATA_RECIPIENT_SOFTWARE_PRODUCT;
   
-  @ElementCollection(targetClass = RegisterScope.class, fetch = FetchType.EAGER)
+  @ElementCollection(targetClass = CDRScope.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "SOFTWARE_PRODUCT_SCOPE", joinColumns=@JoinColumn(name = "SOFTWARE_PRODUCT_ID"))
   @Column(name="SCOPES", nullable=false)
   @Enumerated(EnumType.STRING)
-  Set<RegisterScope> scopes;
+  Set<CDRScope> scopes;
   
   @PrePersist
   public void prePersist() {

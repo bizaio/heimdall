@@ -11,19 +11,16 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.List;
 import org.jose4j.jwk.PublicJsonWebKey;
-import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
-import io.biza.babelfish.oidc.util.SigningUtil;
 import io.biza.heimdall.auth.exceptions.CryptoException;
 import io.biza.heimdall.auth.exceptions.NotInitialisedException;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
 import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
+import io.biza.heimdall.shared.util.JoseSigningUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -53,7 +50,7 @@ public class JwtSigningService {
       jwk.setPrivateKey(privateKey);
       jwk.setKeyId(jwkData.id().toString());
 
-      return SigningUtil.sign(tokenClaims, jwk);
+      return JoseSigningUtil.sign(tokenClaims, jwk);
 
     } catch (JoseException e) {
       LOG.error("Encountered Generic Jose4j Exception while attempting signing", e);
