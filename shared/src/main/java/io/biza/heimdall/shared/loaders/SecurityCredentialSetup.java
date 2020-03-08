@@ -68,7 +68,7 @@ public class SecurityCredentialSetup {
   Boolean showPrivateKeys;
 
   public void initialiseSecurityCredentials() {
-    createRegisterJwk();
+    //createRegisterJwk();
     createCertificateAuthority();
   }
 

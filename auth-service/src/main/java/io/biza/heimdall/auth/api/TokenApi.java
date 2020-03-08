@@ -1,13 +1,14 @@
 package io.biza.heimdall.auth.api;
 
+import io.biza.babelfish.oidc.exceptions.InvalidClientException;
+import io.biza.babelfish.oidc.exceptions.InvalidRequestException;
+import io.biza.babelfish.oidc.exceptions.InvalidScopeException;
+import io.biza.babelfish.oidc.exceptions.UnsupportedGrantTypeException;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
+import io.biza.babelfish.spring.exceptions.KeyRetrievalException;
+import io.biza.babelfish.spring.exceptions.SigningOperationException;
+import io.biza.babelfish.spring.exceptions.SigningVerificationException;
 import io.biza.heimdall.auth.api.delegate.TokenApiDelegate;
-import io.biza.heimdall.auth.exceptions.CryptoException;
-import io.biza.heimdall.auth.exceptions.InvalidClientException;
-import io.biza.heimdall.auth.exceptions.InvalidRequestException;
-import io.biza.heimdall.auth.exceptions.InvalidScopeException;
-import io.biza.heimdall.auth.exceptions.NotInitialisedException;
-import io.biza.heimdall.auth.exceptions.UnsupportedGrantTypeException;
 import io.biza.heimdall.auth.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -39,9 +40,8 @@ public interface TokenApi {
       consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE },
       produces = { MediaType.APPLICATION_JSON_VALUE })
   default ResponseEntity<TokenResponse> tokenLogin(
-      @RequestParam Map<String,String> rawLoginRequest)
-      throws InvalidRequestException, InvalidClientException, InvalidScopeException,
-      UnsupportedGrantTypeException, NotInitialisedException, CryptoException {
+      @RequestParam Map<String,String> rawLoginRequest) throws InvalidRequestException, InvalidClientException, InvalidScopeException, SigningOperationException, SigningVerificationException, KeyRetrievalException, UnsupportedGrantTypeException
+       {
     return getDelegate().tokenLogin(rawLoginRequest);
   }
 

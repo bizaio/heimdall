@@ -102,12 +102,12 @@
         </dependency>
         <dependency>
             <groupId>io.biza</groupId>
-            <artifactId>babelfish-util</artifactId>
+            <artifactId>babelfish-spring</artifactId>
             <version>${babelfish.version}</version>
         </dependency>        
         <dependency>
             <groupId>io.biza</groupId>
-            <artifactId>electronic-thumb-auth</artifactId>
+            <artifactId>electronic-thumb-client</artifactId>
             <version>${electronic-thumb.version}</version>
             <scope>test</scope>
         </dependency>

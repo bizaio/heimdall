@@ -1,7 +1,8 @@
 package io.biza.heimdall.auth.api;
 
-import io.biza.babelfish.cdr.support.RawJson;
+import io.biza.babelfish.oidc.payloads.JWKS;
 import io.biza.babelfish.oidc.requests.ProviderDiscoveryMetadata;
+import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import io.biza.heimdall.auth.api.delegate.DiscoveryApiDelegate;
 import io.biza.heimdall.auth.Constants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +39,7 @@ public interface DiscoveryApi {
       description = "Returns a JWKS containing all Active Register Public Java Web Keys in JWKS format",
       content = @Content(schema = @Schema(implementation = String.class)))})
   @RequestMapping(path = "/jwks", method = RequestMethod.GET)
-  default ResponseEntity<RawJson> getJwks() {
+  default ResponseEntity<JWKS> getJwks() throws NotInitialisedException {
     return getDelegate().getJwks();
   }
 

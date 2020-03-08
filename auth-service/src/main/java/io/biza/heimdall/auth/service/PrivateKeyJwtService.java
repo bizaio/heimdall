@@ -1,31 +1,30 @@
 package io.biza.heimdall.auth.service;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Validator;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import io.biza.babelfish.oidc.exceptions.InvalidClientException;
+import io.biza.babelfish.oidc.exceptions.InvalidRequestException;
+import io.biza.babelfish.oidc.exceptions.InvalidScopeException;
+import io.biza.babelfish.oidc.payloads.JWTClaims;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
 import io.biza.babelfish.oidc.requests.RequestTokenPrivateKeyJwt;
-import io.biza.heimdall.auth.exceptions.CryptoException;
-import io.biza.heimdall.auth.exceptions.InvalidClientException;
-import io.biza.heimdall.auth.exceptions.InvalidRequestException;
-import io.biza.heimdall.auth.exceptions.InvalidScopeException;
-import io.biza.heimdall.auth.exceptions.NotInitialisedException;
+import io.biza.babelfish.spring.exceptions.KeyRetrievalException;
+import io.biza.babelfish.spring.exceptions.SigningOperationException;
+import io.biza.babelfish.spring.exceptions.SigningVerificationException;
+import io.biza.babelfish.spring.interfaces.JWKService;
 import io.biza.heimdall.auth.util.EndpointUtil;
 import io.biza.heimdall.auth.Constants;
 import io.biza.heimdall.shared.enumerations.HeimdallTokenType;
 import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.TokenData;
 import io.biza.heimdall.shared.persistence.repository.ClientRepository;
-import io.biza.heimdall.shared.util.JoseSigningUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -44,9 +43,12 @@ public class PrivateKeyJwtService {
   @Autowired
   TokenIssuanceService issuanceToken;
 
+  @Autowired
+  JWKService signingService;
+
   public ResponseEntity<TokenResponse> tokenLogin(RequestTokenPrivateKeyJwt request)
       throws InvalidRequestException, InvalidClientException, InvalidScopeException,
-      NotInitialisedException, CryptoException {
+      SigningOperationException, SigningVerificationException, KeyRetrievalException {
     /**
      * The Validator must pass
      */
@@ -74,11 +76,12 @@ public class PrivateKeyJwtService {
       throw new InvalidClientException();
     }
     ClientData holderClient = optionalHolderClient.get();
-    
+
     /**
      * Client Secret doesn't pass
      */
-    if (holderClient.clientSecret() != null && !holderClient.clientSecret().equals(request.clientSecret())) {
+    if (holderClient.clientSecret() != null
+        && !holderClient.clientSecret().equals(request.clientSecret())) {
       LOG.error("Client Secret for ({}) is incorrect", clientId);
       throw new InvalidClientException();
     }
@@ -86,26 +89,17 @@ public class PrivateKeyJwtService {
     /**
      * Requested scopes exceed the available scopes
      */
-    if (request.scopes() != null && !List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(request.scopes())) {
+    if (request.scopes() != null
+        && !List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(request.scopes())) {
       throw new InvalidScopeException();
     }
 
     /**
      * Process the supplied assertion
      */
-    try {
-      JoseSigningUtil.verify(request.clientAssertion(), holderClient.softwareProduct().jwksUri(),
-          holderClient.id().toString(), EndpointUtil.tokenEndpoint().toString());
-    } catch (JoseException e) {
-      LOG.error("Encountered Generic Jose4j Exception", e);
-      throw CryptoException.builder().jose(e).build();
-    } catch (InvalidJwtException e) {
-      LOG.warn("Supplied JWT did not pass signing", e);
-      throw CryptoException.builder().invalidJwt(e).build();
-    } catch (IOException | InterruptedException e) {
-      LOG.error("Encountered generic signing verification error", e);
-      throw CryptoException.builder().build();
-    }
+    signingService.verify(request.clientAssertion(), holderClient.softwareProduct().jwksUri(),
+        JWTClaims.builder().issuerByUUID(holderClient.id()).audience(EndpointUtil.tokenEndpoint())
+            .build());
 
     /**
      * Setup Token Data record

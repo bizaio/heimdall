@@ -17,14 +17,13 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import io.biza.babelfish.oidc.enumerations.OAuth2ErrorCode;
+import io.biza.babelfish.oidc.exceptions.InvalidClientException;
+import io.biza.babelfish.oidc.exceptions.InvalidGrantException;
+import io.biza.babelfish.oidc.exceptions.InvalidRequestException;
+import io.biza.babelfish.oidc.exceptions.InvalidScopeException;
+import io.biza.babelfish.oidc.exceptions.UnauthorisedClientException;
+import io.biza.babelfish.oidc.exceptions.UnsupportedGrantTypeException;
 import io.biza.babelfish.oidc.requests.OAuth2ErrorResponse;
-import io.biza.heimdall.auth.exceptions.CryptoException;
-import io.biza.heimdall.auth.exceptions.InvalidClientException;
-import io.biza.heimdall.auth.exceptions.InvalidGrantException;
-import io.biza.heimdall.auth.exceptions.InvalidRequestException;
-import io.biza.heimdall.auth.exceptions.InvalidScopeException;
-import io.biza.heimdall.auth.exceptions.UnauthorisedClientException;
-import io.biza.heimdall.auth.exceptions.UnsupportedGrantTypeException;
 import io.biza.heimdall.auth.Constants;
 import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
@@ -41,23 +40,6 @@ public class ExceptionController {
         .body(OAuth2ErrorResponse.builder().error(OAuth2ErrorCode.INVALID_CLIENT)
             .errorDescription(Constants.OAUTH2_INVALID_CLIENT_MESSAGE)
             .errorUri(Constants.OAUTH2_ERROR_RESPONSE_URI).build());
-  }
-
-  @ExceptionHandler(CryptoException.class)
-  public ResponseEntity<Object> handleInvalidClientException(HttpServletRequest req,
-      CryptoException ex) {
-
-    if (ex.invalidJwt() != null) {
-      return ResponseEntity.badRequest()
-          .body(OAuth2ErrorResponse.builder().error(OAuth2ErrorCode.INVALID_GRANT)
-              .errorDescription(ex.invalidJwt().getMessage())
-              .errorUri(Constants.OAUTH2_INVALID_JWT_RESPONSE_URI).build());
-
-    } else {
-      return ResponseEntity.badRequest()
-          .body(OAuth2ErrorResponse.builder().error(OAuth2ErrorCode.SERVER_ERROR)
-              .errorDescription(Constants.OAUTH2_SERVER_ERROR_MESSAGE).build());
-    }
   }
 
   @ExceptionHandler(NullPointerException.class)

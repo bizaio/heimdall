@@ -9,13 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import io.biza.babelfish.oidc.exceptions.InvalidClientException;
+import io.biza.babelfish.oidc.exceptions.InvalidRequestException;
+import io.biza.babelfish.oidc.exceptions.InvalidScopeException;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
 import io.biza.babelfish.oidc.requests.RequestTokenClientCredentials;
-import io.biza.heimdall.auth.exceptions.CryptoException;
-import io.biza.heimdall.auth.exceptions.InvalidClientException;
-import io.biza.heimdall.auth.exceptions.InvalidRequestException;
-import io.biza.heimdall.auth.exceptions.InvalidScopeException;
-import io.biza.heimdall.auth.exceptions.NotInitialisedException;
+import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.heimdall.auth.Constants;
 import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
 import io.biza.heimdall.shared.enumerations.HeimdallTokenType;
@@ -41,8 +40,7 @@ public class ClientCredentialService {
   TokenIssuanceService issuanceToken;
 
   public ResponseEntity<TokenResponse> tokenLogin(RequestTokenClientCredentials request)
-      throws InvalidRequestException, InvalidClientException, InvalidScopeException,
-      NotInitialisedException, CryptoException {
+      throws InvalidRequestException, InvalidClientException, InvalidScopeException, SigningOperationException  {
     /**
      * The Validator must pass
      */
