@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @ComponentScan({"io.biza.heimdall.shared.component.mapper",
     "io.biza.heimdall.shared.component.persistence", "io.biza.heimdall.shared.loaders",
-    "io.biza.heimdall.auth"})
+    "io.biza.heimdall.auth", "io.biza.babelfish.spring"})
 @Slf4j
 public class HeimdallAuthApplication {
 

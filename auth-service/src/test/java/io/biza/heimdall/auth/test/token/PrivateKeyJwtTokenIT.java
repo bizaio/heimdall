@@ -51,7 +51,7 @@ public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
 
     Thumb client = new Thumb(ThumbConfig.builder()
         .register(ThumbConfigRegister.builder()
-            .auth(ThumbConfigAuth.builder().clientId(TestDataConstants.RECIPIENT_CLIENT_ID).authMethod(ThumbAuthMethod.PRIVATE_KEY_JWT).build())
+            .auth(ThumbConfigAuth.builder().disableTls(true).clientId(TestDataConstants.RECIPIENT_CLIENT_ID).authMethod(ThumbAuthMethod.PRIVATE_KEY_JWT).build())
             .build())
         .build());
     
@@ -67,8 +67,13 @@ public class PrivateKeyJwtTokenIT extends SpringTestEnvironment {
 
       LOG.info("Token retrieval returned: {}", token.toString());
     } catch (DiscoveryFailure e) {
+      LOG.error(e.toString());
       fail(e);
     } catch (AuthorisationFailure e) {
+      LOG.error(e.toString());
+      if(e.tokenError() != null) {
+        LOG.error("Token Error response is: {}", e.tokenError().toJSONObject().toJSONString());
+      }
       fail(e);
     } finally {
       httpServer.stop(1);

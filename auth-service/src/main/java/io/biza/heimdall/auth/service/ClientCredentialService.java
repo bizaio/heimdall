@@ -3,11 +3,16 @@ package io.biza.heimdall.auth.service;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.oidc.exceptions.InvalidClientException;
 import io.biza.babelfish.oidc.exceptions.InvalidRequestException;
@@ -38,14 +43,30 @@ public class ClientCredentialService {
 
   @Autowired
   TokenIssuanceService issuanceToken;
-
-  public ResponseEntity<TokenResponse> tokenLogin(RequestTokenClientCredentials request)
+  
+  @Autowired
+  HttpServletRequest servletRequest;
+  
+  public ResponseEntity<TokenResponse> tokenLogin(RequestTokenClientCredentials tokenRequest)
       throws InvalidRequestException, InvalidClientException, InvalidScopeException, SigningOperationException  {
+    
+    /**
+     * Parse in basic authentication details
+     */
+    BasicAuthenticationConverter converter = new BasicAuthenticationConverter();
+    UsernamePasswordAuthenticationToken userPass = converter.convert(servletRequest);
+    tokenRequest.clientId(String.valueOf(userPass.getPrincipal()));
+    tokenRequest.clientSecret(String.valueOf(userPass.getCredentials()));
+    
     /**
      * The Validator must pass
      */
-    if (validator.validate(request).size() > 0) {
+    Set<ConstraintViolation<RequestTokenClientCredentials>> validationResult = validator.validate(tokenRequest);
+    if (validationResult.size() > 0) {
       LOG.warn("Input request did not pass initial validation");
+      for(ConstraintViolation<RequestTokenClientCredentials> one : validationResult) {
+        LOG.debug("Validation failed for {}: {}", one.getPropertyPath(), one.getMessage());
+      }
       throw new InvalidRequestException();
     }
 
@@ -54,10 +75,10 @@ public class ClientCredentialService {
      */
     UUID clientId;
     try {
-      clientId = UUID.fromString(request.clientId());
+      clientId = UUID.fromString(tokenRequest.clientId());
     } catch (IllegalArgumentException e) {
       LOG.warn("Client Identifier provided ({}) is not a UUID and therefore invalid",
-          request.clientId());
+          tokenRequest.clientId());
       throw new InvalidClientException();
     }
 
@@ -83,16 +104,16 @@ public class ClientCredentialService {
     /**
      * Requested scopes exceed the available scopes
      */
-    if (request.scopes() != null
-        && !List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(request.scopes())) {
-      LOG.warn("Requested scopes includes scopes we don't support: {}", request.scopes());
+    if (tokenRequest.scopes() != null
+        && !List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ).containsAll(tokenRequest.scopes())) {
+      LOG.warn("Requested scopes includes scopes we don't support: {}", tokenRequest.scopes());
       throw new InvalidScopeException();
     }
 
     /**
      * Client Secret doesn't pass
      */
-    if (!holderClient.clientSecret().equals(request.clientSecret())) {
+    if (!holderClient.clientSecret().equals(tokenRequest.clientSecret())) {
       LOG.error("Client Secret for ({}) is incorrect", clientId);
       throw new InvalidClientException();
     }
@@ -103,8 +124,8 @@ public class ClientCredentialService {
     TokenData token = TokenData.builder().audience(holderClient.id().toString())
         .authenticationTime(OffsetDateTime.now()).client(holderClient)
         .expiry(OffsetDateTime.now().plusHours(tokenLength.longValue()))
-        .scopes(request.scopes() == null ? List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ)
-            : request.scopes())
+        .scopes(tokenRequest.scopes() == null ? List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ)
+            : tokenRequest.scopes())
         .tokenType(HeimdallTokenType.ACCESS_TOKEN).build();
 
     return issuanceToken.createAccessToken(token);

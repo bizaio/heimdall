@@ -30,17 +30,16 @@ public class DiscoveryRetrievalIT extends SpringTestEnvironment {
     
     Thumb client = new Thumb(ThumbConfig.builder()
         .register(ThumbConfigRegister.builder()
-            .auth(ThumbConfigAuth.builder().authMethod(ThumbAuthMethod.CLIENT_CREDENTIALS).clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).clientId(TestDataConstants.HOLDER_CLIENT_ID).build())
+            .auth(ThumbConfigAuth.builder().disableTls(true).authMethod(ThumbAuthMethod.CLIENT_CREDENTIALS).clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).clientId(TestDataConstants.HOLDER_CLIENT_ID).build())
             .build())
         .build());
 
-
-      
       try {
         OIDCProviderMetadata meta = client.register().auth().discovery();
         assertNotNull(meta);
         LOG.info(meta.toString());
       } catch (DiscoveryFailure e) {
+        LOG.error(e.toString());
         fail("Encountered discovery failure", e);
       }
   }

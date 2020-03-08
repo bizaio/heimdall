@@ -1,6 +1,5 @@
 package io.biza.heimdall.shared;
 
-import org.jose4j.jws.AlgorithmIdentifiers;
 
 public class Constants {
   public static final String DEFAULT_LOCALE = "AU";
@@ -13,8 +12,6 @@ public class Constants {
   public static final String CA_SIGNING_ALGORITHM = "SHA256WithRSA";
   
   public static final String JAVA_ALGORITHM = "RSASSA-PSS";
-  public static final String JOSE4J_ALGORITHM = AlgorithmIdentifiers.RSA_PSS_USING_SHA256;
-  
   public static final String LOCAL_KEYSTORE_PASSWORD = "solongandthanksforallthefish";
   public static final String LOCAL_KEYSTORE_PATH = "heimdall.jks";
   

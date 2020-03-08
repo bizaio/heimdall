@@ -3,7 +3,9 @@ package io.biza.heimdall.auth.service;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import io.biza.babelfish.oidc.exceptions.InvalidRequestException;
 import io.biza.babelfish.oidc.exceptions.InvalidScopeException;
 import io.biza.babelfish.oidc.payloads.JWTClaims;
 import io.biza.babelfish.oidc.payloads.TokenResponse;
+import io.biza.babelfish.oidc.requests.RequestTokenClientCredentials;
 import io.biza.babelfish.oidc.requests.RequestTokenPrivateKeyJwt;
 import io.biza.babelfish.spring.exceptions.KeyRetrievalException;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
@@ -49,24 +52,33 @@ public class PrivateKeyJwtService {
   public ResponseEntity<TokenResponse> tokenLogin(RequestTokenPrivateKeyJwt request)
       throws InvalidRequestException, InvalidClientException, InvalidScopeException,
       SigningOperationException, SigningVerificationException, KeyRetrievalException {
+
     /**
      * The Validator must pass
      */
-    if (validator.validate(request).size() > 0) {
+    Set<ConstraintViolation<RequestTokenPrivateKeyJwt>> validationResult =
+        validator.validate(request);
+    if (validationResult.size() > 0) {
+      LOG.warn("Input request did not pass initial validation");
+      for (ConstraintViolation<RequestTokenPrivateKeyJwt> one : validationResult) {
+        LOG.debug("Validation failed for {}: {}", one.getPropertyPath(), one.getMessage());
+      }
       throw new InvalidRequestException();
     }
 
     /**
-     * All client identifiers in Heimdall are UUID so we attempt parsing immediately.
+     * All client identifiers in Heimdall are UUID so we attempt parsing immediately by peeking into
+     * the signed payload
      */
     UUID clientId;
     try {
-      clientId = UUID.fromString(request.clientId());
+      clientId = UUID.fromString(signingService.peekAtIssuer(request.clientAssertion()));
     } catch (IllegalArgumentException e) {
       throw new InvalidRequestException();
     }
 
     Optional<ClientData> optionalHolderClient = clientRepository.findById(clientId);
+
 
     /**
      * Holder doesn't exist so client can't be valid

@@ -36,7 +36,7 @@ public class ClientCredentialsTokenIT extends SpringTestEnvironment {
   public void testClientCredentialsToken() throws IOException, NotInitialisedException  {
     Thumb client = new Thumb(ThumbConfig.builder()
         .register(ThumbConfigRegister.builder()
-            .auth(ThumbConfigAuth.builder().authMethod(ThumbAuthMethod.CLIENT_CREDENTIALS).clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).clientId(TestDataConstants.HOLDER_CLIENT_ID).build())
+            .auth(ThumbConfigAuth.builder().disableTls(true).authMethod(ThumbAuthMethod.CLIENT_CREDENTIALS).clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).clientId(TestDataConstants.HOLDER_CLIENT_ID).build())
             .build())
         .build());
     
@@ -52,8 +52,13 @@ public class ClientCredentialsTokenIT extends SpringTestEnvironment {
 
       LOG.info("Token retrieval returned: {}", token.toString());
     } catch (DiscoveryFailure e) {
+      LOG.error(e.toString());
       fail(e);
     } catch (AuthorisationFailure e) {
+      LOG.error(e.toString());
+      if(e.tokenError() != null) {
+        LOG.error("Token Error response is: {}", e.tokenError().toJSONObject().toJSONString());
+      }
       fail(e);
     } finally {
       httpServer.stop(1);

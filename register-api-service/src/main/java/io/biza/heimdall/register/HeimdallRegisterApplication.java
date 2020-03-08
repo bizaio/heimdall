@@ -14,7 +14,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @SpringBootApplication
 @ComponentScan({"io.biza.heimdall.shared.component", "io.biza.heimdall.shared.loaders",
-    "io.biza.heimdall.register"})
+    "io.biza.heimdall.register", "io.biza.babelfish.spring"})
 public class HeimdallRegisterApplication {
 
   public static void main(String[] args) {

@@ -42,8 +42,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.jose4j.jwk.PublicJsonWebKey;
-import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -51,9 +49,7 @@ import io.biza.babelfish.cdr.enumerations.register.CertificateStatus;
 import io.biza.babelfish.cdr.enumerations.register.JWKStatus;
 import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
-import io.biza.heimdall.shared.persistence.model.RegisterAuthorityJWKData;
 import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
-import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -61,97 +57,12 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityCredentialSetup {
   @Autowired
   private RegisterAuthorityTLSRepository caRepository;
-  @Autowired
-  private RegisterAuthorityJWKRepository jwkRepository;
 
   @Value("${heimdall.show_private_keys:false}")
   Boolean showPrivateKeys;
 
   public void initialiseSecurityCredentials() {
-    //createRegisterJwk();
     createCertificateAuthority();
-  }
-
-  private void createRegisterJwk() {
-    RegisterAuthorityJWKData jwkData = jwkRepository.findFirstByStatusIn(List.of(JWKStatus.ACTIVE));
-
-    if (jwkData != null) {
-      LOG.info("JWKS Authority already initialised, skipping JWK generation");
-      LOG.info("JWK key identifier is {}", jwkData.id());
-      LOG.debug("JWK Authority details is output below");
-
-      try {
-
-        KeyFactory keyFactory = KeyFactory.getInstance(jwkData.javaFactory());
-        X509EncodedKeySpec publicKeySpec =
-            new X509EncodedKeySpec(Base64.getDecoder().decode(jwkData.publicKey()));
-        PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
-
-        PKCS8EncodedKeySpec privateKeySpec =
-            new PKCS8EncodedKeySpec(Base64.getDecoder().decode(jwkData.privateKey()));
-        PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
-
-        PublicJsonWebKey webKey = PublicJsonWebKey.Factory.newPublicJwk(publicKey);
-        webKey.setAlgorithm(jwkData.joseAlgorithm());
-        webKey.setKeyId(jwkData.id().toString());
-        webKey.setPrivateKey(privateKey);
-
-        if (showPrivateKeys) {
-          LOG.debug("\n\n-----BEGIN PRIVATE KEY-----\n{}\n-----END RSA PRIVATE KEY-----\n",
-              Base64.getEncoder().encodeToString(webKey.getPrivateKey().getEncoded())
-                  .replaceAll(".{80}(?=.)", "$0\n"));
-        }
-
-        LOG.debug("\n\n-----BEGIN PUBLIC KEY-----\n{}\n-----END PUBLIC KEY-----\n", Base64.getEncoder()
-            .encodeToString(webKey.getKey().getEncoded()).replaceAll(".{80}(?=.)", "$0\n"));
-
-      } catch (NoSuchAlgorithmException | InvalidKeySpecException | JoseException e) {
-        LOG.error("Encountered error while serialising the existing jwk", e);
-      }
-
-      return;
-    }
-
-    /**
-     * Generate a new keypair
-     */
-    KeyPairGenerator keyGen;
-    try {
-      keyGen = KeyPairGenerator.getInstance(Constants.JAVA_ALGORITHM);
-      keyGen.initialize(2048);
-      KeyPair keyPair = keyGen.generateKeyPair();
-
-      /**
-       * Setup JWK Data
-       */
-
-      LOG.info("Private key pair in format of {} and algorithm of {}",
-          keyPair.getPrivate().getFormat(), keyPair.getPrivate().getAlgorithm());
-      LOG.info("Public key pair in format of {} and algorithm of {}",
-          keyPair.getPublic().getFormat(), keyPair.getPublic().getAlgorithm());
-
-
-      RegisterAuthorityJWKData newJwkData = jwkRepository.save(RegisterAuthorityJWKData.builder()
-          .privateKey(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()))
-          .publicKey(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()))
-          .javaFactory(Constants.JAVA_ALGORITHM).joseAlgorithm(Constants.JOSE4J_ALGORITHM)
-          .status(JWKStatus.ACTIVE).build());
-
-      LOG.warn("JWKS Authority initialisation has been completed!");
-      LOG.debug("JWK Authority details is output below");
-
-      if (showPrivateKeys) {
-        LOG.debug("\n\n-----BEGIN PRIVATE KEY-----\n{}\n-----END RSA PRIVATE KEY-----\n",
-            newJwkData.privateKey().replaceAll(".{80}(?=.)", "$0\n"));
-      }
-
-      LOG.debug("\n\n-----BEGIN PUBLIC KEY-----\n{}\n-----END PUBLIC KEY-----\n",
-          newJwkData.publicKey().replaceAll(".{80}(?=.)", "$0\n"));
-
-    } catch (NoSuchAlgorithmException e) {
-      LOG.error("Invalid algorithm of {} specified, cannot proceed", Constants.JAVA_ALGORITHM);
-    }
-
   }
 
   private void createCertificateAuthority() {

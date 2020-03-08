@@ -35,6 +35,9 @@ localdb/
 # Local keystore
 *.jks
 *.p12
+babelfish-jwks.json
+thumb-keys.json
+
 
 # maven versons backup
 *.versionsBackup

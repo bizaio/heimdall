@@ -11,16 +11,12 @@ import io.biza.babelfish.cdr.enumerations.register.CertificateStatus;
 import io.biza.heimdall.auth.api.delegate.CertificateAuthorityApiDelegate;
 import io.biza.heimdall.shared.persistence.model.RegisterAuthorityTLSData;
 import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
-import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityJWKRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Validated
 @Controller
 @Slf4j
 public class CertificateAuthorityApiDelegateImpl implements CertificateAuthorityApiDelegate {
-
-  @Autowired
-  RegisterAuthorityJWKRepository jwkRepository;
 
   @Autowired
   RegisterAuthorityTLSRepository caRepository;

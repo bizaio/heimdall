@@ -16,12 +16,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Base64;
 import java.util.Map;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Tag(name = Constants.TAG_TOKEN_NAME, description = Constants.TAG_TOKEN_DESCRIPTION)
 @RequestMapping("/oidc")
@@ -37,11 +40,12 @@ public interface TokenApi {
       description = "Returns a Bearer token",
       content = @Content(schema = @Schema(implementation = TokenResponse.class)))})
   @RequestMapping(path = "/token", method = RequestMethod.POST,
-      consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE },
-      produces = { MediaType.APPLICATION_JSON_VALUE })
+      consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE},
+      produces = {MediaType.APPLICATION_JSON_VALUE})
   default ResponseEntity<TokenResponse> tokenLogin(
-      @RequestParam Map<String,String> rawLoginRequest) throws InvalidRequestException, InvalidClientException, InvalidScopeException, SigningOperationException, SigningVerificationException, KeyRetrievalException, UnsupportedGrantTypeException
-       {
+      @RequestParam Map<String, String> rawLoginRequest) throws InvalidRequestException,
+      InvalidClientException, InvalidScopeException, SigningOperationException,
+      SigningVerificationException, KeyRetrievalException, UnsupportedGrantTypeException {
     return getDelegate().tokenLogin(rawLoginRequest);
   }
 

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @ComponentScan({"io.biza.heimdall.shared.component", "io.biza.heimdall.shared.loaders",
-    "io.biza.heimdall.admin"})
+    "io.biza.heimdall.admin", "io.biza.babelfish.spring"})
 @Slf4j
 public class HeimdallAdminApplication {
 
