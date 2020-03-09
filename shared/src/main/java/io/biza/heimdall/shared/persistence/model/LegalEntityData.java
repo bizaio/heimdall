@@ -106,10 +106,10 @@ public class LegalEntityData {
   @PrePersist
   public void prePersist() {
     if (dataHolder() != null) {
-      dataHolder.legalEntity(this);
+      dataHolder().legalEntity(this);
     }
     if (dataRecipient() != null) {
-      dataRecipient.legalEntity(this);
+      dataRecipient().legalEntity(this);
     }
 
   }

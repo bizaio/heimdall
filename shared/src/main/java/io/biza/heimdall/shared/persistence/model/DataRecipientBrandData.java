@@ -54,14 +54,12 @@ import lombok.ToString;
 public class DataRecipientBrandData {
 
   @Id
-  @Column(name = "ID", insertable = false, updatable = false)
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "ID", updatable = false)
   @Type(type = "uuid-char")
   UUID id;
   
   @ManyToOne
   @JoinColumn(name = "DATA_RECIPIENT_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_RECIPIENT_BRAND_ID_FK"))
-  @ToString.Exclude
   @NotNull
   DataRecipientData dataRecipient;
   
@@ -72,7 +70,6 @@ public class DataRecipientBrandData {
   URI logoUri;
   
   @OneToMany(mappedBy = "dataRecipientBrand", cascade = CascadeType.ALL)
-  @ToString.Exclude
   Set<SoftwareProductData> softwareProducts;
   
   @Column(name = "STATUS")

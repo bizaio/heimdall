@@ -30,6 +30,8 @@ public class TokenIssuanceService {
 
     TokenData savedToken = tokenRepository.save(token);
     
+    LOG.debug("Saved token with details of: {}", savedToken);
+    
     JWTClaims tokenClaims = JWTClaims.builder().subjectByUUID(token.client().id()).jwtId(token.id().toString()).expiry(savedToken.expiry()).issuedAt(savedToken.created())
     .issuerByURI(EndpointUtil.issuerUri()).audience(List.of(savedToken.audience())).scope(List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ)).build();
 

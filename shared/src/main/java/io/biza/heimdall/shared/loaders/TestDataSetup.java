@@ -84,6 +84,7 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
           .legalEntity(LegalEntityData.builder().legalName(TestDataConstants.HOLDER_LEGAL_NAME)
               .organisationType(CommonOrganisationType.COMPANY).build())
           .dataHolderBrands(Set.of(DataHolderBrandData.builder()
+              .id(UUID.fromString(TestDataConstants.HOLDER_BRAND_ID))
               .authDetails(Set.of(DataHolderBrandAuthData.builder()
                   .authType(RegisterAuthType.HYBRIDFLOW_JWKS)
                   .jwksEndpoint(URI.create("https://localhost:" + TestDataConstants.HOLDER_AUTH_PORT
@@ -115,34 +116,44 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
       LOG.warn("Loading Test Data Recipient information");
 
 
-      DataRecipientData recipient = recipientRepository.save(DataRecipientData.builder()
-          .industry(IndustryType.BANKING)
-          .legalEntity(LegalEntityData.builder().legalName(TestDataConstants.RECIPIENT_LEGAL_NAME)
-              .organisationType(CommonOrganisationType.COMPANY).build())
-          .logoUri(TestDataConstants.RECIPIENT_LOGO_URI)
-          .status(DataRecipientStatusType.ACTIVE).build());
+
+      DataRecipientData recipientData = DataRecipientData.builder().industry(IndustryType.BANKING)
+          .logoUri(TestDataConstants.RECIPIENT_LOGO_URI).status(DataRecipientStatusType.ACTIVE)
+          .build();
+
+      LegalEntityData legalEntity = LegalEntityData.builder()
+          .legalName(TestDataConstants.RECIPIENT_LEGAL_NAME)
+          .organisationType(CommonOrganisationType.COMPANY).build().dataRecipient(recipientData);
+      recipientData.legalEntity(legalEntity);
+
+      DataRecipientData recipient = recipientRepository.save(recipientData);
 
       LOG.info("Loaded recipient as {}", recipient);
 
-
-      DataRecipientBrandData brand = recipientBrandRepository
-          .save(DataRecipientBrandData.builder().brandName(TestDataConstants.RECIPIENT_NAME)
+      DataRecipientBrandData recipientBrandData =
+          DataRecipientBrandData.builder().brandName(TestDataConstants.RECIPIENT_NAME)
+              .id(UUID.fromString(TestDataConstants.RECIPIENT_BRAND_ID))
               .logoUri(TestDataConstants.RECIPIENT_BRAND_LOGO_URI)
-              .status(DataRecipientBrandStatusType.ACTIVE).build().dataRecipient(recipient));
+              .status(DataRecipientBrandStatusType.ACTIVE).build().dataRecipient(recipient);
+
+      LOG.info("Attempting to save brand data of {}", recipientBrandData);
+
+      DataRecipientBrandData brand = recipientBrandRepository.save(recipientBrandData);
 
       SoftwareProductData product = productRepository.save(SoftwareProductData.builder()
           .jwksUri(URI.create("http://localhost:" + TestDataConstants.RECIPIENT_PORT
               + TestDataConstants.RECIPIENT_JWKS_PATH))
+          .id(UUID.fromString(TestDataConstants.RECIPIENT_PRODUCT_ID))
           .name(TestDataConstants.RECIPIENT_PRODUCT_NAME)
           .uri(TestDataConstants.RECIPIENT_PRODUCT_WEBSITE)
           .description(TestDataConstants.RECIPIENT_PRODUCT_DESCRIPTION)
           .logoUri(TestDataConstants.RECIPIENT_PRODUCT_LOGO_URI)
           .tosUri(TestDataConstants.RECIPIENT_PRODUCT_TOS)
           .policyUri(TestDataConstants.RECIPIENT_PRODUCT_POLICY)
-          .revocationUri(TestDataConstants.RECIPIENT_PRODUCT_REVOCATION_URI).scopes(Set
-              .of(CDRScope.BANK_ACCOUNTS_BASIC_READ, CDRScope.BANK_ACCOUNTS_DETAIL_READ))
-          .redirectUris(TestDataConstants.RECIPIENT_PRODUCT_REDIRECT_URI)
-          .build().dataRecipientBrand(brand));
+          .revocationUri(TestDataConstants.RECIPIENT_PRODUCT_REVOCATION_URI)
+          .scopes(Set.of(CDRScope.BANK_ACCOUNTS_BASIC_READ, CDRScope.BANK_ACCOUNTS_DETAIL_READ))
+          .redirectUris(TestDataConstants.RECIPIENT_PRODUCT_REDIRECT_URI).build()
+          .dataRecipientBrand(brand));
 
       LOG.info("Saved: {}", product);
 
@@ -154,6 +165,8 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
       LOG.info("Saving {}", recipientClient);
 
       clientRepository.save(recipientClient);
+      
+      LOG.info("Test Data Setup Completed");
 
     }
   }

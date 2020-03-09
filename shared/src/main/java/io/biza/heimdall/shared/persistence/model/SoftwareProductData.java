@@ -60,8 +60,7 @@ import lombok.ToString;
 public class SoftwareProductData {
 
   @Id
-  @Column(name = "ID", insertable = false, updatable = false)
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "ID", updatable = false)
   @Type(type = "uuid-char")
   UUID id;
   

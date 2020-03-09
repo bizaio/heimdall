@@ -122,7 +122,7 @@ public class PrivateKeyJwtService {
         .scopes(request.scopes() == null ? List.of(Constants.SECURITY_SCOPE_REGISTER_BANK_READ)
             : request.scopes())
         .tokenType(HeimdallTokenType.ACCESS_TOKEN).build();
-
+    
     return issuanceToken.createAccessToken(token);
   }
 

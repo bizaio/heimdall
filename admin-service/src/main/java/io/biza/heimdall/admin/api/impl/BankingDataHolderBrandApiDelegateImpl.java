@@ -49,6 +49,7 @@ public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderB
     }
     DataHolderBrandData dataHolderData = mapper.map(brand, DataHolderBrandData.class);
     dataHolderData.dataHolder(holder.get());
+    dataHolderData.id(UUID.randomUUID());
     DataHolderBrandData savedBrand = brandRepository.save(dataHolderData);
     LOG.debug("Created a new data holder with content of: {}", savedBrand);
     return ResponseEntity.ok(mapper.map(savedBrand, DioDataHolderBrand.class));

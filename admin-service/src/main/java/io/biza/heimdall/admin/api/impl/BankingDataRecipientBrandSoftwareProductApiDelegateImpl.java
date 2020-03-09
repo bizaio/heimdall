@@ -52,6 +52,7 @@ public class BankingDataRecipientBrandSoftwareProductApiDelegateImpl
     }
     SoftwareProductData softwareProductData =
         mapper.map(softwareProduct, SoftwareProductData.class);
+    softwareProductData.id(UUID.randomUUID());
     softwareProductData.dataRecipientBrand(brand.get());
     SoftwareProductData savedBrandSoftwareProduct =
         softwareProductRepository.save(softwareProductData);

@@ -57,8 +57,7 @@ import lombok.ToString;
 public class DataHolderBrandData {
 
   @Id
-  @Column(name = "ID", insertable = false, updatable = false)
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "ID", updatable = false)
   @Type(type = "uuid-char")
   UUID id;
     

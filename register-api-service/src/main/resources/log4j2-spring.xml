@@ -8,12 +8,12 @@
     </Appenders>
  
     <Loggers>
-        <Root level="info">
+        <Root level="trace">
             <AppenderRef ref="Console" />
         </Root>
  
         <!-- LOG "io.biza*" at TRACE level -->
-        <Logger name="io.biza" level="trace"></Logger>
+        <Logger name="io.biza.*" level="trace"></Logger>
     </Loggers>
  
 </Configuration>

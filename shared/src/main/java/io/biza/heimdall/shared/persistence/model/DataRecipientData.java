@@ -60,7 +60,7 @@ public class DataRecipientData {
   @Type(type = "uuid-char")
   UUID id;
   
-  @OneToOne(mappedBy = "dataHolder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToOne(mappedBy = "dataRecipient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @NotNull
   LegalEntityData legalEntity;
   
@@ -91,7 +91,7 @@ public class DataRecipientData {
       }
     }
     if (legalEntity() != null) {
-      legalEntity.dataRecipient(this);
+      legalEntity().dataRecipient(this);
     }
   }
   
