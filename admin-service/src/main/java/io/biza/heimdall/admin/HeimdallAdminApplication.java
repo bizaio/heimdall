@@ -37,10 +37,10 @@ public class HeimdallAdminApplication {
         .components(new Components().addSecuritySchemes(Constants.SECURITY_SCHEME_NAME,
             new SecurityScheme().type(SecurityScheme.Type.OPENIDCONNECT)
                 .openIdConnectUrl(Constants.OPENID_CONNECT_URL)))
-        .info(new Info().title("Deep Thought Administration API").version(appVersion).description(
-            "This is the Deep Thought Administration API. You can find out more about Deep Thought at [https://github.com/bizaio/deepthought](https://github.com/bizaio/deepthought) or on the [DataRight.io Slack, #oss](https://join.slack.com/t/datarightio/shared_invite/enQtNzAyNTI2MjA2MzU1LTU1NGE4MmQ2N2JiZWI2ODA5MTQ2N2Q0NTRmYmM0OWRlM2U5YzA3NzU5NDYyODlhNjRmNzU3ZDZmNTI0MDE3NjY).")
+        .info(new Info().title("Heimdall Administration API").version(appVersion).description(
+            "This is the Heimdall Administration API. You can find out more about Heimdall at [https://github.com/bizaio/heimdall](https://github.com/bizaio/heimdall) or on the [DataRight.io Slack, #oss](https://join.slack.com/t/datarightio/shared_invite/enQtNzAyNTI2MjA2MzU1LTU1NGE4MmQ2N2JiZWI2ODA5MTQ2N2Q0NTRmYmM0OWRlM2U5YzA3NzU5NDYyODlhNjRmNzU3ZDZmNTI0MDE3NjY).")
             .license(new License().name("GPL 3.0")
-                .url("https://github.com/bizaio/deepthought/blob/develop/LICENSE")));
+                .url("https://github.com/bizaio/heimdall/blob/develop/LICENSE")));
   }
 
 }

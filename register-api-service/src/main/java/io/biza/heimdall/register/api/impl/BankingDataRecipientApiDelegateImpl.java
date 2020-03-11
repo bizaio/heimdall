@@ -88,19 +88,19 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
      */
     Map<String, Object> additionalClaims = new HashMap<String, Object>();
     additionalClaims.put("org_id", softwareProduct.dataRecipientBrand().id().toString());
-    additionalClaims.put("org_name", softwareProduct.dataRecipientBrand().brandName());
-    additionalClaims.put("client_name", softwareProduct.name());
-    additionalClaims.put("client_description", softwareProduct.description());
-    additionalClaims.put("client_uri", softwareProduct.uri());
+    additionalClaims.put("org_name", softwareProduct.dataRecipientBrand().brandName().toString());
+    additionalClaims.put("client_name", softwareProduct.name().toString());
+    additionalClaims.put("client_description", softwareProduct.description().toString());
+    additionalClaims.put("client_uri", softwareProduct.uri().toString());
     additionalClaims.put("redirect_uris",
-        softwareProduct.redirectUris().stream().collect(Collectors.toList()));
-    additionalClaims.put("logo_uri", softwareProduct.logoUri());
-    additionalClaims.put("tos_uri", softwareProduct.tosUri());
-    additionalClaims.put("policy_uri", softwareProduct.policyUri());
-    additionalClaims.put("jwks_uri", softwareProduct.jwksUri());
-    additionalClaims.put("revocation_uri", softwareProduct.revocationUri());
+        softwareProduct.redirectUris().stream().map(uri -> uri.toString()).collect(Collectors.toList()));
+    additionalClaims.put("logo_uri", softwareProduct.logoUri().toString());
+    additionalClaims.put("tos_uri", softwareProduct.tosUri().toString());
+    additionalClaims.put("policy_uri", softwareProduct.policyUri().toString());
+    additionalClaims.put("jwks_uri", softwareProduct.jwksUri().toString());
+    additionalClaims.put("revocation_uri", softwareProduct.revocationUri().toString());
     additionalClaims.put("software_id", softwareProduct.id().toString());
-    additionalClaims.put("software_roles", softwareProduct.softwareRole());
+    additionalClaims.put("software_roles", softwareProduct.softwareRole().toString());
 
 
     JWTClaims ssaClaims = JWTClaims.builder().issuer(Constants.REGISTER_ISSUER)

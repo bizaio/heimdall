@@ -12,11 +12,10 @@
 package io.biza.heimdall.register.api.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import io.biza.babelfish.spring.controlleradvice.BabelfishExceptionControllerAdvice;
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
-@Slf4j
-public class ExceptionController {
-
+public class ExceptionControllerAdvice extends BabelfishExceptionControllerAdvice {
 
 }
