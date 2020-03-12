@@ -48,8 +48,11 @@ public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderB
           .explanation(Constants.ERROR_INVALID_HOLDER).build();
     }
     DataHolderBrandData dataHolderData = mapper.map(brand, DataHolderBrandData.class);
+    
+    LOG.debug("Data Holder Brand data to save: {}", dataHolderData);
     dataHolderData.dataHolder(holder.get());
     dataHolderData.id(UUID.randomUUID());
+    dataHolderData.endpointDetail().dataHolderBrand(dataHolderData);
     DataHolderBrandData savedBrand = brandRepository.save(dataHolderData);
     LOG.debug("Created a new data holder with content of: {}", savedBrand);
     return ResponseEntity.ok(mapper.map(savedBrand, DioDataHolderBrand.class));
