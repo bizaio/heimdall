@@ -12,7 +12,7 @@ server:
     key-store-password: solongandthanksforallthefish
     key-alias: heimdall-service
     key-password: solongandthanksforallthefish
-    key-store: heimdall.jks
+    key-store: heimdall-auth.p12
     enabled: true  
 spring:
    datasource:
