@@ -1,5 +1,6 @@
 babelfish:
   jwk-file: heimdall.jwks
+  tls-verify: false
 heimdall:
   version: 1.0.0
   hostname: localhost
