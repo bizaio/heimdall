@@ -33,7 +33,7 @@ build/
 # File based database
 localdb/
 # Local keystore
-*.jks
+*.jwks
 *.p12
 babelfish-jwks.json
 thumb-keys.json
@@ -41,3 +41,4 @@ thumb-keys.json
 
 # maven versons backup
 *.versionsBackup
+application-demo.yml

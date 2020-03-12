@@ -1,3 +1,5 @@
+babelfish:
+  jwk-file: heimdall.jwks
 heimdall:
   version: 1.0.0
   hostname: localhost
@@ -7,10 +9,11 @@ server:
   servlet:
     context-path: /cdr-register
   ssl:
+    key-store-type: PKCS12
     key-store-password: solongandthanksforallthefish
     key-alias: heimdall-service
     key-password: solongandthanksforallthefish
-    key-store: heimdall.jks
+    key-store: heimdall.p12
     enabled: true    
 
 spring:
@@ -19,7 +22,7 @@ spring:
         resourceserver:
           jwt:
             jws-algorithm: PS256
-            jwk-set-uri: https://localhost:9103/dio-auth/jwks
+            jwk-set-uri: https://register.demo.cdr.zone/dio-auth/jwks
    datasource:
      url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
      driverClassName: org.h2.Driver

@@ -321,6 +321,16 @@
                 <register-resource-uri>https://localhost:9101/cdr-register</register-resource-uri>
                 <tomcat.http.port>9101</tomcat.http.port>
             </properties>
-        </profile>
+    </profile>
+        <profile>
+	                <id>demo</id>
+				            <properties>
+					                <spring-boot.run.profiles>demo</spring-boot.run.profiles>
+					                    <skipDynamicServer>true</skipDynamicServer>
+					                    <register-auth-uri>https://auth.register.demo.cdr.zone/dio-auth</register-auth-uri>
+					                <register-resource-uri>https://api.register.demo.cdr.zone/cdr-register</register-resource-uri>
+				                    <tomcat.http.port>9101</tomcat.http.port>
+			                </properties>
+	            </profile>				
     </profiles>
 </project>

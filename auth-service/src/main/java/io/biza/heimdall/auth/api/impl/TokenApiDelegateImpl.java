@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TokenApiDelegateImpl implements TokenApiDelegate {
 
-  @Value("${heimdall.hostname}")
+  @Value("${heimdall.auth.hostname:localhost}")
   private String hostname;
 
   @Autowired

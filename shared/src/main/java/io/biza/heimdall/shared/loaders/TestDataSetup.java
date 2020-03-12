@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-@Profile({"test", "dev"})
+@Profile({"test", "dev", "demo"})
 public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent> {
   @Autowired
   DataHolderRepository holderRepository;

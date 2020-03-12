@@ -57,7 +57,7 @@ public class HeimdallCertificateInitialision implements InitializingBean {
   @Value("${server.ssl.key-store}")
   public String KEYSTORE_PATH;
 
-  @Value("${heimdall.hostname}")
+  @Value("${heimdall.ssl-initialiser-hostname:localhost}")
   public String HOSTNAME;
   
   @Value("${server.ssl.key-alias:heimdall-service}")

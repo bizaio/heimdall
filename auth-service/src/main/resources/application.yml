@@ -1,3 +1,5 @@
+babelfish:
+  jwk-file: heimdall-auth.jwks
 heimdall:
   version: 1.0.0
   hostname: localhost
