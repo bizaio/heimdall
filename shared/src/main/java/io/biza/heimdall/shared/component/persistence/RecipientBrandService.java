@@ -15,6 +15,7 @@ import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
+import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
@@ -75,42 +76,35 @@ public class RecipientBrandService {
   
   public Page<DioDataRecipientBrand> list(Specification<DataRecipientBrandData> specification,
       Pageable pageable) {
-    /**
-     * List all hodlers
-     */
-    Page<DataRecipientBrandData> data =
-        recipientBrandRepository.findAll(specification, pageable);
 
-    LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB,
-        data));
+    if (specification == null) {
+      specification = Specification.where(null);
+    }
+
+    Page<DataRecipientBrandData> data;
+
+    /**
+     * List all recipients
+     */
+    if (pageable != null) {
+      data = recipientBrandRepository.findAll(specification, pageable);
+    } else {
+      data = new PageImpl<DataRecipientBrandData>(recipientBrandRepository.findAll(specification));
+    }
+
+    LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB, data));
 
     /**
      * Reconstruct Page
      */
-    Page<DioDataRecipientBrand> page = new PageImpl<DioDataRecipientBrand>(
-        mapper.mapAsList(data.getContent(), DioDataRecipientBrand.class),
-        data.getPageable(), data.getTotalElements());
+    Page<DioDataRecipientBrand> page =
+        new PageImpl<DioDataRecipientBrand>(mapper.mapAsList(data.getContent(), DioDataRecipientBrand.class),
+            data.getPageable(), data.getTotalElements());
 
     /**
      * Map as a list
      */
     return page;
-  }
-
-
-  public List<DioDataRecipientBrand> list(UUID recipientId) {
-    /**
-     * List all hodlers
-     */
-    List<DataRecipientBrandData> dataRecipientBrandData =
-        recipientBrandRepository.findByDataRecipientId(recipientId);
-    LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB,
-        dataRecipientBrandData));
-
-    /**
-     * Map as a list
-     */
-    return mapper.mapAsList(dataRecipientBrandData, DioDataRecipientBrand.class);
   }
 
   public DioDataRecipientBrand update(UUID recipientId, UUID brandId,

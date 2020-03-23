@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
 
@@ -16,7 +17,7 @@ public interface BankingDataHolderClientApiDelegate {
   }
 
   default ResponseEntity<DioDataHolderClient> createHolderClient(UUID holderId,
-      DioDataHolderClient brand) throws ValidationListException {
+      DioDataHolderClient brand) throws ValidationListException, NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -24,16 +25,16 @@ public interface BankingDataHolderClientApiDelegate {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioDataHolderClient> getHolderClient(UUID holderId, UUID brandId) {
+  default ResponseEntity<DioDataHolderClient> getHolderClient(UUID holderId, UUID brandId) throws NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   default ResponseEntity<DioDataHolderClient> updateHolderClient(UUID holderId, UUID brandId,
-      @NotNull DioDataHolderClient holder) {
+      @NotNull DioDataHolderClient holder) throws ValidationListException, NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<Void> deleteHolderClient(UUID holderId, UUID brandId) {
+  default ResponseEntity<Void> deleteHolderClient(UUID holderId, UUID brandId) throws NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

@@ -2,6 +2,7 @@ package io.biza.heimdall.admin.api;
 
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandSoftwareProductApiDelegate;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,7 +67,7 @@ public interface BankingDataRecipientBrandSoftwareProductApi {
   default ResponseEntity<DioSoftwareProduct> getRecipientSoftwareProduct(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
-      @NotNull @Valid @PathVariable("softwareProductId") UUID softwareProductId) {
+      @NotNull @Valid @PathVariable("softwareProductId") UUID softwareProductId) throws NotFoundException {
     return getDelegate().getRecipientBrandSoftwareProduct(recipientId, brandId, softwareProductId);
   }
 
@@ -88,7 +89,7 @@ public interface BankingDataRecipientBrandSoftwareProductApi {
   default ResponseEntity<DioSoftwareProduct> createRecipientSoftwareProduct(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
-      @NotNull @RequestBody DioSoftwareProduct softwareProduct) throws ValidationListException {
+      @NotNull @RequestBody DioSoftwareProduct softwareProduct) throws ValidationListException, NotFoundException {
     return getDelegate().createRecipientBrandSoftwareProduct(recipientId, brandId, softwareProduct);
   }
 
@@ -111,7 +112,7 @@ public interface BankingDataRecipientBrandSoftwareProductApi {
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
       @NotNull @Valid @PathVariable("softwareProductId") UUID softwareProductId,
-      @NotNull @RequestBody DioSoftwareProduct recipient) throws ValidationListException {
+      @NotNull @RequestBody DioSoftwareProduct recipient) throws ValidationListException, NotFoundException {
     return getDelegate().updateRecipientBrandSoftwareProduct(recipientId, brandId,
         softwareProductId, recipient);
   }
@@ -132,7 +133,7 @@ public interface BankingDataRecipientBrandSoftwareProductApi {
   default ResponseEntity<Void> deleteRecipientSoftwareProduct(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
-      @NotNull @Valid @PathVariable("softwareProductId") UUID softwareProductId) {
+      @NotNull @Valid @PathVariable("softwareProductId") UUID softwareProductId) throws NotFoundException {
     return getDelegate().deleteRecipientBrandSoftwareProduct(recipientId, brandId,
         softwareProductId);
   }

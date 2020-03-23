@@ -2,6 +2,7 @@ package io.biza.heimdall.admin.api;
 
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderClientApiDelegate;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,7 +63,7 @@ public interface BankingDataHolderClientApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_READ)
   default ResponseEntity<DioDataHolderClient> getHolderClient(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
-      @NotNull @Valid @PathVariable("clientId") UUID clientId) {
+      @NotNull @Valid @PathVariable("clientId") UUID clientId) throws NotFoundException {
     return getDelegate().getHolderClient(holderId, clientId);
   }
 
@@ -83,7 +84,7 @@ public interface BankingDataHolderClientApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<DioDataHolderClient> createHolderClient(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
-      @NotNull @RequestBody DioDataHolderClient client) throws ValidationListException {
+      @NotNull @RequestBody DioDataHolderClient client) throws ValidationListException, NotFoundException {
     return getDelegate().createHolderClient(holderId, client);
   }
 
@@ -105,7 +106,7 @@ public interface BankingDataHolderClientApi {
   default ResponseEntity<DioDataHolderClient> updateHolderClient(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
       @NotNull @Valid @PathVariable("clientId") UUID clientId,
-      @NotNull @RequestBody DioDataHolderClient holder) throws ValidationListException {
+      @NotNull @RequestBody DioDataHolderClient holder) throws ValidationListException, NotFoundException {
     return getDelegate().updateHolderClient(holderId, clientId, holder);
   }
 
@@ -123,7 +124,7 @@ public interface BankingDataHolderClientApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<Void> deleteHolderClient(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
-      @NotNull @Valid @PathVariable("clientId") UUID clientId) {
+      @NotNull @Valid @PathVariable("clientId") UUID clientId) throws NotFoundException {
     return getDelegate().deleteHolderClient(holderId, clientId);
   }
 

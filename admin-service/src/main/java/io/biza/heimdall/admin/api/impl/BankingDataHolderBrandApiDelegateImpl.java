@@ -12,13 +12,16 @@ import org.springframework.validation.annotation.Validated;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderBrandApiDelegate;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
+import io.biza.heimdall.shared.component.persistence.HolderBrandService;
 import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
 import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
+import io.biza.heimdall.shared.persistence.specifications.HolderBrandSpecifications;
 import lombok.extern.slf4j.Slf4j;
 
 @Validated
@@ -27,105 +30,36 @@ import lombok.extern.slf4j.Slf4j;
 public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderBrandApiDelegate {
 
   @Autowired
-  DataHolderBrandRepository brandRepository;
-
+  HolderBrandService holderBrand;
+  
   @Autowired
-  DataHolderRepository holderRepository;
-
-  @Autowired
-  private HeimdallMapper mapper;
+  HeimdallMapper mapper;
 
   @Override
   public ResponseEntity<DioDataHolderBrand> createHolderBrand(UUID holderId,
-      DioDataHolderBrand brand) throws ValidationListException {
-
-    Optional<DataHolderData> holder = holderRepository.findById(holderId);
-
-    if (!holder.isPresent()) {
-      LOG.warn("Attempted to create a holder brand for a holder id of {} that doesn't exist",
-          holderId);
-      throw ValidationListException.builder().type(HeimdallExceptionType.INVALID_HOLDER)
-          .explanation(Constants.ERROR_INVALID_HOLDER).build();
-    }
-    DataHolderBrandData dataHolderData = mapper.map(brand, DataHolderBrandData.class);
-    
-    LOG.debug("Data Holder Brand data to save: {}", dataHolderData);
-    dataHolderData.dataHolder(holder.get());
-    dataHolderData.id(UUID.randomUUID());
-    dataHolderData.endpointDetail().dataHolderBrand(dataHolderData);
-    DataHolderBrandData savedBrand = brandRepository.save(dataHolderData);
-    LOG.debug("Created a new data holder with content of: {}", savedBrand);
-    return ResponseEntity.ok(mapper.map(savedBrand, DioDataHolderBrand.class));
+      DioDataHolderBrand brand) throws ValidationListException, NotFoundException {
+    return ResponseEntity.ok(holderBrand.create(holderId, brand));
   }
 
   @Override
   public ResponseEntity<List<DioDataHolderBrand>> listHolderBrands(UUID holderId) {
-
-    Optional<DataHolderData> holder = holderRepository.findById(holderId);
-
-    if (!holder.isPresent()) {
-      LOG.warn("Attempted to list brands on non existent holder {}", holderId);
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    LOG.debug("Listing all data holders and received {}", holder.get().dataHolderBrands());
-    return ResponseEntity.ok(mapper.mapAsList(
-        Optional.of(holder.get().dataHolderBrands()).orElse(Set.of()), DioDataHolderBrand.class));
+    return ResponseEntity.ok(holderBrand.list(HolderBrandSpecifications.holderId(holderId), null).toList());
   }
 
   @Override
-  public ResponseEntity<DioDataHolderBrand> getHolderBrand(UUID holderId, UUID brandId) {
-    Optional<DataHolderBrandData> data = brandRepository.findByIdAndDataHolderId(brandId, holderId);
-
-    if (data.isPresent()) {
-      LOG.info(
-          "Retrieving a single data holder brand with holder of {} and brand of {} and got content of {}",
-          holderId, brandId, data.get());
-      return ResponseEntity.ok(mapper.map(data.get(), DioDataHolderBrand.class));
-    } else {
-      LOG.warn("Attempted to retrieve a single holder {} with brand of {} and couldn't find it",
-          holderId, brandId);
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+  public ResponseEntity<DioDataHolderBrand> getHolderBrand(UUID holderId, UUID brandId) throws NotFoundException {
+    return ResponseEntity.ok(holderBrand.read(holderId, brandId));
   }
 
   @Override
   public ResponseEntity<DioDataHolderBrand> updateHolderBrand(UUID holderId, UUID brandId,
-      DioDataHolderBrand updateData) {
-    Optional<DataHolderBrandData> optionalData =
-        brandRepository.findByIdAndDataHolderId(brandId, holderId);
-
-    if (optionalData.isPresent()) {
-      DataHolderBrandData data = optionalData.get();
-      mapper.map(updateData, data);
-      data.dataHolder(optionalData.get().dataHolder());
-      DataHolderBrandData updatedData = brandRepository.save(data);
-
-      LOG.info("Updating a single data holder brand of holder {} and brand {} and now set to {}",
-          holderId, brandId, updatedData);
-
-      return ResponseEntity.ok(mapper.map(updatedData, DioDataHolderBrand.class));
-    } else {
-      LOG.warn(
-          "Attempted to retrieve a single data holder brand and could not find with holder of {} and brand of {}",
-          holderId, brandId);
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+      DioDataHolderBrand updateData) throws ValidationListException, NotFoundException {
+    return ResponseEntity.ok(holderBrand.update(holderId, brandId, updateData));
   }
 
   @Override
-  public ResponseEntity<Void> deleteHolderBrand(UUID holderId, UUID brandId) {
-    Optional<DataHolderBrandData> data = brandRepository.findByIdAndDataHolderId(brandId, holderId);
-
-    if (data.isPresent()) {
-      LOG.info("Deleting a single data holder brand with id of {}", holderId);
-      brandRepository.delete(data.get());
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } else {
-      LOG.warn(
-          "Attempted to retrieve a single data holder brand and could not find with holder of {} and brand of {}",
-          holderId);
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+  public ResponseEntity<Void> deleteHolderBrand(UUID holderId, UUID brandId) throws NotFoundException {
+    holderBrand.delete(holderId, brandId);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

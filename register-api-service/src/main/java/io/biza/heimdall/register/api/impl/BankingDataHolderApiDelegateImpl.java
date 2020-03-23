@@ -17,7 +17,7 @@ import io.biza.heimdall.shared.component.persistence.RecipientService;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
-import io.biza.heimdall.shared.persistence.specifications.DataHolderBrandSpecifications;
+import io.biza.heimdall.shared.persistence.specifications.HolderBrandSpecifications;
 import io.biza.heimdall.shared.util.RegisterContainerAttributes;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +39,7 @@ public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDel
     Specification<DataHolderBrandData> specification = null;
 
     if (requestList.updatedSince() != null) {
-      specification = DataHolderBrandSpecifications.updatedSince(requestList.updatedSince());
+      specification = HolderBrandSpecifications.updatedSince(requestList.updatedSince());
     }
 
     Page<DioDataHolderBrand> result = holderBrandService.list(specification,

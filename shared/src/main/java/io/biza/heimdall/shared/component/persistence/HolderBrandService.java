@@ -72,15 +72,22 @@ public class HolderBrandService {
 
   public Page<DioDataHolderBrand> list(Specification<DataHolderBrandData> specification,
       Pageable pageable) {
+    
+    if(specification == null) {
+      specification = Specification.where(null);
+    }
+
+    Page<DataHolderBrandData> dataHolderBrandData;
+
     /**
      * List all hodlers
      */
-    Page<DataHolderBrandData> dataHolderBrandData =
-        holderBrandRepository.findAll(specification, pageable);
-
-    LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB,
-        dataHolderBrandData));
-
+    if (pageable != null) {
+      dataHolderBrandData = holderBrandRepository.findAll(specification, pageable);
+    } else {
+      dataHolderBrandData = new PageImpl<DataHolderBrandData>(holderBrandRepository.findAll(specification));
+    }
+    
     /**
      * Reconstruct Page
      */

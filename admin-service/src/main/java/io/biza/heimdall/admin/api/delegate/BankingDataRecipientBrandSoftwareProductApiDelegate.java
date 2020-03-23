@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 
@@ -16,7 +17,7 @@ public interface BankingDataRecipientBrandSoftwareProductApiDelegate {
   }
 
   default ResponseEntity<DioSoftwareProduct> createRecipientBrandSoftwareProduct(UUID recipientId,
-      UUID brandId, DioSoftwareProduct softwareProduct) throws ValidationListException {
+      UUID brandId, DioSoftwareProduct softwareProduct) throws ValidationListException, NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -26,17 +27,17 @@ public interface BankingDataRecipientBrandSoftwareProductApiDelegate {
   }
 
   default ResponseEntity<DioSoftwareProduct> getRecipientBrandSoftwareProduct(UUID recipientId,
-      UUID brandId, UUID softwareProductId) {
+      UUID brandId, UUID softwareProductId) throws NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   default ResponseEntity<DioSoftwareProduct> updateRecipientBrandSoftwareProduct(UUID recipientId,
-      UUID brandId, UUID softwareProductId, @NotNull DioSoftwareProduct recipient) {
+      UUID brandId, UUID softwareProductId, @NotNull DioSoftwareProduct recipient) throws ValidationListException, NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   default ResponseEntity<Void> deleteRecipientBrandSoftwareProduct(UUID recipientId, UUID brandId,
-      UUID softwareProductId) {
+      UUID softwareProductId) throws NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

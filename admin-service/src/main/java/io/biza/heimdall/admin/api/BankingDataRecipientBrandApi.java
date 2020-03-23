@@ -2,6 +2,7 @@ package io.biza.heimdall.admin.api;
 
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandApiDelegate;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,7 +64,7 @@ public interface BankingDataRecipientBrandApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
   default ResponseEntity<DioDataRecipientBrand> getRecipientBrand(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
-      @NotNull @Valid @PathVariable("brandId") UUID brandId) {
+      @NotNull @Valid @PathVariable("brandId") UUID brandId) throws NotFoundException {
     return getDelegate().getRecipientBrand(recipientId, brandId);
   }
 
@@ -84,7 +85,7 @@ public interface BankingDataRecipientBrandApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
-      @NotNull @RequestBody DioDataRecipientBrand brand) throws ValidationListException {
+      @NotNull @RequestBody DioDataRecipientBrand brand) throws ValidationListException, NotFoundException {
     return getDelegate().createRecipientBrand(recipientId, brand);
   }
 
@@ -106,7 +107,7 @@ public interface BankingDataRecipientBrandApi {
   default ResponseEntity<DioDataRecipientBrand> updateRecipientBrand(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
-      @NotNull @RequestBody DioDataRecipientBrand recipient) throws ValidationListException {
+      @NotNull @RequestBody DioDataRecipientBrand recipient) throws ValidationListException, NotFoundException {
     return getDelegate().updateRecipientBrand(recipientId, brandId, recipient);
   }
 
@@ -124,7 +125,7 @@ public interface BankingDataRecipientBrandApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<Void> deleteRecipientBrand(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
-      @NotNull @Valid @PathVariable("brandId") UUID brandId) {
+      @NotNull @Valid @PathVariable("brandId") UUID brandId) throws NotFoundException {
     return getDelegate().deleteRecipientBrand(recipientId, brandId);
   }
 

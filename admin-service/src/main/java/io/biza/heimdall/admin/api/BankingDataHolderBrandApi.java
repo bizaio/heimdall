@@ -2,6 +2,7 @@ package io.biza.heimdall.admin.api;
 
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderBrandApiDelegate;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,7 +63,7 @@ public interface BankingDataHolderBrandApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_READ)
   default ResponseEntity<DioDataHolderBrand> getHolderBrand(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
-      @NotNull @Valid @PathVariable("brandId") UUID brandId) {
+      @NotNull @Valid @PathVariable("brandId") UUID brandId) throws NotFoundException {
     return getDelegate().getHolderBrand(holderId, brandId);
   }
 
@@ -83,7 +84,7 @@ public interface BankingDataHolderBrandApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<DioDataHolderBrand> createHolderBrand(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
-      @NotNull @RequestBody DioDataHolderBrand brand) throws ValidationListException {
+      @NotNull @RequestBody DioDataHolderBrand brand) throws ValidationListException, NotFoundException {
     return getDelegate().createHolderBrand(holderId, brand);
   }
 
@@ -105,7 +106,7 @@ public interface BankingDataHolderBrandApi {
   default ResponseEntity<DioDataHolderBrand> updateHolderBrand(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
-      @NotNull @RequestBody DioDataHolderBrand holder) throws ValidationListException {
+      @NotNull @RequestBody DioDataHolderBrand holder) throws ValidationListException, NotFoundException {
     return getDelegate().updateHolderBrand(holderId, brandId, holder);
   }
 
@@ -123,7 +124,7 @@ public interface BankingDataHolderBrandApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<Void> deleteHolderBrand(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
-      @NotNull @Valid @PathVariable("brandId") UUID brandId) {
+      @NotNull @Valid @PathVariable("brandId") UUID brandId) throws NotFoundException {
     return getDelegate().deleteHolderBrand(holderId, brandId);
   }
 

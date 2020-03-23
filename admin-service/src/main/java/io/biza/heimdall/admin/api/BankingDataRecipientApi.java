@@ -2,6 +2,7 @@ package io.biza.heimdall.admin.api;
 
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientApiDelegate;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,7 +61,7 @@ public interface BankingDataRecipientApi {
   @GetMapping(value = "/{recipientId}", produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
   default ResponseEntity<DioDataRecipient> getRecipient(
-      @NotNull @Valid @PathVariable("recipientId") UUID recipientId) {
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId) throws NotFoundException {
     return getDelegate().getRecipient(recipientId);
   }
 
@@ -100,7 +101,7 @@ public interface BankingDataRecipientApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<DioDataRecipient> updateRecipient(
       @NotNull @Valid @PathVariable("recipientId") UUID recipientId,
-      @NotNull @RequestBody DioDataRecipient recipient) throws ValidationListException {
+      @NotNull @RequestBody DioDataRecipient recipient) throws ValidationListException, NotFoundException {
     return getDelegate().updateRecipient(recipientId, recipient);
   }
 
@@ -117,7 +118,7 @@ public interface BankingDataRecipientApi {
   @DeleteMapping(path = "/{recipientId}")
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<Void> deleteRecipient(
-      @NotNull @Valid @PathVariable("recipientId") UUID recipientId) {
+      @NotNull @Valid @PathVariable("recipientId") UUID recipientId) throws NotFoundException {
     return getDelegate().deleteRecipient(recipientId);
   }
 

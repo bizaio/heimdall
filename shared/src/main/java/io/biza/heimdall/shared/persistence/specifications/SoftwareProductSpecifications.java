@@ -21,19 +21,20 @@ import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData_;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData_;
+import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
+import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData_;
+import io.biza.heimdall.shared.persistence.model.DataRecipientData;
+import io.biza.heimdall.shared.persistence.model.DataRecipientData_;
+import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
+import io.biza.heimdall.shared.persistence.model.SoftwareProductData_;
 
-public class DataHolderBrandSpecifications {
-
-  public static Specification<DataHolderBrandData> updatedSince(OffsetDateTime updatedSince) {
-    return (root, query, cb) -> {
-      return cb.greaterThan(root.get(DataHolderBrandData_.lastUpdated), updatedSince);
-    };
-  }
+public class SoftwareProductSpecifications {
   
-  public static Specification<DataHolderBrandData> holderId(UUID holderId) {
+  public static Specification<SoftwareProductData> recipientId(UUID recipientId) {
     return (root, query, cb) -> {
-      Join<DataHolderBrandData, DataHolderData> holderJoin = root.join(DataHolderBrandData_.dataHolder);
-      return cb.equal(holderJoin.get(DataHolderData_.id), holderId);
+      Join<SoftwareProductData, DataRecipientBrandData> brandJoin = root.join(SoftwareProductData_.dataRecipientBrand);
+      Join<DataRecipientBrandData, DataRecipientData> recipientJoin = brandJoin.join(DataRecipientBrandData_.dataRecipient);
+      return cb.equal(recipientJoin.get(DataRecipientData_.id), recipientId);
     };
   }
 }

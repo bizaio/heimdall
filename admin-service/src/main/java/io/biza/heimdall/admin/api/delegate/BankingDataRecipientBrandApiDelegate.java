@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 
@@ -15,7 +16,7 @@ public interface BankingDataRecipientBrandApiDelegate {
   }
 
   default ResponseEntity<DioDataRecipientBrand> createRecipientBrand(UUID recipientId,
-      DioDataRecipientBrand brand) throws ValidationListException {
+      DioDataRecipientBrand brand) throws ValidationListException, NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
@@ -23,16 +24,16 @@ public interface BankingDataRecipientBrandApiDelegate {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<DioDataRecipientBrand> getRecipientBrand(UUID recipientId, UUID brandId) {
+  default ResponseEntity<DioDataRecipientBrand> getRecipientBrand(UUID recipientId, UUID brandId) throws NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   default ResponseEntity<DioDataRecipientBrand> updateRecipientBrand(UUID recipientId, UUID brandId,
-      DioDataRecipientBrand recipient) {
+      DioDataRecipientBrand recipient) throws ValidationListException, NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<Void> deleteRecipientBrand(UUID recipientId, UUID brandId) {
+  default ResponseEntity<Void> deleteRecipientBrand(UUID recipientId, UUID brandId) throws NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

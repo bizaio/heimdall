@@ -71,12 +71,22 @@ public class ClientService {
 
   public Page<DioDataHolderClient> list(Specification<ClientData> specification,
       Pageable pageable) {
+    
+    if(specification == null) {
+      specification = Specification.where(null);
+    }
+
+    Page<ClientData> dataHolderClientData;
+
     /**
      * List all hodlers
      */
-    Page<ClientData> dataHolderClientData =
-        clientRepository.findAll(specification, pageable);
-
+    if (pageable != null) {
+      dataHolderClientData = clientRepository.findAll(specification, pageable);
+    } else {
+      dataHolderClientData = new PageImpl<ClientData>(clientRepository.findAll(specification));
+    }
+    
     LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB,
         dataHolderClientData));
 
