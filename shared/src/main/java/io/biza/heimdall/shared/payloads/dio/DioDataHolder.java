@@ -4,9 +4,11 @@ import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import org.hibernate.cache.spi.access.AccessType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +28,7 @@ public class DioDataHolder {
   
   @JsonProperty("id")
   @NotNull
-  @Schema(description = "Data Holder Identifier")
+  @Schema(description = "Data Holder Identifier", accessMode = AccessMode.READ_ONLY)
   UUID id;
   
   @JsonProperty("name")

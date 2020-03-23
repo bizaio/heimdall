@@ -128,6 +128,8 @@ public class BankingDataRecipientBrandSoftwareProductApiDelegateImpl
   @Override
   public ResponseEntity<Void> deleteRecipientBrandSoftwareProduct(UUID recipientId, UUID brandId,
       UUID softwareProductId) {
+    
+    
     Optional<SoftwareProductData> data = softwareProductRepository
         .findByIdAndDataRecipientBrandIdAndDataRecipientBrandDataRecipientId(softwareProductId,
             brandId, recipientId);

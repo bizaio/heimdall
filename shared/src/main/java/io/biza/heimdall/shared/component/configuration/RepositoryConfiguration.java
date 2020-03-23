@@ -11,17 +11,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.shared.persistence.repository;
+package io.biza.heimdall.shared.component.configuration;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Repository
-public interface DataHolderBrandRepository extends JpaRepository<DataHolderBrandData, UUID>, JpaSpecificationExecutor<DataHolderBrandData> {
-  public Optional<DataHolderBrandData> findByIdAndDataHolderId(UUID brandId, UUID holderId);
+@Configuration
+@EntityScan(basePackages = "io.biza.heimdall.shared.persistence.model")
+@EnableJpaRepositories(basePackages = "io.biza.heimdall.shared.persistence.repository")
+@EnableTransactionManagement
+public class RepositoryConfiguration {
+
+
 }
+
+

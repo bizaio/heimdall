@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
         <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <node.version>v12.14.1</node.version>
@@ -66,6 +67,7 @@
         <module>admin-service</module>
         <module>auth-service</module>
         <module>register-api-service</module>
+        <module>heimdall-function</module>
     </modules>
 
     <build>

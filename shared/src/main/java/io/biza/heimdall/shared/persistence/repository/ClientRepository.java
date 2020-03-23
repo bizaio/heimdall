@@ -13,6 +13,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,5 @@ import io.biza.heimdall.shared.persistence.model.ClientData;
 @Repository
 public interface ClientRepository extends JpaRepository<ClientData, UUID>, JpaSpecificationExecutor<ClientData> {
   public Optional<ClientData> findByIdAndDataHolderId(UUID clientId, UUID holderId);
+  public List<ClientData> findByDataHolderId(UUID holderId);
 }

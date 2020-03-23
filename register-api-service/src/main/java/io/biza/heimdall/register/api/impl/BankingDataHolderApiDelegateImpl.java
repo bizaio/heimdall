@@ -12,6 +12,9 @@ import io.biza.babelfish.cdr.models.responses.register.RequestGetDataHolderBrand
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandList;
 import io.biza.heimdall.register.api.delegate.BankingDataHolderApiDelegate;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
+import io.biza.heimdall.shared.component.persistence.HolderBrandService;
+import io.biza.heimdall.shared.component.persistence.RecipientService;
+import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
 import io.biza.heimdall.shared.persistence.specifications.DataHolderBrandSpecifications;
@@ -24,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDelegate {
 
   @Autowired
-  DataHolderBrandRepository holderRepository;
+  HolderBrandService holderBrandService;
 
   @Autowired
   HeimdallMapper mapper;
@@ -39,16 +42,14 @@ public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDel
       specification = DataHolderBrandSpecifications.updatedSince(requestList.updatedSince());
     }
 
-    Page<DataHolderBrandData> dataHolderBrandData = holderRepository.findAll(specification,
-        PageRequest.of(requestList.page() - 1, requestList.pageSize()));
+    Page<DioDataHolderBrand> result = holderBrandService.list(specification,
+        PageRequest.of(requestList.page(), requestList.pageSize()));
 
-    ResponseRegisterDataHolderBrandList listResponse = ResponseRegisterDataHolderBrandList.builder()
-        .meta(RegisterContainerAttributes.toMetaPaginated(dataHolderBrandData))
-        .links(RegisterContainerAttributes.toLinksPaginated(dataHolderBrandData))
-        .data(mapper.mapAsList(dataHolderBrandData.getContent(), RegisterDataHolderBrand.class))
-        .build();
-    LOG.debug("List response came back with: {}", listResponse);
-    return ResponseEntity.ok(listResponse);
+    return ResponseEntity.ok(ResponseRegisterDataHolderBrandList.builder()
+        .meta(RegisterContainerAttributes.toMetaPaginated(result))
+        .links(RegisterContainerAttributes.toLinksPaginated(result))
+        .data(mapper.mapAsList(result.getContent(), RegisterDataHolderBrand.class)).build());
+
   }
 
 }

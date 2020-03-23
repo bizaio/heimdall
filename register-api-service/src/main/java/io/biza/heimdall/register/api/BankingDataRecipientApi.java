@@ -5,8 +5,10 @@ import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusList;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientList;
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
 import io.biza.babelfish.cdr.support.RawJson;
+import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -72,7 +74,7 @@ public interface BankingDataRecipientApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<RawJson> getSoftwareStatementAssertion(
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
-      @NotNull @Valid @PathVariable("productId") UUID productId) {
+      @NotNull @Valid @PathVariable("productId") UUID productId) throws SigningOperationException, NotFoundException {
     return getDelegate().getSoftwareStatementAssertion(brandId, productId);
   }
 

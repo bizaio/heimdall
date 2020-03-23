@@ -15,10 +15,12 @@ package io.biza.heimdall.shared.persistence.repository;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
+import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 
 @Repository
-public interface DataRecipientRepository extends JpaRepository<DataRecipientData, UUID> {
+public interface DataRecipientRepository extends JpaRepository<DataRecipientData, UUID>, JpaSpecificationExecutor<DataRecipientData> {
   
 }

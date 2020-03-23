@@ -13,14 +13,18 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 
 @Repository
-public interface SoftwareProductRepository extends JpaRepository<SoftwareProductData, UUID> {
+public interface SoftwareProductRepository extends JpaRepository<SoftwareProductData, UUID>, JpaSpecificationExecutor<SoftwareProductData> {
   public Optional<SoftwareProductData> findByIdAndDataRecipientBrandIdAndDataRecipientBrandDataRecipientId(UUID productId, UUID brandId, UUID recipientId);
   public Optional<SoftwareProductData> findByIdAndDataRecipientBrandId(UUID productId, UUID brandId);
+  public List<SoftwareProductData> findByDataRecipientBrandIdAndDataRecipientBrandDataRecipientId(UUID brandId, UUID recipientId);
 }

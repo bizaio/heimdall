@@ -2,6 +2,7 @@ package io.biza.heimdall.admin.api;
 
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderApiDelegate;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,7 +60,7 @@ public interface BankingDataHolderApi {
   @GetMapping(value = "/{holderId}", produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_READ)
   default ResponseEntity<DioDataHolder> getHolder(
-      @NotNull @Valid @PathVariable("holderId") UUID holderId) {
+      @NotNull @Valid @PathVariable("holderId") UUID holderId) throws NotFoundException {
     return getDelegate().getHolder(holderId);
   }
 
@@ -99,7 +100,7 @@ public interface BankingDataHolderApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<DioDataHolder> updateHolder(
       @NotNull @Valid @PathVariable("holderId") UUID holderId,
-      @NotNull @RequestBody DioDataHolder holder) throws ValidationListException {
+      @NotNull @RequestBody DioDataHolder holder) throws ValidationListException, NotFoundException {
     return getDelegate().updateHolder(holderId, holder);
   }
 
@@ -116,7 +117,7 @@ public interface BankingDataHolderApi {
   @DeleteMapping(path = "/{holderId}")
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<Void> deleteHolder(
-      @NotNull @Valid @PathVariable("holderId") UUID holderId) {
+      @NotNull @Valid @PathVariable("holderId") UUID holderId) throws NotFoundException {
     return getDelegate().deleteHolder(holderId);
   }
 

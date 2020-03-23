@@ -11,20 +11,28 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.shared.component.persistence;
+package io.biza.heimdall.shared.exceptions;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import java.util.List;
+import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
+import io.biza.heimdall.shared.payloads.dio.ValidationError;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
-@Configuration
-@EntityScan(basePackages = "io.biza.heimdall.shared.persistence.model")
-@EnableJpaRepositories(basePackages = "io.biza.heimdall.shared.persistence.repository")
-@EnableTransactionManagement
-public class RepositoryConfiguration {
-
-
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+public class NotFoundException extends Exception {
+  private static final long serialVersionUID = 1L;
+  
+  public String message;
+  
 }
-
-

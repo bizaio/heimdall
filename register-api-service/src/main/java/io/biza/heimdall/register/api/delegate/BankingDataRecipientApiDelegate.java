@@ -9,6 +9,8 @@ import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusList;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientList;
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
 import io.biza.babelfish.cdr.support.RawJson;
+import io.biza.babelfish.spring.exceptions.SigningOperationException;
+import io.biza.heimdall.shared.exceptions.NotFoundException;
 
 public interface BankingDataRecipientApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
@@ -23,7 +25,7 @@ public interface BankingDataRecipientApiDelegate {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId, UUID productId) {
+  default ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId, UUID productId) throws SigningOperationException, NotFoundException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
