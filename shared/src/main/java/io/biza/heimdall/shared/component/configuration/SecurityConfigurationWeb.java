@@ -19,7 +19,7 @@ public class SecurityConfigurationWeb extends WebSecurityConfigurerAdapter {
     Provider bc = BouncyCastleProviderSingleton.getInstance();
     Security.addProvider(bc);
 
-    
+
     // JWT Validation
     http.oauth2ResourceServer().jwt();
     // Anonymous access, method security to pickup

@@ -23,31 +23,32 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "The data that is common to all organisations, regardless of the type (e.g. company, trust, partnership, government)")
+@Schema(
+    description = "The data that is common to all organisations, regardless of the type (e.g. company, trust, partnership, government)")
 public class DioDataRecipient {
-  
+
   @JsonProperty("id")
   @NotNull
   @Schema(description = "Data Holder Identifier")
   UUID id;
-  
+
   @JsonProperty("legalEntity")
   @NotNull
   @Schema(description = "Legal Entity details for Data Holder")
   DioLegalEntity legalEntity;
-  
+
   @JsonProperty("industry")
   @NotNull
   IndustryType industry;
-    
+
   @JsonProperty("logoUri")
   @NotNull
   URI logoUri;
-  
+
   @JsonProperty("status")
   @NotNull
   DataRecipientStatusType status;
-  
+
   @JsonProperty("lastUpdated")
   OffsetDateTime lastUpdated;
 

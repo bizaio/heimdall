@@ -23,22 +23,21 @@ import lombok.ToString;
 @NoArgsConstructor
 @Schema(description = "A Data Holder Client")
 public class DioDataHolderClient {
-  
+
   @JsonProperty("id")
   @NotNull
   @Schema(description = "Data Holder Client Identifier")
   UUID id;
-  
+
   @JsonProperty("credentialType")
   @NotNull
   @Schema(description = "Client Credentialing Method")
   @Builder.Default
   DioClientCredentialType credentialType = DioClientCredentialType.CLIENT_CREDENTIALS_SECRET;
-  
+
   @JsonProperty("clientSecret")
   @NotEmpty
-  @Schema(
-      description = "Client Secret")
+  @Schema(description = "Client Secret")
   String clientSecret;
-  
+
 }

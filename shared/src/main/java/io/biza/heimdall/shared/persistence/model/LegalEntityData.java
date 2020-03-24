@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.model;
 
@@ -59,24 +57,26 @@ public class LegalEntityData {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
-  
+
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "DATA_HOLDER_ID", foreignKey = @ForeignKey(name = "LEGAL_ENTITY_DATA_HOLDER_ID_FK"))
+  @JoinColumn(name = "DATA_HOLDER_ID",
+      foreignKey = @ForeignKey(name = "LEGAL_ENTITY_DATA_HOLDER_ID_FK"))
   @ToString.Exclude
   DataHolderData dataHolder;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "DATA_RECIPIENT_ID", foreignKey = @ForeignKey(name = "LEGAL_ENTITY_DATA_RECIPIENT_ID_FK"))
+  @JoinColumn(name = "DATA_RECIPIENT_ID",
+      foreignKey = @ForeignKey(name = "LEGAL_ENTITY_DATA_RECIPIENT_ID_FK"))
   @ToString.Exclude
   DataRecipientData dataRecipient;
-  
+
   @Column(name = "LEGAL_NAME")
   @NotNull
   String legalName;
-  
+
   @Column(name = "REGISTRATION_NUMBER")
   String registrationNumber;
-  
+
   @Column(name = "REGISTRATION_DATE")
   LocalDate registrationDate;
 
@@ -85,24 +85,24 @@ public class LegalEntityData {
   @NotNull
   @Builder.Default
   Locale registeredCountry = new Locale(Constants.DEFAULT_LANGUAGE, Constants.DEFAULT_LOCALE);
-  
+
   @Column(name = "ABN")
   String abn;
-  
+
   @Column(name = "ACN")
   String acn;
-  
+
   @Column(name = "ARBN")
   String arbn;
-  
+
   @Column(name = "ANZSIC_CODE")
   String industryCode;
-  
+
   @Column(name = "ORGANISATION_TYPE")
   @Enumerated(EnumType.STRING)
   @NotNull
   CommonOrganisationType organisationType;
-  
+
   @PrePersist
   public void prePersist() {
     if (dataHolder() != null) {
@@ -113,5 +113,5 @@ public class LegalEntityData {
     }
 
   }
-  
+
 }

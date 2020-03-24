@@ -24,24 +24,23 @@ import lombok.ToString;
 @NoArgsConstructor
 @Schema(description = "The Data Recipient Brand")
 public class DioDataRecipientBrand {
-  
+
   @JsonProperty("id")
   @NotNull
   @Schema(description = "Data Recipient Brand Identifier")
   UUID id;
-  
+
   @JsonProperty("name")
   @NotEmpty
-  @Schema(
-      description = "Brand Name")
+  @Schema(description = "Brand Name")
   String name;
-  
+
   @JsonProperty("logoUri")
   @NotNull
   URI logoUri;
-  
+
   @JsonProperty("status")
   @NotNull
   DataRecipientStatusType status;
-  
+
 }

@@ -26,18 +26,17 @@ import lombok.ToString;
 @NoArgsConstructor
 @Schema(description = "The Data Holder Brand")
 public class DioDataHolderBrand {
-  
+
   @JsonProperty("id")
   @NotNull
   @Schema(description = "Data Holder Brand Identifier")
   UUID id;
-  
+
   @JsonProperty("name")
   @NotEmpty
-  @Schema(
-      description = "Brand Name")
+  @Schema(description = "Brand Name")
   String name;
-  
+
   @JsonProperty("logoUri")
   @NotNull
   URI logoUri;
@@ -45,12 +44,12 @@ public class DioDataHolderBrand {
   @JsonProperty("status")
   @NotNull
   DataRecipientStatusType status;
-  
+
   @JsonProperty("endpointDetail")
   @NotNull
   RegisterDataHolderBrandServiceEndpoint endpointDetail;
 
   @JsonProperty("lastUpdated")
   OffsetDateTime lastUpdated;
-  
+
 }

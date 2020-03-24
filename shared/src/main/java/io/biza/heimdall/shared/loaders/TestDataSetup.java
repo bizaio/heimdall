@@ -165,7 +165,7 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
       LOG.info("Saving {}", recipientClient);
 
       clientRepository.save(recipientClient);
-      
+
       LOG.info("Test Data Setup Completed");
 
     }

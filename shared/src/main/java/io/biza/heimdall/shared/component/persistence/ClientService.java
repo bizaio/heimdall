@@ -1,6 +1,5 @@
 package io.biza.heimdall.shared.component.persistence;
 
-import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,10 +12,8 @@ import io.biza.heimdall.shared.component.functions.ValidationService;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
 import io.biza.heimdall.shared.persistence.model.ClientData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.repository.ClientRepository;
 import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
@@ -38,7 +35,7 @@ public class ClientService {
 
   @Autowired
   private HeimdallMapper mapper;
-  
+
   public static final String TYPE_NAME_PAYLOAD = DioDataHolderClient.class.getName();
   public static final String TYPE_NAME_DB = ClientData.class.getName();
 
@@ -48,15 +45,15 @@ public class ClientService {
     /**
      * Locate existing holder
      */
-    DataHolderData holderData = holderRepository.findById(holderId).orElseThrow(
-        () -> NotFoundException.builder().message(MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_ID, holderId)).build());
+    DataHolderData holderData =
+        holderRepository.findById(holderId).orElseThrow(() -> NotFoundException.builder()
+            .message(MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_ID, holderId)).build());
 
     /**
      * Validate input data
      */
-    validationService.validate(holderClient,
-        MessageUtil.format(
-            Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderClient));
+    validationService.validate(holderClient, MessageUtil
+        .format(Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderClient));
 
     /**
      * Create Data Holder Client Record
@@ -71,8 +68,8 @@ public class ClientService {
 
   public Page<DioDataHolderClient> list(Specification<ClientData> specification,
       Pageable pageable) {
-    
-    if(specification == null) {
+
+    if (specification == null) {
       specification = Specification.where(null);
     }
 
@@ -86,7 +83,7 @@ public class ClientService {
     } else {
       dataHolderClientData = new PageImpl<ClientData>(clientRepository.findAll(specification));
     }
-    
+
     LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB,
         dataHolderClientData));
 
@@ -113,17 +110,17 @@ public class ClientService {
     /**
      * Validate input data
      */
-    validationService.validate(holderClient,
-        MessageUtil.format(
-            Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderClient));
+    validationService.validate(holderClient, MessageUtil
+        .format(Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderClient));
 
     /**
      * Locate existing holder
      */
-    ClientData holderClientData = clientRepository.findByIdAndDataHolderId(clientId, holderId)
-        .orElseThrow(() -> NotFoundException.builder()
-            .message(MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_CLIENT_ID, holderId, clientId))
-            .build());
+    ClientData holderClientData =
+        clientRepository.findByIdAndDataHolderId(clientId, holderId)
+            .orElseThrow(() -> NotFoundException.builder().message(
+                MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_CLIENT_ID, holderId, clientId))
+                .build());
 
     /**
      * Map supplied data over the top
@@ -140,10 +137,11 @@ public class ClientService {
     /**
      * Locate existing holder
      */
-    ClientData holderData = clientRepository.findByIdAndDataHolderId(clientId, holderId)
-        .orElseThrow(() -> NotFoundException.builder()
-            .message(MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_CLIENT_ID, holderId, clientId))
-            .build());
+    ClientData holderData =
+        clientRepository.findByIdAndDataHolderId(clientId, holderId)
+            .orElseThrow(() -> NotFoundException.builder().message(
+                MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_CLIENT_ID, holderId, clientId))
+                .build());
 
     return mapper.map(holderData, DioDataHolderClient.class);
 
@@ -154,10 +152,11 @@ public class ClientService {
     /**
      * Locate existing holder
      */
-    ClientData holderClientData = clientRepository.findByIdAndDataHolderId(clientId, holderId)
-        .orElseThrow(() -> NotFoundException.builder()
-            .message(MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_CLIENT_ID, holderId, clientId))
-            .build());
+    ClientData holderClientData =
+        clientRepository.findByIdAndDataHolderId(clientId, holderId)
+            .orElseThrow(() -> NotFoundException.builder().message(
+                MessageUtil.format(Messages.UNABLE_TO_FIND_HOLDER_CLIENT_ID, holderId, clientId))
+                .build());
 
     /**
      * Now delete them

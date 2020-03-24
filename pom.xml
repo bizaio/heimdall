@@ -67,7 +67,6 @@
         <module>admin-service</module>
         <module>auth-service</module>
         <module>register-api-service</module>
-        <module>heimdall-function</module>
     </modules>
 
     <build>

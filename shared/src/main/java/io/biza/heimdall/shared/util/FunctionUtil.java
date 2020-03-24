@@ -47,9 +47,10 @@ public class FunctionUtil {
         .setHeader(MessageHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
         .setHeader(HttpHeaders.STATUS_CODE, HttpStatus.NOT_FOUND).build();
   }
-  
+
   public static <T> Message<?> unavailable(Exception e) {
-    LOG.info("Encountered error leading to service unavailability with message of: {}", e.getMessage());
+    LOG.info("Encountered error leading to service unavailability with message of: {}",
+        e.getMessage());
     return MessageBuilder.withPayload(new Object())
         .setHeader(MessageHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
         .setHeader(HttpHeaders.STATUS_CODE, HttpStatus.SERVICE_UNAVAILABLE).build();

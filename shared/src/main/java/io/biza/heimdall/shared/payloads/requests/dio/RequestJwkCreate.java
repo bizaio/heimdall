@@ -28,5 +28,5 @@ public class RequestJwkCreate {
   @Schema(description = "How many keys to produce", defaultValue = "1")
   @Builder.Default
   Integer keyCount = 1;
-  
+
 }

@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.model;
 
@@ -55,36 +53,37 @@ public class DataHolderBrandEndpointData {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
-  
+
   @OneToOne(fetch = FetchType.LAZY)
   @MapsId
-  @JoinColumn(name = "DATA_HOLDER_BRAND_ENDPOINT_ID", foreignKey = @ForeignKey(name = "ENDPOINT_DETAIL_DATA_HOLDER_BRAND_ID_FK"))
+  @JoinColumn(name = "DATA_HOLDER_BRAND_ENDPOINT_ID",
+      foreignKey = @ForeignKey(name = "ENDPOINT_DETAIL_DATA_HOLDER_BRAND_ID_FK"))
   DataHolderBrandData dataHolderBrand;
-  
+
   @Column(name = "VERSION")
   @Enumerated(EnumType.STRING)
   CDRVersionType version;
-  
+
   @Column(name = "PUBLIC_BASE_URI")
   URI publicBaseUri;
-  
+
   @Column(name = "RESOURCE_BASE_URI")
   URI resourceBaseUri;
-  
+
   @Column(name = "INFOSEC_BASE_URI")
   URI infosecBaseUri;
-  
+
   @Column(name = "EXTENSION_BASE_URI")
   URI extensionBaseUri;
-  
+
   @Column(name = "WEBSITE_URI")
   URI websiteUri;
-  
+
   @PrePersist
   public void prePersist() {
-    if(dataHolderBrand() != null) {
+    if (dataHolderBrand() != null) {
       dataHolderBrand.endpointDetail(this);
     }
   }
-  
+
 }

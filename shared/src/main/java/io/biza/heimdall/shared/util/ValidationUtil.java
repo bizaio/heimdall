@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import org.apache.commons.lang3.StringUtils;
 import io.biza.heimdall.shared.enumerations.DioValidationErrorType;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.payloads.dio.ValidationError;
 
 public class ValidationUtil {

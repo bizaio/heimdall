@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.mapper;
 
@@ -87,7 +85,8 @@ public class OrikaFactoryConfigurer {
           BidirectionalConverter<?, ?> converter =
               (BidirectionalConverter<?, ?>) clazz.getConstructor().newInstance();
           converterFactory.registerConverter(converter);
-          LOG.info("Registered converter for {} <-> {}", converter.getAType().getName(), converter.getBType().getName());
+          LOG.info("Registered converter for {} <-> {}", converter.getAType().getName(),
+              converter.getBType().getName());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException
             | NoSuchMethodException | SecurityException e) {
           LOG.error(
@@ -104,9 +103,11 @@ public class OrikaFactoryConfigurer {
        * Configure bidirectional configurers
        */
       try (ScanResult mapperResult = new ClassGraph().enableAllInfo()
-          .whitelistPackages("io.biza.heimdall.shared.persistence.mapper", "io.biza.heimdall.shared.payloads.mapper").scan()) {
-        ClassInfoList configurerClasses =
-            mapperResult.getClassesImplementing("io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface");
+          .whitelistPackages("io.biza.heimdall.shared.persistence.mapper",
+              "io.biza.heimdall.shared.payloads.mapper")
+          .scan()) {
+        ClassInfoList configurerClasses = mapperResult
+            .getClassesImplementing("io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface");
 
         for (Class<?> clazz : configurerClasses.loadClasses()) {
           try {

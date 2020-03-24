@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.mapper;
 
@@ -25,21 +23,14 @@ public class SoftwareProductDataMapper implements OrikaFactoryConfigurerInterfac
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
     orikaMapperFactory.classMap(SoftwareProductData.class, SoftwareProductMetaData.class)
-    .fieldAToB("id", "softwareProductId")
-    .field("name", "softwareProductName")
-    .field("description", "softwareProductDescription")
-    .byDefault()
-    .register();
-    
+        .fieldAToB("id", "softwareProductId").field("name", "softwareProductName")
+        .field("description", "softwareProductDescription").byDefault().register();
+
     orikaMapperFactory.classMap(SoftwareProductData.class, SoftwareProductStatus.class)
-    .fieldAToB("id", "softwareProductId")
-    .field("status", "softwareProductStatus")
-    .register();
-    
+        .fieldAToB("id", "softwareProductId").field("status", "softwareProductStatus").register();
+
     orikaMapperFactory.classMap(SoftwareProductData.class, DioSoftwareProduct.class)
-    .fieldAToB("id", "id")
-    .byDefault()
-    .register();
+        .fieldAToB("id", "id").byDefault().register();
 
   }
 }

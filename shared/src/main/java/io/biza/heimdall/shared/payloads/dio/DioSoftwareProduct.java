@@ -27,49 +27,47 @@ import lombok.ToString;
 @NoArgsConstructor
 @Schema(description = "Data Recipient Brand Software Products")
 public class DioSoftwareProduct {
-  
+
   @JsonProperty("id")
   @NotNull
   @Schema(description = "Data Recipient Software Product Identifier")
   UUID id;
-  
+
   @JsonProperty("status")
   @NotNull
   SoftwareProductStatusType status;
-  
+
   @JsonProperty("name")
   @NotEmpty
-  @Schema(
-      description = "Software Product Name")
+  @Schema(description = "Software Product Name")
   String name;
-  
+
   @JsonProperty("description")
   @NotEmpty
-  @Schema(
-      description = "Software Product Description")
+  @Schema(description = "Software Product Description")
   String description;
-  
+
   @JsonProperty("uri")
   @Schema(description = "Software Product URI")
   @NotNull
   URI uri;
-  
+
   @JsonProperty("redirectUris")
   @Schema(description = "Software Product Redirect URI List")
   @NotNull
   List<URI> redirectUris;
-  
+
   @JsonProperty("logoUri")
   @Schema(description = "Software Product Logo URI")
   @NotNull
   URI logoUri;
-  
+
   @JsonProperty("jwksUri")
   @Schema(description = "JWKS URI")
   @NotNull
   URI jwksUri;
 
-  
+
   @JsonProperty("tosUri")
   @Schema(description = "Software Product TOS URI")
   @NotNull
@@ -90,9 +88,9 @@ public class DioSoftwareProduct {
   @NotNull
   @Builder.Default
   RegisterSoftwareRole softwareRole = RegisterSoftwareRole.DATA_RECIPIENT_SOFTWARE_PRODUCT;
-  
+
   @JsonProperty("scopes")
   @Schema(description = "Scopes this Software Product has access to")
   List<CDRScope> scopes;
-  
+
 }

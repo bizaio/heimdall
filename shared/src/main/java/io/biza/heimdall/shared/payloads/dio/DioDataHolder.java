@@ -4,7 +4,6 @@ import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import org.hibernate.cache.spi.access.AccessType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,25 +22,25 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "The data that is common to all organisations, regardless of the type (e.g. company, trust, partnership, government)")
+@Schema(
+    description = "The data that is common to all organisations, regardless of the type (e.g. company, trust, partnership, government)")
 public class DioDataHolder {
-  
+
   @JsonProperty("id")
   @NotNull
   @Schema(description = "Data Holder Identifier", accessMode = AccessMode.READ_ONLY)
   UUID id;
-  
+
   @JsonProperty("name")
   @NotEmpty
-  @Schema(
-      description = "Unique legal name of the organisation")
+  @Schema(description = "Unique legal name of the organisation")
   String name;
-  
+
   @JsonProperty("legalEntity")
   @NotNull
   @Schema(description = "Legal Entity details for Data Holder")
   DioLegalEntity legalEntity;
-  
+
   @JsonProperty("industry")
   @NotNull
   IndustryType industry;

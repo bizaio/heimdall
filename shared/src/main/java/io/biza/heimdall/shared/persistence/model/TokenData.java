@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.model;
 
@@ -56,32 +54,33 @@ public class TokenData {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
-  
+
   @ManyToOne
-  @JoinColumn(name = "CLIENT_ID", nullable = true, foreignKey = @ForeignKey(name = "TOKEN_CLIENT_ID_FK"))
+  @JoinColumn(name = "CLIENT_ID", nullable = true,
+      foreignKey = @ForeignKey(name = "TOKEN_CLIENT_ID_FK"))
   @ToString.Exclude
   ClientData client;
 
   @Column(name = "TOKEN_TYPE")
   @Enumerated(EnumType.STRING)
   HeimdallTokenType tokenType;
-    
+
   @Column(name = "EXPIRY")
   OffsetDateTime expiry;
-  
+
   @Column(name = "CREATED")
   @CreationTimestamp
   OffsetDateTime created;
-  
+
   @Column(name = "AUDIENCE")
   String audience;
 
   @Column(name = "AUTHENTICATION_TIME")
   OffsetDateTime authenticationTime;
-  
+
   @Column(name = "SCOPE")
   @ElementCollection
   @NotNull
   List<String> scopes;
-  
+
 }

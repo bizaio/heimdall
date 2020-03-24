@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.model;
 
@@ -24,8 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -60,35 +56,36 @@ public class DataHolderBrandData {
   @Column(name = "ID", updatable = false)
   @Type(type = "uuid-char")
   UUID id;
-    
+
   @Column(name = "BRAND_NAME")
   @NotNull
   String brandName;
-  
+
   @ManyToOne
-  @JoinColumn(name = "DATA_HOLDER_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_HOLDER_BRAND_DATA_HOLDER_FK"))
+  @JoinColumn(name = "DATA_HOLDER_ID", nullable = false,
+      foreignKey = @ForeignKey(name = "DATA_HOLDER_BRAND_DATA_HOLDER_FK"))
   @ToString.Exclude
   DataHolderData dataHolder;
-    
+
   @Column(name = "LOGO_URI")
   @NotNull
   URI logoUri;
-  
+
   @Column(name = "STATUS")
   @Enumerated(EnumType.STRING)
   DataHolderStatusType status;
-  
+
   @OneToOne(mappedBy = "dataHolderBrand", cascade = CascadeType.ALL, optional = true)
   DataHolderBrandEndpointData endpointDetail;
-  
+
   @OneToMany(mappedBy = "dataHolderBrand", cascade = CascadeType.ALL)
   @ToString.Exclude
   Set<DataHolderBrandAuthData> authDetails;
-  
+
   @UpdateTimestamp
   @Column(name = "LAST_UPDATED")
   OffsetDateTime lastUpdated;
-  
+
   @PrePersist
   public void prePersist() {
     if (authDetails() != null) {
@@ -96,8 +93,8 @@ public class DataHolderBrandData {
         one.dataHolderBrand(this);
       }
     }
-    
-    if(dataHolder() != null) {
+
+    if (dataHolder() != null) {
       Set<DataHolderBrandData> brands = new HashSet<DataHolderBrandData>();
       brands.addAll(dataHolder.dataHolderBrands());
       brands.add(this);
@@ -107,6 +104,6 @@ public class DataHolderBrandData {
       endpointDetail.dataHolderBrand(this);
     }
   }
-  
-  
+
+
 }

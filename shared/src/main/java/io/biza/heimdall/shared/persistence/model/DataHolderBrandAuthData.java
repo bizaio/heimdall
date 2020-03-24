@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.model;
 
@@ -56,28 +54,29 @@ public class DataHolderBrandAuthData {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
-  
+
   @ManyToOne
-  @JoinColumn(name = "DATA_HOLDER_BRAND_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_HOLDER_BRAND_AUTH_DATA_HOLDER_BRAND_FK"))
+  @JoinColumn(name = "DATA_HOLDER_BRAND_ID", nullable = false,
+      foreignKey = @ForeignKey(name = "DATA_HOLDER_BRAND_AUTH_DATA_HOLDER_BRAND_FK"))
   DataHolderBrandData dataHolderBrand;
-    
+
   @Column(name = "AUTH_TYPE")
   @Enumerated(EnumType.STRING)
   @Builder.Default
   RegisterAuthType authType = RegisterAuthType.HYBRIDFLOW_JWKS;
-  
+
   @Column(name = "JWKS_ENDPOINT")
   @NotNull
   URI jwksEndpoint;
-  
+
   @PrePersist
   public void prePersist() {
-    if(dataHolderBrand() != null) {
+    if (dataHolderBrand() != null) {
       Set<DataHolderBrandAuthData> authData = new HashSet<DataHolderBrandAuthData>();
       authData.addAll(dataHolderBrand.authDetails());
       authData.add(this);
       dataHolderBrand.authDetails(authData);
     }
   }
-  
+
 }

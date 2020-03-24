@@ -2,9 +2,7 @@ package io.biza.heimdall.shared.component.persistence;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
-import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.babelfish.oidc.enumerations.JWSSigningAlgorithmType;
 import io.biza.babelfish.oidc.payloads.JWTClaims;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
@@ -27,16 +22,12 @@ import io.biza.heimdall.shared.component.functions.ValidationService;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
-import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
 import io.biza.heimdall.shared.util.MessageUtil;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
-import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

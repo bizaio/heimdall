@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.model;
 
@@ -23,8 +21,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -57,41 +53,42 @@ public class DataRecipientBrandData {
   @Column(name = "ID", updatable = false)
   @Type(type = "uuid-char")
   UUID id;
-  
+
   @ManyToOne
-  @JoinColumn(name = "DATA_RECIPIENT_ID", nullable = false, foreignKey = @ForeignKey(name = "DATA_RECIPIENT_BRAND_ID_FK"))
+  @JoinColumn(name = "DATA_RECIPIENT_ID", nullable = false,
+      foreignKey = @ForeignKey(name = "DATA_RECIPIENT_BRAND_ID_FK"))
   @NotNull
   DataRecipientData dataRecipient;
-  
+
   @Column(name = "BRAND_NAME")
   String brandName;
-  
+
   @Column(name = "LOGO_URI")
   URI logoUri;
-  
+
   @OneToMany(mappedBy = "dataRecipientBrand", cascade = CascadeType.ALL)
   Set<SoftwareProductData> softwareProducts;
-  
+
   @Column(name = "STATUS")
   @Enumerated(EnumType.STRING)
   DataRecipientBrandStatusType status;
-  
+
   @PrePersist
   public void prePersist() {
-    if(dataRecipient() != null) {
+    if (dataRecipient() != null) {
       Set<DataRecipientBrandData> brands = new HashSet<DataRecipientBrandData>();
-      if(dataRecipient.dataRecipientBrands() != null) {
+      if (dataRecipient.dataRecipientBrands() != null) {
         brands.addAll(dataRecipient.dataRecipientBrands());
       }
       brands.add(this);
       dataRecipient.dataRecipientBrands(brands);
     }
-    
-    if(softwareProducts != null) {
-      for(SoftwareProductData one : softwareProducts) {
+
+    if (softwareProducts != null) {
+      for (SoftwareProductData one : softwareProducts) {
         one.dataRecipientBrand(this);
       }
     }
   }
-  
+
 }

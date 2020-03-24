@@ -1,6 +1,5 @@
 package io.biza.heimdall.shared.component.persistence;
 
-import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,12 +12,7 @@ import io.biza.heimdall.shared.component.functions.ValidationService;
 import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
-import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
@@ -73,7 +67,7 @@ public class RecipientBrandService {
         savedDataRecipientBrand));
     return mapper.map(savedDataRecipientBrand, DioDataRecipientBrand.class);
   }
-  
+
   public Page<DioDataRecipientBrand> list(Specification<DataRecipientBrandData> specification,
       Pageable pageable) {
 
@@ -97,9 +91,9 @@ public class RecipientBrandService {
     /**
      * Reconstruct Page
      */
-    Page<DioDataRecipientBrand> page =
-        new PageImpl<DioDataRecipientBrand>(mapper.mapAsList(data.getContent(), DioDataRecipientBrand.class),
-            data.getPageable(), data.getTotalElements());
+    Page<DioDataRecipientBrand> page = new PageImpl<DioDataRecipientBrand>(
+        mapper.mapAsList(data.getContent(), DioDataRecipientBrand.class), data.getPageable(),
+        data.getTotalElements());
 
     /**
      * Map as a list

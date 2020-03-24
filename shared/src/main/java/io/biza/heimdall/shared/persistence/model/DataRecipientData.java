@@ -1,15 +1,13 @@
 /*******************************************************************************
  * Copyright (C) 2020 Biza Pty Ltd
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.model;
 
@@ -59,30 +57,30 @@ public class DataRecipientData {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
-  
+
   @OneToOne(mappedBy = "dataRecipient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @NotNull
   LegalEntityData legalEntity;
-  
+
   @Column(name = "REGISTER_INDUSTRY")
   @Enumerated(EnumType.STRING)
   IndustryType industry;
-    
+
   @Column(name = "LOGO_URI")
   URI logoUri;
-  
+
   @OneToMany(mappedBy = "dataRecipient", cascade = CascadeType.ALL)
   @ToString.Exclude
   Set<DataRecipientBrandData> dataRecipientBrands;
-  
+
   @Column(name = "STATUS")
   @Enumerated(EnumType.STRING)
   DataRecipientStatusType status;
-  
+
   @UpdateTimestamp
   @Column(name = "LAST_UPDATED")
   OffsetDateTime lastUpdated;
-  
+
   @PrePersist
   public void prePersist() {
     if (dataRecipientBrands() != null) {
@@ -94,5 +92,5 @@ public class DataRecipientData {
       legalEntity().dataRecipient(this);
     }
   }
-  
+
 }

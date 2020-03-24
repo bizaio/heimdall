@@ -1,6 +1,5 @@
 package io.biza.heimdall.shared.component.persistence;
 
-import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;

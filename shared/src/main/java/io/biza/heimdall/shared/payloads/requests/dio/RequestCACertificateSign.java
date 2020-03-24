@@ -29,14 +29,14 @@ public class RequestCACertificateSign {
   @Min(1)
   @Builder.Default
   Integer validity = 1;
-  
+
   @JsonProperty("certificateType")
   @NotNull
   CertificateType certificateType;
-  
+
   @JsonProperty("commonName")
   @NotNull
   String commonName;
-  
-  
+
+
 }

@@ -59,10 +59,10 @@ public class HeimdallCertificateInitialision implements InitializingBean {
 
   @Value("${heimdall.ssl-initialiser-hostname:localhost}")
   public String HOSTNAME;
-  
+
   @Value("${server.ssl.key-alias:heimdall-service}")
   public String keystoreServiceKey;
-  
+
   @Value("${heimdall.ca-keystore-id:heimdall-ca}")
   public String keystoreCaServiceKey;
 
@@ -170,13 +170,13 @@ public class HeimdallCertificateInitialision implements InitializingBean {
         .generateCertificate(new ByteArrayInputStream(resultCert.getEncoded()));
     certificateChain[1] = (X509Certificate) CertificateFactory.getInstance("X.509")
         .generateCertificate(new ByteArrayInputStream(caCertificate.getEncoded()));
-    
+
     /**
      * Load the CA on it's own so we can validate our own certificates
      */
     X509Certificate caCertificateStore = (X509Certificate) CertificateFactory.getInstance("X.509")
         .generateCertificate(new ByteArrayInputStream(caCertificate.getEncoded()));
-    
+
     /**
      * Save this keystore
      */

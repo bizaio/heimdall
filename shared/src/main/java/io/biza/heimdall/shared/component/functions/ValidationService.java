@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.util.ValidationUtil;
 
 @Service

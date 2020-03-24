@@ -1,6 +1,5 @@
 package io.biza.heimdall.shared.component.persistence;
 
-import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,8 +13,6 @@ import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
-import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
 import io.biza.heimdall.shared.util.MessageUtil;
@@ -56,8 +53,8 @@ public class HolderService {
   }
 
   public Page<DioDataHolder> list(Specification<DataHolderData> specification, Pageable pageable) {
-    
-    if(specification == null) {
+
+    if (specification == null) {
       specification = Specification.where(null);
     }
 

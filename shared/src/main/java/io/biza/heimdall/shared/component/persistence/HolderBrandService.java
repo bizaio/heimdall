@@ -1,11 +1,9 @@
 package io.biza.heimdall.shared.component.persistence;
 
-import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -72,8 +70,8 @@ public class HolderBrandService {
 
   public Page<DioDataHolderBrand> list(Specification<DataHolderBrandData> specification,
       Pageable pageable) {
-    
-    if(specification == null) {
+
+    if (specification == null) {
       specification = Specification.where(null);
     }
 
@@ -85,9 +83,10 @@ public class HolderBrandService {
     if (pageable != null) {
       dataHolderBrandData = holderBrandRepository.findAll(specification, pageable);
     } else {
-      dataHolderBrandData = new PageImpl<DataHolderBrandData>(holderBrandRepository.findAll(specification));
+      dataHolderBrandData =
+          new PageImpl<DataHolderBrandData>(holderBrandRepository.findAll(specification));
     }
-    
+
     /**
      * Reconstruct Page
      */
