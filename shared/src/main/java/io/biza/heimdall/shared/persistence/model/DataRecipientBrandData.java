@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,6 +32,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientBrandStatusType;
+import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -64,6 +66,7 @@ public class DataRecipientBrandData {
   String brandName;
 
   @Column(name = "LOGO_URI")
+  @Convert(converter = URIDataConverter.class)  
   URI logoUri;
 
   @OneToMany(mappedBy = "dataRecipientBrand", cascade = CascadeType.ALL)

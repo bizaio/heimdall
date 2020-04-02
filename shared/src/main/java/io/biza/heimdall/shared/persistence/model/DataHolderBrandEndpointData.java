@@ -14,6 +14,7 @@ package io.biza.heimdall.shared.persistence.model;
 import java.net.URI;
 import java.util.UUID;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,6 +31,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.register.CDRVersionType;
+import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -68,15 +70,19 @@ public class DataHolderBrandEndpointData {
   URI publicBaseUri;
 
   @Column(name = "RESOURCE_BASE_URI")
+  @Convert(converter = URIDataConverter.class)  
   URI resourceBaseUri;
 
   @Column(name = "INFOSEC_BASE_URI")
+  @Convert(converter = URIDataConverter.class)  
   URI infosecBaseUri;
 
   @Column(name = "EXTENSION_BASE_URI")
+  @Convert(converter = URIDataConverter.class)  
   URI extensionBaseUri;
 
   @Column(name = "WEBSITE_URI")
+  @Convert(converter = URIDataConverter.class)  
   URI websiteUri;
 
   @PrePersist

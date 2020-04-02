@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,6 +35,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
+import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,6 +69,7 @@ public class DataRecipientData {
   IndustryType industry;
 
   @Column(name = "LOGO_URI")
+  @Convert(converter = URIDataConverter.class)  
   URI logoUri;
 
   @OneToMany(mappedBy = "dataRecipient", cascade = CascadeType.ALL)

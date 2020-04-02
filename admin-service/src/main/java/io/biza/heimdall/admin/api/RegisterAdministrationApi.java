@@ -3,7 +3,6 @@ package io.biza.heimdall.admin.api;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.RegisterAdministrationApiDelegate;
 import io.biza.heimdall.shared.payloads.requests.dio.RequestCACertificateSign;
-import io.biza.heimdall.shared.payloads.requests.dio.RequestJwkCreate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

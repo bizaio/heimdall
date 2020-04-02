@@ -1,4 +1,4 @@
-package io.biza.heimdall.shared.component.persistence;
+package io.biza.heimdall.shared.component.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

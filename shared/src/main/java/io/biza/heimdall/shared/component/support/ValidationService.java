@@ -1,4 +1,4 @@
-package io.biza.heimdall.shared.component.functions;
+package io.biza.heimdall.shared.component.support;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;

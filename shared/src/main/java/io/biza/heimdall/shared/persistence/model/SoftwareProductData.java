@@ -18,6 +18,7 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,6 +38,7 @@ import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.cdr.enumerations.register.RegisterSoftwareRole;
 import io.biza.babelfish.cdr.enumerations.register.SoftwareProductStatusType;
+import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -83,27 +85,34 @@ public class SoftwareProductData {
   String description;
 
   @Column(name = "URI")
+  @Convert(converter = URIDataConverter.class)
   URI uri;
 
   @ElementCollection(targetClass = URI.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "SOFTWARE_PRODUCT_REDIRECT_URIS",
       joinColumns = @JoinColumn(name = "SOFTWARE_PRODUCT_ID"))
   @Column(name = "REDIRECT_URIS", nullable = false)
+  @Convert(converter = URIDataConverter.class)  
   Set<URI> redirectUris;
 
   @Column(name = "LOGO_URI")
+  @Convert(converter = URIDataConverter.class)
   URI logoUri;
 
   @Column(name = "TOS_URI")
+  @Convert(converter = URIDataConverter.class)
   URI tosUri;
 
   @Column(name = "POLICY_URI")
+  @Convert(converter = URIDataConverter.class)
   URI policyUri;
 
   @Column(name = "JWKS_URI")
+  @Convert(converter = URIDataConverter.class)
   URI jwksUri;
 
   @Column(name = "REVOCATION_URI")
+  @Convert(converter = URIDataConverter.class)
   URI revocationUri;
 
   @Column(name = "ROLE", nullable = false)

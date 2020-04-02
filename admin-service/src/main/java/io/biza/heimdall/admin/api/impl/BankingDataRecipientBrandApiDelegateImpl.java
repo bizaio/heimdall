@@ -1,26 +1,17 @@
 package io.biza.heimdall.admin.api.impl;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandApiDelegate;
-import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
-import io.biza.heimdall.shared.component.persistence.RecipientBrandService;
-import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
+import io.biza.heimdall.shared.component.service.RecipientBrandService;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientData;
-import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
-import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
 import io.biza.heimdall.shared.persistence.specifications.RecipientBrandSpecifications;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package io.biza.heimdall.shared.component.persistence;
+package io.biza.heimdall.shared.component.service;
 
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import io.biza.heimdall.shared.Messages;
-import io.biza.heimdall.shared.component.functions.ValidationService;
-import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
+import io.biza.heimdall.shared.component.support.HeimdallMapper;
+import io.biza.heimdall.shared.component.support.ValidationService;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;

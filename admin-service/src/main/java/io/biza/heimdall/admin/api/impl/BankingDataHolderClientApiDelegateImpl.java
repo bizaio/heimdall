@@ -1,27 +1,17 @@
 package io.biza.heimdall.admin.api.impl;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderClientApiDelegate;
-import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
-import io.biza.heimdall.shared.component.persistence.ClientService;
-import io.biza.heimdall.shared.component.persistence.HolderBrandService;
-import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
+import io.biza.heimdall.shared.component.service.ClientService;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderClient;
-import io.biza.heimdall.shared.persistence.model.ClientData;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
-import io.biza.heimdall.shared.persistence.repository.ClientRepository;
-import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
 import io.biza.heimdall.shared.persistence.specifications.ClientSpecifications;
 import lombok.extern.slf4j.Slf4j;
 

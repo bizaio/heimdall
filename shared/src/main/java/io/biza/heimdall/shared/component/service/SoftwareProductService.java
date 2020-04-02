@@ -1,4 +1,4 @@
-package io.biza.heimdall.shared.component.persistence;
+package io.biza.heimdall.shared.component.service;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -18,8 +18,8 @@ import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.babelfish.spring.interfaces.JWKService;
 import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.Messages;
-import io.biza.heimdall.shared.component.functions.ValidationService;
-import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
+import io.biza.heimdall.shared.component.support.HeimdallMapper;
+import io.biza.heimdall.shared.component.support.ValidationService;
 import io.biza.heimdall.shared.exceptions.NotFoundException;
 import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;

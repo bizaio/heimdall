@@ -1,4 +1,4 @@
-package io.biza.heimdall.shared.component.configuration;
+package io.biza.heimdall.shared.component.security;
 
 import java.security.Provider;
 import java.security.Security;
