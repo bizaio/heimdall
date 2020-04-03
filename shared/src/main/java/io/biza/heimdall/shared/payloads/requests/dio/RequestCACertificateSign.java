@@ -1,10 +1,8 @@
 package io.biza.heimdall.shared.payloads.requests.dio;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.biza.babelfish.cdr.enumerations.register.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,23 +18,12 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Request to generate one or more Register JWKs")
+@Schema(description = "Request to sign a provided CSR with the Register CA")
 public class RequestCACertificateSign {
 
-  @JsonProperty("validity")
+  @JsonProperty("csr")
   @NotNull
-  @Schema(description = "How many years to sign the certificate for", defaultValue = "1")
-  @Min(1)
-  @Builder.Default
-  Integer validity = 1;
-
-  @JsonProperty("certificateType")
-  @NotNull
-  CertificateType certificateType;
-
-  @JsonProperty("commonName")
-  @NotNull
-  String commonName;
+  String csr;
 
 
 }

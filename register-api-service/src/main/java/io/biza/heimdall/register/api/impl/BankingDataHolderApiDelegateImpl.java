@@ -11,9 +11,8 @@ import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderB
 import io.biza.babelfish.cdr.models.responses.register.RequestGetDataHolderBrands;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandList;
 import io.biza.heimdall.register.api.delegate.BankingDataHolderApiDelegate;
-import io.biza.heimdall.shared.component.mapper.HeimdallMapper;
-import io.biza.heimdall.shared.component.persistence.HolderBrandService;
-import io.biza.heimdall.shared.component.persistence.RecipientService;
+import io.biza.heimdall.shared.component.service.HolderBrandService;
+import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;

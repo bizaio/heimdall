@@ -20,5 +20,7 @@ import io.biza.heimdall.shared.persistence.model.DataHolderData;
 @Repository
 public interface DataHolderRepository
     extends JpaRepository<DataHolderData, UUID>, JpaSpecificationExecutor<DataHolderData> {
+  
+  public boolean existsByName(String name);
 
 }

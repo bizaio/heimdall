@@ -70,20 +70,10 @@ public class DataHolderData {
   @ToString.Exclude
   Set<DataHolderBrandData> dataHolderBrands;
 
-  @OneToMany(mappedBy = "dataHolder", cascade = CascadeType.ALL)
-  @ToString.Exclude
-  Set<ClientData> clients;
-
-
   @PrePersist
   public void prePersist() {
     if (dataHolderBrands() != null) {
       for (DataHolderBrandData one : dataHolderBrands) {
-        one.dataHolder(this);
-      }
-    }
-    if (clients() != null) {
-      for (ClientData one : clients) {
         one.dataHolder(this);
       }
     }

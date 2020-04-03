@@ -18,5 +18,5 @@ import io.biza.heimdall.shared.persistence.model.LegalEntityData;
 
 @Repository
 public interface LegalEntityRepository extends JpaRepository<LegalEntityData, UUID> {
-
+  public boolean existsByLegalName(String name);
 }

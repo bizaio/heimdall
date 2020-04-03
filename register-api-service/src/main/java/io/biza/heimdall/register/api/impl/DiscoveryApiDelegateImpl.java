@@ -15,8 +15,7 @@ import io.biza.babelfish.oidc.requests.ProviderDiscoveryMetadata;
 import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import io.biza.babelfish.spring.interfaces.JWKService;
 import io.biza.heimdall.register.api.delegate.DiscoveryApiDelegate;
-import io.biza.heimdall.shared.component.persistence.KeyService;
-import io.biza.heimdall.shared.persistence.repository.RegisterAuthorityTLSRepository;
+import io.biza.heimdall.shared.component.service.KeyService;
 import lombok.extern.slf4j.Slf4j;
 
 @Validated

@@ -15,7 +15,6 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -29,7 +28,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -68,10 +66,6 @@ public class SoftwareProductData {
   @ToString.Exclude
   @NotNull
   DataRecipientBrandData dataRecipientBrand;
-
-  @OneToMany(mappedBy = "softwareProduct", cascade = CascadeType.ALL)
-  @ToString.Exclude
-  Set<ClientData> clients;
 
   @Column(name = "STATUS")
   @Enumerated(EnumType.STRING)

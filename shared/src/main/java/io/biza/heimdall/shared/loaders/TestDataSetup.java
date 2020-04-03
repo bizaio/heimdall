@@ -29,9 +29,7 @@ import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import io.biza.babelfish.cdr.enumerations.register.RegisterAuthType;
 import io.biza.heimdall.shared.TestDataConstants;
-import io.biza.heimdall.shared.enumerations.DioClientCredentialType;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
-import io.biza.heimdall.shared.persistence.model.ClientData;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandEndpointData;
@@ -40,7 +38,6 @@ import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.LegalEntityData;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
-import io.biza.heimdall.shared.persistence.repository.ClientRepository;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
 import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
@@ -70,14 +67,10 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
   @Autowired
   LegalEntityRepository legalRepository;
 
-  @Autowired
-  ClientRepository clientRepository;
-
-
   @Override
   public void onApplicationEvent(final ApplicationReadyEvent event) {
 
-    if (!clientRepository.existsById(UUID.fromString(TestDataConstants.HOLDER_CLIENT_ID))) {
+    if (!holderRepository.existsByName(TestDataConstants.HOLDER_NAME)) {
       LOG.warn("Loading Test Data Holder information");
       DataHolderData holder = holderRepository.save(DataHolderData.builder()
           .industry(IndustryType.BANKING)
@@ -103,16 +96,9 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
 
       LOG.info("Loaded holder as {}", holder);
 
-      ClientData holderClient = clientRepository
-          .save(ClientData.builder().id(UUID.fromString(TestDataConstants.HOLDER_CLIENT_ID))
-              .credentialType(DioClientCredentialType.CLIENT_CREDENTIALS_SECRET)
-              .clientSecret(TestDataConstants.HOLDER_CLIENT_SECRET).build().dataHolder(holder));
-
-      LOG.info("Loaded holder client as {}", holderClient);
-
     }
 
-    if (!clientRepository.existsById(UUID.fromString(TestDataConstants.RECIPIENT_CLIENT_ID))) {
+    if(!legalRepository.existsByLegalName(TestDataConstants.RECIPIENT_LEGAL_NAME)) {
       LOG.warn("Loading Test Data Recipient information");
 
 
@@ -156,16 +142,6 @@ public class TestDataSetup implements ApplicationListener<ApplicationReadyEvent>
           .dataRecipientBrand(brand));
 
       LOG.info("Saved: {}", product);
-
-      ClientData recipientClient =
-          ClientData.builder().credentialType(DioClientCredentialType.CLIENT_CREDENTIALS_ASSERTION)
-              .id(UUID.fromString(TestDataConstants.RECIPIENT_CLIENT_ID)).build()
-              .softwareProduct(product);
-
-      LOG.info("Saving {}", recipientClient);
-
-      clientRepository.save(recipientClient);
-
       LOG.info("Test Data Setup Completed");
 
     }

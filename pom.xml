@@ -65,7 +65,6 @@
     <modules>
         <module>shared</module>
         <module>admin-service</module>
-        <module>auth-service</module>
         <module>register-api-service</module>
     </modules>
 
