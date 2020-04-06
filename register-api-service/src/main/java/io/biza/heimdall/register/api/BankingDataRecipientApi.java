@@ -8,7 +8,7 @@ import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
+import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

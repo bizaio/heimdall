@@ -43,31 +43,4 @@ public class Constants {
   public final static String SECURITY_SCOPE_KEY_ADMIN = "HEIMDALL:ADMIN:KEY:ADMIN";
   public final static String OAUTH2_SCOPE_KEY_ADMIN =
       "hasAuthority('SCOPE_" + SECURITY_SCOPE_KEY_ADMIN + "')";
-
-
-
-  /**
-   * Response codes as strings
-   */
-  public final static String RESPONSE_CODE_CREATED = "201";
-  public final static String RESPONSE_CODE_OK = "200";
-  public final static String RESPONSE_CODE_NOT_FOUND = "404";
-  public final static String RESPONSE_CODE_NO_CONTENT = "204";
-  public final static String RESPONSE_CODE_UNPROCESSABLE_ENTITY = "422";
-
-  /**
-   * Response descriptions
-   */
-  public final static String RESPONSE_SUCCESSFUL_LIST =
-      "Successful Response containing list of requested objects";
-  public final static String RESPONSE_SUCCESSFUL_READ = "Success";
-  public final static String RESPONSE_SUCCESSFUL_CREATE =
-      "Successfully created new object with content returned";
-  public final static String RESPONSE_SUCCESSFUL_DELETE =
-      "Successfully deleted object specified in request with no content returned";
-  public final static String RESPONSE_SUCCESSFUL_UPDATE =
-      "Successfully updated object specified with updated object returned";
-  public final static String RESPONSE_OBJECT_NOT_FOUND = "Requested Object could not be found";
-  public final static String RESPONSE_INPUT_VALIDATION_ERROR =
-      "Provided request details contains validation errors, validation errors are included in the response";
 }

@@ -7,17 +7,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import io.biza.babelfish.spring.exceptions.ValidationListException;
+import io.biza.babelfish.spring.service.ValidationService;
+import io.biza.babelfish.spring.util.MessageUtil;
 import io.biza.heimdall.shared.Messages;
 import io.biza.heimdall.shared.component.support.HeimdallMapper;
-import io.biza.heimdall.shared.component.support.ValidationService;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
+import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
-import io.biza.heimdall.shared.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -54,7 +54,7 @@ public class RecipientBrandService {
      * Validate input data
      */
     validationService.validate(recipientBrand, MessageUtil.format(
-        Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, recipientBrand));
+        io.biza.babelfish.spring.Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, recipientBrand));
 
     /**
      * Create Data Recipient Brand Record
@@ -63,7 +63,7 @@ public class RecipientBrandService {
         mapper.map(recipientBrand, DataRecipientBrandData.class).dataRecipient(recipientData);
     DataRecipientBrandData savedDataRecipientBrand =
         recipientBrandRepository.save(dataRecipientBrandData);
-    LOG.debug(MessageUtil.format(Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
         savedDataRecipientBrand));
     return mapper.map(savedDataRecipientBrand, DioDataRecipientBrand.class);
   }
@@ -86,7 +86,7 @@ public class RecipientBrandService {
       data = new PageImpl<DataRecipientBrandData>(recipientBrandRepository.findAll(specification));
     }
 
-    LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB, data));
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB, data));
 
     /**
      * Reconstruct Page
@@ -112,7 +112,7 @@ public class RecipientBrandService {
      * Validate input data
      */
     validationService.validate(recipientBrand, MessageUtil.format(
-        Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, recipientBrand));
+        io.biza.babelfish.spring.Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, recipientBrand));
 
     /**
      * Locate existing recipient
@@ -129,7 +129,7 @@ public class RecipientBrandService {
     mapper.map(recipientBrand, recipientBrandData);
     DataRecipientBrandData savedDataRecipientBrand =
         recipientBrandRepository.save(recipientBrandData);
-    LOG.debug(MessageUtil.format(Messages.UPDATED_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.UPDATED_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
         savedDataRecipientBrand));
     return mapper.map(savedDataRecipientBrand, DioDataRecipientBrand.class);
   }

@@ -29,7 +29,7 @@ import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.service.RecipientService;
 import io.biza.heimdall.shared.component.service.SoftwareProductService;
 import io.biza.heimdall.shared.component.support.HeimdallMapper;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
+import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;

@@ -31,7 +31,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.register.CDRVersionType;
-import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
+import io.biza.babelfish.spring.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

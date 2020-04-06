@@ -27,12 +27,10 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import io.biza.babelfish.cdr.exceptions.LabelValueEnumValueNotSupportedException;
 import io.biza.babelfish.cdr.support.LabelValueEnumInterface;
-import io.biza.heimdall.shared.component.ExceptionAdvice;
-import io.biza.heimdall.shared.enumerations.DioValidationErrorType;
-import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
-import io.biza.heimdall.shared.payloads.dio.ResponseValidationError;
-import io.biza.heimdall.shared.payloads.dio.ValidationError;
+import io.biza.babelfish.spring.controlleradvice.BabelfishExceptionAdvice;
+import io.biza.babelfish.spring.exceptions.ValidationListException;
+import io.biza.babelfish.spring.payloads.ResponseValidationError;
+import io.biza.babelfish.spring.payloads.BabelValidationError;
 import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +41,6 @@ import javax.validation.ConstraintViolationException;
 
 @Slf4j
 @ControllerAdvice
-public class ExceptionController extends ExceptionAdvice {
+public class ExceptionController extends BabelfishExceptionAdvice {
   
 }

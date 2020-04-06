@@ -10,7 +10,7 @@ import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecip
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
 import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
+import io.biza.babelfish.spring.exceptions.NotFoundException;
 
 public interface BankingDataRecipientApiDelegate {
   default Optional<NativeWebRequest> getRequest() {

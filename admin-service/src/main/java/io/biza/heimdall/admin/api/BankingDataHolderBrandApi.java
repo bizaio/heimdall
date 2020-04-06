@@ -1,9 +1,9 @@
 package io.biza.heimdall.admin.api;
 
+import io.biza.babelfish.spring.exceptions.ValidationListException;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderBrandApiDelegate;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
+import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -39,8 +39,8 @@ public interface BankingDataHolderBrandApi {
   @Operation(summary = "List all Holder Brands", description = "List all Holder Brands",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_HOLDER_READ})})
-  @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-      description = Constants.RESPONSE_SUCCESSFUL_LIST, content = @Content(
+  @ApiResponses(value = {@ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+      description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_LIST, content = @Content(
           array = @ArraySchema(schema = @Schema(implementation = DioDataHolderBrand.class))))})
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_READ)
@@ -54,11 +54,11 @@ public interface BankingDataHolderBrandApi {
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_HOLDER_READ})})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-          description = Constants.RESPONSE_SUCCESSFUL_READ,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_READ,
           content = @Content(schema = @Schema(implementation = DioDataHolderBrand.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_NOT_FOUND,
-          description = Constants.RESPONSE_OBJECT_NOT_FOUND)})
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_NOT_FOUND,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_OBJECT_NOT_FOUND)})
   @GetMapping(value = "/{brandId}", produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_READ)
   default ResponseEntity<DioDataHolderBrand> getHolderBrand(
@@ -72,11 +72,11 @@ public interface BankingDataHolderBrandApi {
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_HOLDER_WRITE})})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_CREATED,
-          description = Constants.RESPONSE_SUCCESSFUL_CREATE,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_CREATED,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_CREATE,
           content = @Content(schema = @Schema(implementation = DioDataHolderBrand.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_INPUT_VALIDATION_ERROR,
           content = @Content(array = @ArraySchema(
               schema = @Schema(implementation = ValidationListException.class))))})
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -93,11 +93,11 @@ public interface BankingDataHolderBrandApi {
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_HOLDER_WRITE})})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-          description = Constants.RESPONSE_SUCCESSFUL_UPDATE,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_UPDATE,
           content = @Content(schema = @Schema(implementation = DioDataHolderBrand.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_INPUT_VALIDATION_ERROR,
           content = @Content(array = @ArraySchema(
               schema = @Schema(implementation = ValidationListException.class))))})
   @PutMapping(path = "/{brandId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -115,11 +115,11 @@ public interface BankingDataHolderBrandApi {
           scopes = {Constants.SECURITY_SCOPE_HOLDER_WRITE})})
 
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-          description = Constants.RESPONSE_SUCCESSFUL_DELETE,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_DELETE,
           content = @Content(schema = @Schema(implementation = DioDataHolderBrand.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_NOT_FOUND,
-          description = Constants.RESPONSE_OBJECT_NOT_FOUND)})
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_NOT_FOUND,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_OBJECT_NOT_FOUND)})
   @DeleteMapping(path = "/{brandId}")
   @PreAuthorize(Constants.OAUTH2_SCOPE_HOLDER_WRITE)
   default ResponseEntity<Void> deleteHolderBrand(

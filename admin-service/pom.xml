@@ -66,6 +66,10 @@
             <version>${springdoc-openapi-ui.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>          
+        <dependency>
             <groupId>io.biza</groupId>
             <artifactId>heimdall-shared</artifactId>
             <version>${project.version}</version>

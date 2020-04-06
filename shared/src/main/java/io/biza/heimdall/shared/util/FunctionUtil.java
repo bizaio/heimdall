@@ -11,12 +11,12 @@ import org.springframework.integration.http.HttpHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
-import io.biza.heimdall.shared.enumerations.DioValidationErrorType;
-import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
-import io.biza.heimdall.shared.payloads.dio.ResponseValidationError;
-import io.biza.heimdall.shared.payloads.dio.ValidationError;
+import io.biza.babelfish.spring.exceptions.ValidationListException;
+import io.biza.babelfish.spring.payloads.ResponseValidationError;
+import io.biza.babelfish.spring.payloads.BabelValidationError;
+import io.biza.babelfish.spring.enumerations.BabelExceptionType;
+import io.biza.babelfish.spring.enumerations.BabelValidationErrorType;
+import io.biza.babelfish.spring.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -65,16 +65,16 @@ public class FunctionUtil {
 
 
   public static <T> Message<ResponseValidationError> validationErrors(
-      Set<ConstraintViolation<T>> violations, HeimdallExceptionType type, String explanation) {
+      Set<ConstraintViolation<T>> violations, BabelExceptionType type, String explanation) {
 
-    List<ValidationError> validationErrors = new ArrayList<ValidationError>();
+    List<BabelValidationError> validationErrors = new ArrayList<BabelValidationError>();
 
     if (violations != null) {
       for (ConstraintViolation<T> violation : violations) {
         validationErrors
-            .add(ValidationError.builder().fields(List.of(violation.getPropertyPath().toString()))
+            .add(BabelValidationError.builder().fields(List.of(violation.getPropertyPath().toString()))
                 .message(StringUtils.capitalize(violation.getMessage()))
-                .type(DioValidationErrorType.ATTRIBUTE_INVALID).build());
+                .type(BabelValidationErrorType.ATTRIBUTE_INVALID).build());
       }
     }
 

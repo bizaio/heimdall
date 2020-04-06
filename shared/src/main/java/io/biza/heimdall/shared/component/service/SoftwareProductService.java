@@ -15,18 +15,18 @@ import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.oidc.enumerations.JWSSigningAlgorithmType;
 import io.biza.babelfish.oidc.payloads.JWTClaims;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
+import io.biza.babelfish.spring.exceptions.ValidationListException;
 import io.biza.babelfish.spring.interfaces.JWKService;
+import io.biza.babelfish.spring.service.ValidationService;
+import io.biza.babelfish.spring.util.MessageUtil;
 import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.Messages;
 import io.biza.heimdall.shared.component.support.HeimdallMapper;
-import io.biza.heimdall.shared.component.support.ValidationService;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
+import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
-import io.biza.heimdall.shared.util.MessageUtil;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,7 +68,7 @@ public class SoftwareProductService {
      * Validate input data
      */
     validationService.validate(softwareProduct, MessageUtil.format(
-        Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, softwareProduct));
+        io.biza.babelfish.spring.Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, softwareProduct));
 
     /**
      * Create Data Recipient Brand Record
@@ -79,7 +79,7 @@ public class SoftwareProductService {
     softwareProductData.dataRecipientBrand(brandData);
     SoftwareProductData savedBrandSoftwareProduct =
         softwareProductRepository.save(softwareProductData);
-    LOG.debug(MessageUtil.format(Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
         savedBrandSoftwareProduct));
     return mapper.map(savedBrandSoftwareProduct, DioSoftwareProduct.class);
   }
@@ -102,7 +102,7 @@ public class SoftwareProductService {
       data = new PageImpl<SoftwareProductData>(softwareProductRepository.findAll(specification));
     }
 
-    LOG.debug(MessageUtil.format(Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB, data));
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB, data));
 
     /**
      * Reconstruct Page
@@ -128,7 +128,7 @@ public class SoftwareProductService {
      * Validate input data
      */
     validationService.validate(softwareProduct, MessageUtil.format(
-        Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, softwareProduct));
+        io.biza.babelfish.spring.Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, softwareProduct));
 
     /**
      * Locate existing recipient
@@ -146,7 +146,7 @@ public class SoftwareProductService {
      */
     mapper.map(softwareProduct, softwareProductData);
     SoftwareProductData savedSoftwareProduct = softwareProductRepository.save(softwareProductData);
-    LOG.debug(MessageUtil.format(Messages.UPDATED_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.UPDATED_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
         softwareProductData));
     return mapper.map(savedSoftwareProduct, DioSoftwareProduct.class);
   }
