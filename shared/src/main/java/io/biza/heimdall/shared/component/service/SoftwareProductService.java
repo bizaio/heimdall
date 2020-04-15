@@ -16,7 +16,7 @@ import io.biza.babelfish.oidc.enumerations.JWSSigningAlgorithmType;
 import io.biza.babelfish.oidc.payloads.JWTClaims;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.babelfish.spring.exceptions.ValidationListException;
-import io.biza.babelfish.spring.interfaces.JWKService;
+import io.biza.babelfish.spring.interfaces.OldJWKService;
 import io.biza.babelfish.spring.service.ValidationService;
 import io.biza.babelfish.spring.util.MessageUtil;
 import io.biza.heimdall.shared.Constants;
@@ -44,7 +44,7 @@ public class SoftwareProductService {
   ValidationService validationService;
 
   @Autowired
-  JWKService jwkService;
+  OldJWKService jwkService;
 
   @Autowired
   private HeimdallMapper mapper;

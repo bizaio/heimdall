@@ -23,7 +23,7 @@ import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.babelfish.oidc.enumerations.JWSSigningAlgorithmType;
 import io.biza.babelfish.oidc.payloads.JWTClaims;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
-import io.biza.babelfish.spring.interfaces.JWKService;
+import io.biza.babelfish.spring.interfaces.OldJWKService;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.service.RecipientService;
