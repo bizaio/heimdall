@@ -1,10 +1,11 @@
 babelfish:
-  jwk-file: heimdall.jwks
-  tls-verify: false
-heimdall:
-  version: 1.0.0
-  hostname: localhost
-  token_length_hours: 24
+  typeManager:
+    enumerations:
+      packages: io.biza.heimdall.shared.enumerations, io.biza.babelfish.cdr.enumerations
+    forms:
+      packages: io.biza.heimdall.shared.payloads.dio
+  orika:
+    packageBase: io.biza.heimdall.shared.persistence.mapper
 server:
   port: 9101
   servlet:

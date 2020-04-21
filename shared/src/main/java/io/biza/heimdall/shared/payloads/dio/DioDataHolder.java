@@ -27,7 +27,6 @@ import lombok.ToString;
 public class DioDataHolder {
 
   @JsonProperty("id")
-  @NotNull
   @Schema(description = "Data Holder Identifier", accessMode = AccessMode.READ_ONLY)
   UUID id;
 

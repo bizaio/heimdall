@@ -6,23 +6,26 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
+import io.biza.babelfish.cdr.util.MessageUtil;
+import io.biza.babelfish.oidc.enumerations.JWKKeyType;
 import io.biza.babelfish.oidc.enumerations.JWSSigningAlgorithmType;
 import io.biza.babelfish.oidc.payloads.JWTClaims;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.babelfish.spring.exceptions.ValidationListException;
-import io.biza.babelfish.spring.interfaces.OldJWKService;
-import io.biza.babelfish.spring.service.ValidationService;
-import io.biza.babelfish.spring.util.MessageUtil;
+import io.biza.babelfish.spring.interfaces.IssuerService;
+import io.biza.babelfish.spring.service.common.ValidationService;
 import io.biza.heimdall.shared.Constants;
 import io.biza.heimdall.shared.Messages;
 import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
+import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
@@ -33,6 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class SoftwareProductService {
+	
+	@Value("${heimdall.issuerId:dio-register}")
+	String issuerId;
 
   @Autowired
   SoftwareProductRepository softwareProductRepository;
@@ -44,7 +50,7 @@ public class SoftwareProductService {
   ValidationService validationService;
 
   @Autowired
-  OldJWKService jwkService;
+  IssuerService jwkService;
 
   @Autowired
   private HeimdallMapper mapper;
@@ -170,7 +176,7 @@ public class SoftwareProductService {
   }
 
   public String getSoftwareStatementAssertion(UUID brandId, UUID productId)
-      throws SigningOperationException, NotFoundException {
+      throws SigningOperationException, NotFoundException, NotInitialisedException {
     SoftwareProductData softwareProduct =
         softwareProductRepository.findByIdAndDataRecipientBrandId(productId, brandId)
             .orElseThrow(() -> NotFoundException
@@ -206,7 +212,7 @@ public class SoftwareProductService {
         .additionalClaims(additionalClaims).build();
 
 
-    return jwkService.sign(ssaClaims, JWSSigningAlgorithmType.PS256);
+    return jwkService.sign(issuerId, JWKKeyType.RSA, ssaClaims, JWSSigningAlgorithmType.PS256);
   }
 
   public void delete(UUID recipientId, UUID brandId, UUID productId) throws NotFoundException {

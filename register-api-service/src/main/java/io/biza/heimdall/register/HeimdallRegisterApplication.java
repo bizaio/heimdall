@@ -19,16 +19,11 @@ public class HeimdallRegisterApplication {
 
   public static void main(String[] args) {
     SpringApplication application = new SpringApplication(HeimdallRegisterApplication.class);
-
-    if (Paths.get("heimdall.jks").toFile().exists()) {
-      application.setAdditionalProfiles("ssl");
-    }
-
     application.run(args);
   }
 
   @Bean
-  public OpenAPI customOpenAPI(@Value("${heimdall.version}") String appVersion) {
+  public OpenAPI customOpenAPI() {
     /**
      * OpenID Connect is available in OAS annotations but not yet in swagger-ui :(
      * https://github.com/swagger-api/swagger-ui/issues/3517
@@ -40,7 +35,7 @@ public class HeimdallRegisterApplication {
         .components(new Components().addSecuritySchemes(Constants.SECURITY_SCHEME_NAME,
             new SecurityScheme().type(SecurityScheme.Type.OPENIDCONNECT)
                 .openIdConnectUrl(Constants.OPENID_CONNECT_URL)))
-        .info(new Info().title("Heimdall Register API").version(appVersion).description(
+        .info(new Info().title("Heimdall Register API").version(Constants.VERSION).description(
             "This is the Heimdall Register API. You can find out more about Heimdall at [https://github.com/bizaio/heimdall](https://github.com/bizaio/heimdall) or on the [DataRight.io Slack, #oss](https://join.slack.com/t/datarightio/shared_invite/enQtNzAyNTI2MjA2MzU1LTU1NGE4MmQ2N2JiZWI2ODA5MTQ2N2Q0NTRmYmM0OWRlM2U5YzA3NzU5NDYyODlhNjRmNzU3ZDZmNTI0MDE3NjY).")
             .license(new License().name("GPL 3.0")
                 .url("https://github.com/bizaio/heimdall/blob/develop/LICENSE")));

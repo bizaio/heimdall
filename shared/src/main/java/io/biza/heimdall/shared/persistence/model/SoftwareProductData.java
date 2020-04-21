@@ -24,6 +24,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -56,7 +58,8 @@ import lombok.ToString;
 public class SoftwareProductData {
 
   @Id
-  @Column(name = "ID", updatable = false)
+  @Column(name = "ID", insertable = false, updatable = false)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
 

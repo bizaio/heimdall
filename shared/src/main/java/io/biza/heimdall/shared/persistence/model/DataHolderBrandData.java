@@ -18,10 +18,13 @@ import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,6 +37,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import io.biza.babelfish.cdr.enumerations.register.DataHolderStatusType;
+import io.biza.babelfish.spring.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,7 +57,8 @@ import lombok.ToString;
 public class DataHolderBrandData {
 
   @Id
-  @Column(name = "ID", updatable = false)
+  @Column(name = "ID", insertable = false, updatable = false)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
 
@@ -69,6 +74,7 @@ public class DataHolderBrandData {
 
   @Column(name = "LOGO_URI")
   @NotNull
+  @Convert(converter = URIDataConverter.class)
   URI logoUri;
 
   @Column(name = "STATUS")

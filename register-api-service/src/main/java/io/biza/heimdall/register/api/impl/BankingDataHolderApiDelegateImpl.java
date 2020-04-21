@@ -1,5 +1,8 @@
 package io.biza.heimdall.register.api.impl;
 
+import java.util.Optional;
+
+import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,12 +13,12 @@ import org.springframework.validation.annotation.Validated;
 import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderBrand;
 import io.biza.babelfish.cdr.models.responses.register.RequestGetDataHolderBrands;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandList;
+import io.biza.babelfish.spring.util.PrimitiveUtil;
 import io.biza.heimdall.register.api.delegate.BankingDataHolderApiDelegate;
 import io.biza.heimdall.shared.component.service.HolderBrandService;
 import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
 import io.biza.heimdall.shared.persistence.specifications.HolderBrandSpecifications;
 import io.biza.heimdall.shared.util.RegisterContainerAttributes;
 import lombok.extern.slf4j.Slf4j;
@@ -25,30 +28,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDelegate {
 
-  @Autowired
-  HolderBrandService holderBrandService;
+	@Autowired
+	HolderBrandService holderBrandService;
 
-  @Autowired
-  HeimdallMapper mapper;
+	@Autowired
+	HeimdallMapper mapper;
 
-  @Override
-  public ResponseEntity<ResponseRegisterDataHolderBrandList> getBankingDataHolderBrands(
-      RequestGetDataHolderBrands requestList) {
+	@Override
+	public ResponseEntity<ResponseRegisterDataHolderBrandList> getBankingDataHolderBrands(
+			RequestGetDataHolderBrands requestList) {
 
-    Specification<DataHolderBrandData> specification = null;
+		Specification<DataHolderBrandData> specification = null;
 
-    if (requestList.updatedSince() != null) {
-      specification = HolderBrandSpecifications.updatedSince(requestList.updatedSince());
-    }
+		if (requestList.updatedSince() != null) {
+			specification = HolderBrandSpecifications.updatedSince(requestList.updatedSince());
+		}
 
-    Page<DioDataHolderBrand> result = holderBrandService.list(specification,
-        PageRequest.of(requestList.page(), requestList.pageSize()));
+		Page<DioDataHolderBrand> result = holderBrandService.list(specification,
+				PageRequest.of(requestList.page()-1, requestList.pageSize()));
+		
+		LOG.debug("Received holder brand response of: {}", result.getContent());
 
-    return ResponseEntity.ok(ResponseRegisterDataHolderBrandList.builder()
-        .meta(RegisterContainerAttributes.toMetaPaginated(result))
-        .links(RegisterContainerAttributes.toLinksPaginated(result))
-        .data(mapper.mapAsList(result.getContent(), RegisterDataHolderBrand.class)).build());
+		return ResponseEntity.ok(
+				ResponseRegisterDataHolderBrandList.builder().meta(RegisterContainerAttributes.toMetaPaginated(result))
+						.links(RegisterContainerAttributes.toLinksPaginated(result))
+						.data(Optional.ofNullable(mapper.mapAsList(result.getContent(), RegisterDataHolderBrand.class))
+								.orElse(PrimitiveUtil.emptyList()))
+						.build());
 
-  }
+	}
 
 }

@@ -11,6 +11,7 @@ import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusLis
 import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
+import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 
 public interface BankingDataRecipientApiDelegate {
   default Optional<NativeWebRequest> getRequest() {
@@ -25,7 +26,7 @@ public interface BankingDataRecipientApiDelegate {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
-  default ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId, UUID productId) throws SigningOperationException, NotFoundException {
+  default ResponseEntity<RawJson> getSoftwareStatementAssertion(UUID brandId, UUID productId) throws SigningOperationException, NotFoundException, NotInitialisedException {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

@@ -18,7 +18,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import io.biza.heimdall.shared.mapper.OrikaFactoryConfigurer;
+
+import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurer;
 
 @Component
 public class HeimdallMapper extends ConfigurableMapper implements ApplicationContextAware {

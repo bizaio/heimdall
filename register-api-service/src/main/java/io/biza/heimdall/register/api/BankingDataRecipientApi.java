@@ -9,6 +9,7 @@ import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
+import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -74,7 +75,7 @@ public interface BankingDataRecipientApi {
   @PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
   default ResponseEntity<RawJson> getSoftwareStatementAssertion(
       @NotNull @Valid @PathVariable("brandId") UUID brandId,
-      @NotNull @Valid @PathVariable("productId") UUID productId) throws SigningOperationException, NotFoundException {
+      @NotNull @Valid @PathVariable("productId") UUID productId) throws SigningOperationException, NotFoundException, NotInitialisedException {
     return getDelegate().getSoftwareStatementAssertion(brandId, productId);
   }
 

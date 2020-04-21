@@ -11,19 +11,17 @@ import com.nimbusds.jose.crypto.bc.BouncyCastleProviderSingleton;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurationWeb extends WebSecurityConfigurerAdapter {
-  @Override
-  protected void configure(final HttpSecurity http) throws Exception {
-    /**
-     * Inject RSASSA-PSS support into runtime
-     */
-    Provider bc = BouncyCastleProviderSingleton.getInstance();
-    Security.addProvider(bc);
+	@Override
+	protected void configure(final HttpSecurity http) throws Exception {
+		/**
+		 * Inject RSASSA-PSS support into runtime
+		 */
+		Provider bc = BouncyCastleProviderSingleton.getInstance();
+		Security.addProvider(bc);
 
-
-    // JWT Validation
-    http.oauth2ResourceServer().jwt();
-    // Anonymous access, method security to pickup
-    // http.anonymous();
-  }
+		/**
+		 * Validate JWT
+		 */
+		http.oauth2ResourceServer().jwt();
+	}
 }
-

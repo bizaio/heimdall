@@ -1,7 +1,6 @@
 package io.biza.heimdall.register.api;
 
 import io.biza.babelfish.oidc.payloads.JWKS;
-import io.biza.babelfish.oidc.requests.ProviderDiscoveryMetadata;
 import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import io.biza.heimdall.register.api.delegate.DiscoveryApiDelegate;
 import io.swagger.v3.oas.annotations.Operation;

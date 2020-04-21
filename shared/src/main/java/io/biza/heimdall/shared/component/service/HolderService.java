@@ -7,10 +7,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import io.biza.babelfish.cdr.util.MessageUtil;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.babelfish.spring.exceptions.ValidationListException;
-import io.biza.babelfish.spring.service.ValidationService;
-import io.biza.babelfish.spring.util.MessageUtil;
+import io.biza.babelfish.spring.service.common.ValidationService;
 import io.biza.heimdall.shared.Messages;
 import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
@@ -35,14 +36,6 @@ public class HolderService {
   public static final String TYPE_NAME_DB = DataHolderData.class.getName();
 
   public DioDataHolder create(DioDataHolder holder) throws ValidationListException {
-    
-    /**
-     * If it's not supplied, generate an identifier
-     */
-    if(holder.id() == null) {
-      holder.id(UUID.randomUUID());
-    }
-
     /**
      * Validate input data
      */
@@ -52,11 +45,10 @@ public class HolderService {
     /**
      * Create Data Holder Record
      */
-    DataHolderData dataHolderData = mapper.map(holder, DataHolderData.class);
-    DataHolderData savedDataHolder = holderRepository.save(dataHolderData);
+    DataHolderData dataHolderData = holderRepository.save(mapper.map(holder, DataHolderData.class));
     LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
-        savedDataHolder));
-    return mapper.map(savedDataHolder, DioDataHolder.class);
+    		dataHolderData));
+    return mapper.map(dataHolderData, DioDataHolder.class);
   }
 
   public Page<DioDataHolder> list(Specification<DataHolderData> specification, Pageable pageable) {
@@ -77,7 +69,7 @@ public class HolderService {
     }
 
     LOG.debug(
-        MessageUtil.format(io.biza.babelfish.spring.Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB, dataHolderData));
+        MessageUtil.format(io.biza.babelfish.spring.Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_DB, dataHolderData.getContent()));
 
     /**
      * Reconstruct Page
@@ -85,6 +77,9 @@ public class HolderService {
     Page<DioDataHolder> page = new PageImpl<DioDataHolder>(
         mapper.mapAsList(dataHolderData.getContent(), DioDataHolder.class),
         dataHolderData.getPageable(), dataHolderData.getTotalElements());
+
+    LOG.debug(
+            MessageUtil.format(io.biza.babelfish.spring.Messages.LIST_ALL_GENERIC_AND_RECEIVED, TYPE_NAME_PAYLOAD, page.getContent()));
 
     /**
      * Map as a list

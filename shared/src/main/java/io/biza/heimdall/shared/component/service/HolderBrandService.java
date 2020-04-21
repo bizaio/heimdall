@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.spring.exceptions.ValidationListException;
-import io.biza.babelfish.spring.service.ValidationService;
-import io.biza.babelfish.spring.util.MessageUtil;
+import io.biza.babelfish.spring.service.common.ValidationService;
 import io.biza.heimdall.shared.Messages;
 import io.biza.heimdall.shared.component.support.HeimdallMapper;
+import io.biza.babelfish.cdr.util.MessageUtil;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
@@ -61,6 +61,7 @@ public class HolderBrandService {
      */
     DataHolderBrandData dataHolderBrandData =
         mapper.map(holderBrand, DataHolderBrandData.class).dataHolder(holderData);
+    
     DataHolderBrandData savedDataHolderBrand = holderBrandRepository.save(dataHolderBrandData);
     LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
         savedDataHolderBrand));
