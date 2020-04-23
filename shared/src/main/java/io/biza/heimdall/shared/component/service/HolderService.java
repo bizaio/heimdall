@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import io.biza.babelfish.cdr.util.MessageUtil;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.babelfish.spring.exceptions.ValidationListException;
+import io.biza.babelfish.spring.service.common.OrikaMapperService;
 import io.biza.babelfish.spring.service.common.ValidationService;
 import io.biza.heimdall.shared.Messages;
-import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
@@ -30,7 +30,7 @@ public class HolderService {
   ValidationService validationService;
 
   @Autowired
-  private HeimdallMapper mapper;
+  OrikaMapperService mapper;
 
   public static final String TYPE_NAME_PAYLOAD = DioDataHolder.class.getName();
   public static final String TYPE_NAME_DB = DataHolderData.class.getName();

@@ -95,7 +95,7 @@ public class DataHolderBrandData {
   @PrePersist
   public void prePersist() {
     if (authDetails() != null) {
-      for (DataHolderBrandAuthData one : authDetails) {
+      for (DataHolderBrandAuthData one : authDetails()) {
         one.dataHolderBrand(this);
       }
     }

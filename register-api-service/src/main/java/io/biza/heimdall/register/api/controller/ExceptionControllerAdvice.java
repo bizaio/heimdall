@@ -11,10 +11,28 @@
  *******************************************************************************/
 package io.biza.heimdall.register.api.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import io.biza.babelfish.cdr.Constants;
+import io.biza.babelfish.cdr.exceptions.AttributeNotSupportedException;
+import io.biza.babelfish.cdr.models.responses.ResponseErrorListV1;
+import io.biza.babelfish.spring.controlleradvice.CdrExceptionControllerAdvice;
 import io.biza.babelfish.spring.controlleradvice.OIDCExceptionControllerAdvice;
+import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 
 @ControllerAdvice
-public class ExceptionControllerAdvice extends OIDCExceptionControllerAdvice {
+public class ExceptionControllerAdvice extends CdrExceptionControllerAdvice {
 
+	@ExceptionHandler(NotInitialisedException.class)
+	public ResponseEntity<Object> handleNotInitialised(HttpServletRequest req, AttributeNotSupportedException ex) {
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+				.body(ResponseErrorListV1.builder().errors(List.of(Constants.ERROR_NOT_INITIALISED)).build());
+	}
 }

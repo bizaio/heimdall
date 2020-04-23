@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import io.biza.babelfish.spring.exceptions.ValidationListException;
+import io.biza.babelfish.spring.service.common.OrikaMapperService;
 import io.biza.heimdall.admin.api.delegate.BankingDataHolderBrandApiDelegate;
 import io.biza.heimdall.shared.component.service.HolderBrandService;
-import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.specifications.HolderBrandSpecifications;
@@ -25,7 +25,7 @@ public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderB
   HolderBrandService holderBrand;
   
   @Autowired
-  HeimdallMapper mapper;
+  OrikaMapperService mapper;
 
   @Override
   public ResponseEntity<DioDataHolderBrand> createHolderBrand(UUID holderId,
@@ -35,7 +35,7 @@ public class BankingDataHolderBrandApiDelegateImpl implements BankingDataHolderB
 
   @Override
   public ResponseEntity<List<DioDataHolderBrand>> listHolderBrands(UUID holderId) {
-    return ResponseEntity.ok(holderBrand.list(HolderBrandSpecifications.holderId(holderId), null).toList());
+    return ResponseEntity.ok(holderBrand.list(HolderBrandSpecifications.holderId(holderId), null, DioDataHolderBrand.class).toList());
   }
 
   @Override

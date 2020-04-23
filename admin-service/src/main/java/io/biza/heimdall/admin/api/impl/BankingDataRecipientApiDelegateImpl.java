@@ -29,7 +29,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
 
   @Override
   public ResponseEntity<List<DioDataRecipient>> listRecipients() {
-    return ResponseEntity.ok(recipientService.list(null, null).toList());
+    return ResponseEntity.ok(recipientService.list(null, null, DioDataRecipient.class).toList());
   }
 
   @Override

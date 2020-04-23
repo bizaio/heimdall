@@ -9,7 +9,7 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.shared.persistence.mapper;
+package io.biza.heimdall.shared.mapper.persistence;
 
 import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductMetaData;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductStatus;

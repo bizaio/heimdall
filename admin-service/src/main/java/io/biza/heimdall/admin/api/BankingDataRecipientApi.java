@@ -45,7 +45,7 @@ public interface BankingDataRecipientApi {
           array = @ArraySchema(schema = @Schema(implementation = DioDataRecipient.class))))})
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
-  default ResponseEntity<List<DioDataRecipient>> listRecipientes() {
+  default ResponseEntity<List<DioDataRecipient>> listRecipients() {
     return getDelegate().listRecipients();
   }
 

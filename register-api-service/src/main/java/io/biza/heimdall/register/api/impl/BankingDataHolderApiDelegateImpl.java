@@ -13,10 +13,10 @@ import org.springframework.validation.annotation.Validated;
 import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderBrand;
 import io.biza.babelfish.cdr.models.responses.register.RequestGetDataHolderBrands;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandList;
+import io.biza.babelfish.spring.service.common.OrikaMapperService;
 import io.biza.babelfish.spring.util.PrimitiveUtil;
 import io.biza.heimdall.register.api.delegate.BankingDataHolderApiDelegate;
 import io.biza.heimdall.shared.component.service.HolderBrandService;
-import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.specifications.HolderBrandSpecifications;
@@ -31,8 +31,8 @@ public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDel
 	@Autowired
 	HolderBrandService holderBrandService;
 
-	@Autowired
-	HeimdallMapper mapper;
+	  @Autowired
+	  OrikaMapperService mapper;
 
 	@Override
 	public ResponseEntity<ResponseRegisterDataHolderBrandList> getBankingDataHolderBrands(
@@ -44,16 +44,15 @@ public class BankingDataHolderApiDelegateImpl implements BankingDataHolderApiDel
 			specification = HolderBrandSpecifications.updatedSince(requestList.updatedSince());
 		}
 
-		Page<DioDataHolderBrand> result = holderBrandService.list(specification,
-				PageRequest.of(requestList.page()-1, requestList.pageSize()));
+		Page<RegisterDataHolderBrand> result = holderBrandService.list(specification,
+				PageRequest.of(requestList.page()-1, requestList.pageSize()), RegisterDataHolderBrand.class);
 		
 		LOG.debug("Received holder brand response of: {}", result.getContent());
 
 		return ResponseEntity.ok(
 				ResponseRegisterDataHolderBrandList.builder().meta(RegisterContainerAttributes.toMetaPaginated(result))
 						.links(RegisterContainerAttributes.toLinksPaginated(result))
-						.data(Optional.ofNullable(mapper.mapAsList(result.getContent(), RegisterDataHolderBrand.class))
-								.orElse(PrimitiveUtil.emptyList()))
+						.data(result.getContent())
 						.build());
 
 	}

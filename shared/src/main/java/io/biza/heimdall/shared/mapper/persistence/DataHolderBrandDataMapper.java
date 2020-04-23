@@ -9,24 +9,24 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.shared.persistence.mapper;
+package io.biza.heimdall.shared.mapper.persistence;
 
-import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientBrandMetaData;
+import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderBrand;
 import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
-import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
+import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
+import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import ma.glasnost.orika.MapperFactory;
 
-public class DataRecipientBrandDataMapper implements OrikaFactoryConfigurerInterface {
+public class DataHolderBrandDataMapper implements OrikaFactoryConfigurerInterface {
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(DataRecipientBrandData.class, DataRecipientBrandMetaData.class)
-        .fieldAToB("id", "dataRecipientBrandId").byDefault().register();
+    orikaMapperFactory.classMap(DataHolderBrandData.class, RegisterDataHolderBrand.class)
+        .fieldAToB("id", "dataHolderBrandId").field("dataHolder.industry", "industry")
+        .field("dataHolder.legalEntity", "legalEntity").byDefault().register();
 
-    orikaMapperFactory.classMap(DataRecipientBrandData.class, DioDataRecipientBrand.class)
+    orikaMapperFactory.classMap(DataHolderBrandData.class, DioDataHolderBrand.class)
         .fieldAToB("id", "id").field("brandName", "name").byDefault().register();
-
 
   }
 }

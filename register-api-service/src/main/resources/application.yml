@@ -1,11 +1,17 @@
 babelfish:
+  issuer:
+    autoInit: true
+    autoInitRealms: dio-register
   typeManager:
     enumerations:
       packages: io.biza.heimdall.shared.enumerations, io.biza.babelfish.cdr.enumerations
     forms:
       packages: io.biza.heimdall.shared.payloads.dio
   orika:
-    packageBase: io.biza.heimdall.shared.persistence.mapper
+    packageBase: io.biza.heimdall.shared.mapper
+heimdall:
+  issuer:
+    id: dio-register
 server:
   port: 9101
   servlet:

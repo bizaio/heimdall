@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,8 +27,7 @@ import lombok.ToString;
 public class DioDataRecipientBrand {
 
   @JsonProperty("id")
-  @NotNull
-  @Schema(description = "Data Recipient Brand Identifier")
+  @Schema(description = "Data Recipient Brand Identifier", accessMode = AccessMode.READ_ONLY)
   UUID id;
 
   @JsonProperty("name")

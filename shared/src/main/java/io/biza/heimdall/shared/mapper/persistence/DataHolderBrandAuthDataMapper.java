@@ -9,18 +9,20 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *******************************************************************************/
-package io.biza.heimdall.shared.persistence.mapper;
+package io.biza.heimdall.shared.mapper.persistence;
 
+import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderAuth;
 import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
-import io.biza.heimdall.shared.persistence.model.DataHolderData;
+import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
 import ma.glasnost.orika.MapperFactory;
 
-public class DataHolderDataMapper implements OrikaFactoryConfigurerInterface {
+public class DataHolderBrandAuthDataMapper implements OrikaFactoryConfigurerInterface {
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(DataHolderData.class, DioDataHolder.class).fieldAToB("id", "id")
-        .byDefault().register();
+    orikaMapperFactory.classMap(DataHolderBrandAuthData.class, RegisterDataHolderAuth.class)
+        .field("authType", "registerUType").field("jwksEndpoint", "jwksEndpoint").byDefault()
+        .register();
+
   }
 }

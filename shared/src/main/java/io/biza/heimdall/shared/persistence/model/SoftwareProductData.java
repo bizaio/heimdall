@@ -77,8 +77,7 @@ public class SoftwareProductData {
   @Column(name = "NAME")
   String name;
 
-  @Column(name = "DESCRIPTION")
-  @Lob
+  @Column(name = "DESCRIPTION", length = 8192)
   String description;
 
   @Column(name = "URI")

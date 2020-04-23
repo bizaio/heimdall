@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DiscoveryApiDelegateImpl implements DiscoveryApiDelegate {
 
-	@Value("${heimdall.issuerId:dio-register}")
+	@Value("${heimdall.issuer.id:dio-register}")
 	String issuerId;
 
 	@Autowired

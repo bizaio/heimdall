@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import io.biza.babelfish.spring.exceptions.ValidationListException;
+import io.biza.babelfish.spring.service.common.OrikaMapperService;
 import io.biza.babelfish.spring.service.common.ValidationService;
 import io.biza.heimdall.shared.Messages;
-import io.biza.heimdall.shared.component.support.HeimdallMapper;
 import io.biza.babelfish.cdr.util.MessageUtil;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
@@ -34,7 +34,7 @@ public class HolderBrandService {
   ValidationService validationService;
 
   @Autowired
-  private HeimdallMapper mapper;
+  OrikaMapperService mapper;
 
   public static final String TYPE_NAME_PAYLOAD = DioDataHolderBrand.class.getName();
   public static final String TYPE_NAME_DB = DataHolderBrandData.class.getName();
@@ -69,9 +69,9 @@ public class HolderBrandService {
   }
 
 
-  public Page<DioDataHolderBrand> list(Specification<DataHolderBrandData> specification,
-      Pageable pageable) {
-
+  public <T> Page<T> list(Specification<DataHolderBrandData> specification,
+      Pageable pageable, Class<T> clazz) {
+	  
     if (specification == null) {
       specification = Specification.where(null);
     }
@@ -91,8 +91,8 @@ public class HolderBrandService {
     /**
      * Reconstruct Page
      */
-    Page<DioDataHolderBrand> page = new PageImpl<DioDataHolderBrand>(
-        mapper.mapAsList(dataHolderBrandData.getContent(), DioDataHolderBrand.class),
+    Page<T> page = new PageImpl<T>(
+        mapper.mapAsList(dataHolderBrandData.getContent(), clazz),
         dataHolderBrandData.getPageable(), dataHolderBrandData.getTotalElements());
 
     /**

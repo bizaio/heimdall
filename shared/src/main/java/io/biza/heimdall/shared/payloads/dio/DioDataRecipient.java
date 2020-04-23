@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,8 +29,7 @@ import lombok.ToString;
 public class DioDataRecipient {
 
   @JsonProperty("id")
-  @NotNull
-  @Schema(description = "Data Holder Identifier")
+  @Schema(description = "Data Holder Identifier", accessMode = AccessMode.READ_ONLY)
   UUID id;
 
   @JsonProperty("legalEntity")

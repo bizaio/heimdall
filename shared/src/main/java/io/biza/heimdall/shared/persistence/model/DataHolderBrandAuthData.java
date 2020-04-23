@@ -65,7 +65,7 @@ public class DataHolderBrandAuthData {
   @Column(name = "AUTH_TYPE")
   @Enumerated(EnumType.STRING)
   @Builder.Default
-  RegisterAuthType authType = RegisterAuthType.HYBRIDFLOW_JWKS;
+  RegisterAuthType authType = RegisterAuthType.SIGNED_JWT;
 
   @Column(name = "JWKS_ENDPOINT")
   @NotNull

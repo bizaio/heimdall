@@ -14,11 +14,12 @@ import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecip
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusList;
 import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
+import io.biza.babelfish.spring.service.common.OrikaMapperService;
 import io.biza.babelfish.spring.util.PrimitiveUtil;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.service.RecipientService;
 import io.biza.heimdall.shared.component.service.SoftwareProductService;
-import io.biza.heimdall.shared.component.support.HeimdallMapper;
+import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,25 +35,20 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
 	@Autowired
 	SoftwareProductService softwareService;
 
-	@Autowired
-	HeimdallMapper mapper;
+	  @Autowired
+	  OrikaMapperService mapper;
 
 	@Override
 	public ResponseEntity<ResponseRegisterDataRecipientList> getBankingDataRecipients() {
 		return ResponseEntity.ok(ResponseRegisterDataRecipientList.builder()
-				.data(Optional.ofNullable(
-						mapper.mapAsList(recipientService.list(null, null).toList(), RegisterDataRecipient.class))
-						.orElse(PrimitiveUtil.emptyList()))
-				.build());
+				.data(recipientService.list(null, null, RegisterDataRecipient.class).getContent()).build());
 	}
 
 	@Override
 	public ResponseEntity<DataRecipientsStatusList> getBankingDataRecipientStatuses() {
 		return ResponseEntity
 				.ok(DataRecipientsStatusList.builder()
-						.dataRecipients(Optional.ofNullable(
-								mapper.mapAsList(recipientService.list(null, null).toList(), DataRecipientStatus.class))
-								.orElse(PrimitiveUtil.emptyList()))
+						.dataRecipients(recipientService.list(null, null, DataRecipientStatus.class).getContent())
 						.build());
 	}
 
@@ -65,9 +61,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
 	@Override
 	public ResponseEntity<SoftwareProductsStatusList> getSoftwareProductStatuses() {
 		return ResponseEntity.ok(SoftwareProductsStatusList.builder()
-				.softwareProducts(Optional
-						.ofNullable(mapper.mapAsList(softwareService.list(null, null), SoftwareProductStatus.class))
-						.orElse(PrimitiveUtil.emptyList()))
+				.softwareProducts(softwareService.list(null, null, SoftwareProductStatus.class).getContent())
 				.build());
 	}
 

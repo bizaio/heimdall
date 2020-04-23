@@ -37,7 +37,7 @@ public class BankingDataRecipientBrandSoftwareProductApiDelegateImpl
       UUID recipientId, UUID brandId) {
 
     return ResponseEntity.ok(softwareService
-        .list(SoftwareProductSpecifications.recipientId(recipientId), null)
+        .list(SoftwareProductSpecifications.recipientId(recipientId), null, DioSoftwareProduct.class)
         .toList());
   }
 

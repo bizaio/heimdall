@@ -32,7 +32,6 @@ import lombok.ToString;
 public class DioLegalEntity {
 
   @JsonProperty("name")
-  @NotEmpty
   @Schema(description = "Unique legal name of the organisation")
   String name;
 
