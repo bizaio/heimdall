@@ -3,7 +3,6 @@ package io.biza.heimdall.shared.payloads.dio;
 import java.time.LocalDate;
 import java.util.Locale;
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

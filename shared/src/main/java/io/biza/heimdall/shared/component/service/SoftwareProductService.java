@@ -29,7 +29,6 @@ import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.repository.SoftwareProductRepository;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientBrandRepository;
 import lombok.extern.slf4j.Slf4j;

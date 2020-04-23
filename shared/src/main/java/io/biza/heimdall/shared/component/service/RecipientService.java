@@ -14,10 +14,7 @@ import io.biza.heimdall.shared.Messages;
 import io.biza.babelfish.cdr.util.MessageUtil;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
-import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
-import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
 import io.biza.heimdall.shared.persistence.repository.DataRecipientRepository;
 import lombok.extern.slf4j.Slf4j;
 

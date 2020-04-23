@@ -1,6 +1,5 @@
 package io.biza.heimdall.register.api.impl;
 
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,9 @@ import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusLis
 import io.biza.babelfish.cdr.support.RawJson;
 import io.biza.babelfish.spring.exceptions.SigningOperationException;
 import io.biza.babelfish.spring.service.common.OrikaMapperService;
-import io.biza.babelfish.spring.util.PrimitiveUtil;
 import io.biza.heimdall.register.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.service.RecipientService;
 import io.biza.heimdall.shared.component.service.SoftwareProductService;
-import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.babelfish.spring.exceptions.NotFoundException;
 import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 import lombok.extern.slf4j.Slf4j;

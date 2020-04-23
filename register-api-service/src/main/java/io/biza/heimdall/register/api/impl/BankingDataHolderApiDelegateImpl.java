@@ -1,8 +1,5 @@
 package io.biza.heimdall.register.api.impl;
 
-import java.util.Optional;
-
-import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,10 +11,8 @@ import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderB
 import io.biza.babelfish.cdr.models.responses.register.RequestGetDataHolderBrands;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandList;
 import io.biza.babelfish.spring.service.common.OrikaMapperService;
-import io.biza.babelfish.spring.util.PrimitiveUtil;
 import io.biza.heimdall.register.api.delegate.BankingDataHolderApiDelegate;
 import io.biza.heimdall.shared.component.service.HolderBrandService;
-import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.specifications.HolderBrandSpecifications;
 import io.biza.heimdall.shared.util.RegisterContainerAttributes;

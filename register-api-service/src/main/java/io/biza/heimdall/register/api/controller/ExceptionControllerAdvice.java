@@ -24,7 +24,6 @@ import io.biza.babelfish.cdr.Constants;
 import io.biza.babelfish.cdr.exceptions.AttributeNotSupportedException;
 import io.biza.babelfish.cdr.models.responses.ResponseErrorListV1;
 import io.biza.babelfish.spring.controlleradvice.CdrExceptionControllerAdvice;
-import io.biza.babelfish.spring.controlleradvice.OIDCExceptionControllerAdvice;
 import io.biza.babelfish.spring.exceptions.NotInitialisedException;
 
 @ControllerAdvice
