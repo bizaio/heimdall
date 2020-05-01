@@ -11,8 +11,8 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.mapper.persistence;
 
-import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientStatus;
-import io.biza.babelfish.cdr.models.payloads.register.recipient.RegisterDataRecipient;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientStatusV1;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.RegisterDataRecipientV1;
 import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
@@ -22,11 +22,11 @@ public class DataRecipientDataMapper implements OrikaFactoryConfigurerInterface 
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(DataRecipientData.class, DataRecipientStatus.class)
+    orikaMapperFactory.classMap(DataRecipientData.class, DataRecipientStatusV1.class)
         .fieldAToB("id", "dataRecipientId").field("status", "dataRecipientStatus").byDefault()
         .register();
 
-    orikaMapperFactory.classMap(DataRecipientData.class, RegisterDataRecipient.class)
+    orikaMapperFactory.classMap(DataRecipientData.class, RegisterDataRecipientV1.class)
         .fieldAToB("legalEntity.id", "legalEntityId")
         .field("legalEntity.legalName", "legalEntityName").byDefault().register();
 

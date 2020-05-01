@@ -14,6 +14,8 @@ package io.biza.heimdall.shared.persistence.specifications;
 import java.util.UUID;
 import javax.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
+
+import io.biza.babelfish.cdr.enumerations.register.IndustryType;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData_;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
@@ -23,13 +25,23 @@ import io.biza.heimdall.shared.persistence.model.SoftwareProductData_;
 
 public class SoftwareProductSpecifications {
 
-  public static Specification<SoftwareProductData> recipientId(UUID recipientId) {
-    return (root, query, cb) -> {
-      Join<SoftwareProductData, DataRecipientBrandData> brandJoin =
-          root.join(SoftwareProductData_.dataRecipientBrand);
-      Join<DataRecipientBrandData, DataRecipientData> recipientJoin =
-          brandJoin.join(DataRecipientBrandData_.dataRecipient);
-      return cb.equal(recipientJoin.get(DataRecipientData_.id), recipientId);
-    };
-  }
+	public static Specification<SoftwareProductData> industry(IndustryType industry) {
+		return (root, query, cb) -> {
+			Join<SoftwareProductData, DataRecipientBrandData> brandJoin = root
+					.join(SoftwareProductData_.dataRecipientBrand);
+			Join<DataRecipientBrandData, DataRecipientData> recipientJoin = brandJoin
+					.join(DataRecipientBrandData_.dataRecipient);
+			return cb.equal(recipientJoin.get(DataRecipientData_.industry), industry);
+		};
+	}
+
+	public static Specification<SoftwareProductData> recipientId(UUID recipientId) {
+		return (root, query, cb) -> {
+			Join<SoftwareProductData, DataRecipientBrandData> brandJoin = root
+					.join(SoftwareProductData_.dataRecipientBrand);
+			Join<DataRecipientBrandData, DataRecipientData> recipientJoin = brandJoin
+					.join(DataRecipientBrandData_.dataRecipient);
+			return cb.equal(recipientJoin.get(DataRecipientData_.id), recipientId);
+		};
+	}
 }

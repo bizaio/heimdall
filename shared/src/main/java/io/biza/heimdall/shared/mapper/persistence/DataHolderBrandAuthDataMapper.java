@@ -11,7 +11,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.mapper.persistence;
 
-import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderAuth;
+import io.biza.babelfish.cdr.models.payloads.register.holder.RegisterDataHolderAuthV1;
 import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandAuthData;
 import ma.glasnost.orika.MapperFactory;
@@ -20,7 +20,7 @@ public class DataHolderBrandAuthDataMapper implements OrikaFactoryConfigurerInte
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(DataHolderBrandAuthData.class, RegisterDataHolderAuth.class)
+    orikaMapperFactory.classMap(DataHolderBrandAuthData.class, RegisterDataHolderAuthV1.class)
         .field("authType", "registerUType").field("jwksEndpoint", "jwksEndpoint").byDefault()
         .register();
 

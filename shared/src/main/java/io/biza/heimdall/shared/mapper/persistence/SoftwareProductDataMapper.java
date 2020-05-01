@@ -11,8 +11,8 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.mapper.persistence;
 
-import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductMetaData;
-import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductStatus;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductMetaDataV1;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductStatusV1;
 import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.model.SoftwareProductData;
@@ -22,11 +22,11 @@ public class SoftwareProductDataMapper implements OrikaFactoryConfigurerInterfac
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(SoftwareProductData.class, SoftwareProductMetaData.class)
+    orikaMapperFactory.classMap(SoftwareProductData.class, SoftwareProductMetaDataV1.class)
         .fieldAToB("id", "softwareProductId").field("name", "softwareProductName")
         .field("description", "softwareProductDescription").byDefault().register();
 
-    orikaMapperFactory.classMap(SoftwareProductData.class, SoftwareProductStatus.class)
+    orikaMapperFactory.classMap(SoftwareProductData.class, SoftwareProductStatusV1.class)
         .fieldAToB("id", "softwareProductId").field("status", "softwareProductStatus").register();
 
     orikaMapperFactory.classMap(SoftwareProductData.class, DioSoftwareProduct.class)

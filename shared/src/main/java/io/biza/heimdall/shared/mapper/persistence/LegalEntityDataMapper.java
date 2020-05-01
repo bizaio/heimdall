@@ -11,7 +11,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.mapper.persistence;
 
-import io.biza.babelfish.cdr.models.payloads.register.common.LegalEntityDetail;
+import io.biza.babelfish.cdr.models.payloads.register.common.LegalEntityDetailV1;
 import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioLegalEntity;
 import io.biza.heimdall.shared.persistence.model.LegalEntityData;
@@ -24,7 +24,7 @@ public class LegalEntityDataMapper implements OrikaFactoryConfigurerInterface {
     orikaMapperFactory.classMap(LegalEntityData.class, DioLegalEntity.class)
         .field("legalName", "name").byDefault().register();
 
-    orikaMapperFactory.classMap(LegalEntityData.class, LegalEntityDetail.class)
+    orikaMapperFactory.classMap(LegalEntityData.class, LegalEntityDetailV1.class)
         .fieldAToB("id", "legalEntityId").field("legalName", "legalEntityName").byDefault()
         .register();
 

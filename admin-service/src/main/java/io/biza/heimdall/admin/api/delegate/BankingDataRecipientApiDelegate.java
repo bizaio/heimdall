@@ -7,8 +7,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import io.biza.babelfish.spring.exceptions.ValidationListException;
-import io.biza.babelfish.spring.exceptions.NotFoundException;
+
+import io.biza.babelfish.cdr.exceptions.NotFoundException;
+import io.biza.babelfish.cdr.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 
 public interface BankingDataRecipientApiDelegate {

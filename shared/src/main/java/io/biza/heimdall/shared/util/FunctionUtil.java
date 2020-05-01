@@ -11,12 +11,13 @@ import org.springframework.integration.http.HttpHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
-import io.biza.babelfish.spring.exceptions.ValidationListException;
-import io.biza.babelfish.spring.payloads.ResponseValidationError;
-import io.biza.babelfish.spring.payloads.BabelValidationError;
-import io.biza.babelfish.spring.enumerations.BabelExceptionType;
-import io.biza.babelfish.spring.enumerations.BabelValidationErrorType;
-import io.biza.babelfish.spring.exceptions.NotFoundException;
+
+import io.biza.babelfish.cdr.enumerations.BabelExceptionType;
+import io.biza.babelfish.cdr.enumerations.BabelValidationErrorType;
+import io.biza.babelfish.cdr.exceptions.NotFoundException;
+import io.biza.babelfish.cdr.exceptions.ValidationListException;
+import io.biza.babelfish.cdr.models.payloads.BabelValidationError;
+import io.biza.babelfish.cdr.models.responses.ResponseValidationError;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

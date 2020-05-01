@@ -7,8 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import io.biza.babelfish.spring.exceptions.EncryptionOperationException;
-import io.biza.babelfish.spring.exceptions.NotInitialisedException;
+
+import io.biza.babelfish.cdr.exceptions.EncryptionOperationException;
+import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
 import io.biza.babelfish.spring.interfaces.CertificateService;
 import io.biza.heimdall.shared.payloads.requests.dio.RequestCACertificateSign;
 import lombok.extern.slf4j.Slf4j;

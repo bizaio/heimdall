@@ -11,31 +11,24 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.specifications;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import javax.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
+import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
+import io.biza.heimdall.shared.persistence.model.DataHolderBrandData_;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData_;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData_;
 
-public class RecipientBrandSpecifications {
+public class RecipientSpecifications {
 
-	public static Specification<DataRecipientBrandData> industry(IndustryType industry) {
+	public static Specification<DataRecipientData> industry(IndustryType industry) {
 		return (root, query, cb) -> {
-			Join<DataRecipientBrandData, DataRecipientData> recipientJoin = root
-					.join(DataRecipientBrandData_.dataRecipient);
-			return cb.equal(recipientJoin.get(DataRecipientData_.industry), industry);
-		};
-	}
-
-	public static Specification<DataRecipientBrandData> recipientId(UUID recipientId) {
-		return (root, query, cb) -> {
-			Join<DataRecipientBrandData, DataRecipientData> recipientJoin = root
-					.join(DataRecipientBrandData_.dataRecipient);
-			return cb.equal(recipientJoin.get(DataRecipientData_.id), recipientId);
+			return cb.equal(root.get(DataRecipientData_.industry), industry);
 		};
 	}
 }

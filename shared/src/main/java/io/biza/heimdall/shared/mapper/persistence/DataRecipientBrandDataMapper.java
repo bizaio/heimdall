@@ -11,7 +11,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.mapper.persistence;
 
-import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientBrandMetaData;
+import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientBrandMetaDataV1;
 import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
@@ -21,7 +21,7 @@ public class DataRecipientBrandDataMapper implements OrikaFactoryConfigurerInter
 
   @Override
   public void configure(MapperFactory orikaMapperFactory) {
-    orikaMapperFactory.classMap(DataRecipientBrandData.class, DataRecipientBrandMetaData.class)
+    orikaMapperFactory.classMap(DataRecipientBrandData.class, DataRecipientBrandMetaDataV1.class)
         .fieldAToB("id", "dataRecipientBrandId").byDefault().register();
 
     orikaMapperFactory.classMap(DataRecipientBrandData.class, DioDataRecipientBrand.class)
