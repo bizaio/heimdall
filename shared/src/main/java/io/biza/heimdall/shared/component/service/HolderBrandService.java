@@ -7,17 +7,18 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import io.biza.babelfish.spring.service.common.OrikaMapperService;
+import io.biza.babelfish.spring.service.common.ValidationService;
 import io.biza.heimdall.shared.Messages;
-import io.biza.heimdall.shared.component.support.HeimdallMapper;
-import io.biza.heimdall.shared.component.support.ValidationService;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
+import io.biza.babelfish.cdr.exceptions.NotFoundException;
+import io.biza.babelfish.cdr.exceptions.ValidationListException;
+import io.biza.babelfish.cdr.util.MessageUtil;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolderBrand;
 import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import io.biza.heimdall.shared.persistence.repository.DataHolderBrandRepository;
 import io.biza.heimdall.shared.persistence.repository.DataHolderRepository;
-import io.biza.heimdall.shared.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -34,7 +35,7 @@ public class HolderBrandService {
   ValidationService validationService;
 
   @Autowired
-  private HeimdallMapper mapper;
+  OrikaMapperService mapper;
 
   public static final String TYPE_NAME_PAYLOAD = DioDataHolderBrand.class.getName();
   public static final String TYPE_NAME_DB = DataHolderBrandData.class.getName();
@@ -54,23 +55,24 @@ public class HolderBrandService {
      * Validate input data
      */
     validationService.validate(holderBrand, MessageUtil
-        .format(Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderBrand));
+        .format(io.biza.babelfish.spring.Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderBrand));
 
     /**
      * Create Data Holder Brand Record
      */
     DataHolderBrandData dataHolderBrandData =
         mapper.map(holderBrand, DataHolderBrandData.class).dataHolder(holderData);
+    
     DataHolderBrandData savedDataHolderBrand = holderBrandRepository.save(dataHolderBrandData);
-    LOG.debug(MessageUtil.format(Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.CREATED_NEW_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
         savedDataHolderBrand));
     return mapper.map(savedDataHolderBrand, DioDataHolderBrand.class);
   }
 
 
-  public Page<DioDataHolderBrand> list(Specification<DataHolderBrandData> specification,
-      Pageable pageable) {
-
+  public <T> Page<T> list(Specification<DataHolderBrandData> specification,
+      Pageable pageable, Class<T> clazz) {
+	  
     if (specification == null) {
       specification = Specification.where(null);
     }
@@ -90,8 +92,8 @@ public class HolderBrandService {
     /**
      * Reconstruct Page
      */
-    Page<DioDataHolderBrand> page = new PageImpl<DioDataHolderBrand>(
-        mapper.mapAsList(dataHolderBrandData.getContent(), DioDataHolderBrand.class),
+    Page<T> page = new PageImpl<T>(
+        mapper.mapAsList(dataHolderBrandData.getContent(), clazz),
         dataHolderBrandData.getPageable(), dataHolderBrandData.getTotalElements());
 
     /**
@@ -111,7 +113,7 @@ public class HolderBrandService {
      * Validate input data
      */
     validationService.validate(holderBrand, MessageUtil
-        .format(Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderBrand));
+        .format(io.biza.babelfish.spring.Messages.UNABLE_TO_VALIDATE_GENERIC_WITH_CONTENT, TYPE_NAME_PAYLOAD, holderBrand));
 
     /**
      * Locate existing holder
@@ -127,7 +129,7 @@ public class HolderBrandService {
      */
     mapper.map(holderBrand, holderBrandData);
     DataHolderBrandData savedDataHolderBrand = holderBrandRepository.save(holderBrandData);
-    LOG.debug(MessageUtil.format(Messages.UPDATED_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
+    LOG.debug(MessageUtil.format(io.biza.babelfish.spring.Messages.UPDATED_GENERIC_WITH_CONTENT, TYPE_NAME_DB,
         savedDataHolderBrand));
     return mapper.map(savedDataHolderBrand, DioDataHolderBrand.class);
   }

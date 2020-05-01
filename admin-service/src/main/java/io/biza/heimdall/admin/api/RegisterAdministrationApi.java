@@ -31,8 +31,8 @@ public interface RegisterAdministrationApi {
       description = "This accepts a CSR and signs it using the Certificate Authority generated on startup by Heimdall",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.OAUTH2_SCOPE_KEY_ADMIN})})
-  @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-      description = Constants.RESPONSE_SUCCESSFUL_LIST, content = @Content(
+  @ApiResponses(value = {@ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+      description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_LIST, content = @Content(
           array = @ArraySchema(schema = @Schema(implementation = String.class))))})
   @RequestMapping(path = "/ca/sign", method = RequestMethod.POST)
   @PreAuthorize(Constants.OAUTH2_SCOPE_KEY_ADMIN)

@@ -11,6 +11,7 @@ import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.cdr.enumerations.register.RegisterSoftwareRole;
 import io.biza.babelfish.cdr.enumerations.register.SoftwareProductStatusType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,8 +30,7 @@ import lombok.ToString;
 public class DioSoftwareProduct {
 
   @JsonProperty("id")
-  @NotNull
-  @Schema(description = "Data Recipient Software Product Identifier")
+  @Schema(description = "Data Recipient Software Product Identifier", accessMode = AccessMode.READ_ONLY)
   UUID id;
 
   @JsonProperty("status")

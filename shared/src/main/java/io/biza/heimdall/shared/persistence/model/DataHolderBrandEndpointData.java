@@ -31,7 +31,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.register.CDRVersionType;
-import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
+import io.biza.babelfish.spring.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,6 +60,7 @@ public class DataHolderBrandEndpointData {
   @MapsId
   @JoinColumn(name = "DATA_HOLDER_BRAND_ENDPOINT_ID",
       foreignKey = @ForeignKey(name = "ENDPOINT_DETAIL_DATA_HOLDER_BRAND_ID_FK"))
+  @ToString.Exclude
   DataHolderBrandData dataHolderBrand;
 
   @Column(name = "VERSION")
@@ -67,6 +68,7 @@ public class DataHolderBrandEndpointData {
   CDRVersionType version;
 
   @Column(name = "PUBLIC_BASE_URI")
+  @Convert(converter = URIDataConverter.class)
   URI publicBaseUri;
 
   @Column(name = "RESOURCE_BASE_URI")

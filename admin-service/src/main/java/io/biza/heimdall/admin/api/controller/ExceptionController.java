@@ -11,38 +11,12 @@
  *******************************************************************************/
 package io.biza.heimdall.admin.api.controller;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonMappingException.Reference;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
-import io.biza.babelfish.cdr.exceptions.LabelValueEnumValueNotSupportedException;
-import io.biza.babelfish.cdr.support.LabelValueEnumInterface;
-import io.biza.heimdall.shared.component.ExceptionAdvice;
-import io.biza.heimdall.shared.enumerations.DioValidationErrorType;
-import io.biza.heimdall.shared.enumerations.HeimdallExceptionType;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
-import io.biza.heimdall.shared.payloads.dio.ResponseValidationError;
-import io.biza.heimdall.shared.payloads.dio.ValidationError;
+import io.biza.babelfish.spring.controlleradvice.BabelfishExceptionAdvice;
 import lombok.extern.slf4j.Slf4j;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.RollbackException;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 @Slf4j
 @ControllerAdvice
-public class ExceptionController extends ExceptionAdvice {
+public class ExceptionController extends BabelfishExceptionAdvice {
   
 }

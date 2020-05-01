@@ -1,20 +1,22 @@
 babelfish:
-  jwk-file: heimdall-admin.jwks
+  issuer:
+    autoInit: true
+    autoInitRealms: dio-register
+  typeManager:
+    enumerations:
+      packages: io.biza.heimdall.shared.enumerations, io.biza.babelfish.cdr.enumerations
+    forms:
+      packages: io.biza.heimdall.shared.payloads.dio
+  orika:
+    packageBase: io.biza.heimdall.shared.mapper
 heimdall:
-  version: 1.0.0
-  hostname: localhost
-  token_length_hours: 24
+  issuer:
+    id: dio-register
+debug: true
 server:
   port: 9102
   servlet:
     context-path: /dio-register
-  ssl:
-    key-store-type: PKCS12
-    key-store-password: solongandthanksforallthefish
-    key-alias: heimdall-service
-    key-password: solongandthanksforallthefish
-    key-store: heimdall-admin.p12
-    enabled: true  
 spring:
    datasource:
      url: jdbc:h2:file:../localdb/heimdall;AUTO_SERVER=true
@@ -31,5 +33,9 @@ spring:
      hibernate:
        ddl-auto: update
    jackson:
-     default-property-inclusion: non_empty
+     default-property-inclusion: NON_EMPTY
+   devtools:
+     livereload:
+       enabled: false
+
    

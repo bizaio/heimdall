@@ -1,9 +1,9 @@
 package io.biza.heimdall.admin.api;
 
+import io.biza.babelfish.cdr.exceptions.NotFoundException;
+import io.biza.babelfish.cdr.exceptions.ValidationListException;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientApiDelegate;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -40,12 +40,12 @@ public interface BankingDataRecipientApi {
   @Operation(summary = "List all Recipients", description = "List all Recipients",
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_READ})})
-  @ApiResponses(value = {@ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-      description = Constants.RESPONSE_SUCCESSFUL_LIST, content = @Content(
+  @ApiResponses(value = {@ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+      description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_LIST, content = @Content(
           array = @ArraySchema(schema = @Schema(implementation = DioDataRecipient.class))))})
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
-  default ResponseEntity<List<DioDataRecipient>> listRecipientes() {
+  default ResponseEntity<List<DioDataRecipient>> listRecipients() {
     return getDelegate().listRecipients();
   }
 
@@ -53,11 +53,11 @@ public interface BankingDataRecipientApi {
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_READ})})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-          description = Constants.RESPONSE_SUCCESSFUL_READ,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_READ,
           content = @Content(schema = @Schema(implementation = DioDataRecipient.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_NOT_FOUND,
-          description = Constants.RESPONSE_OBJECT_NOT_FOUND)})
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_NOT_FOUND,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_OBJECT_NOT_FOUND)})
   @GetMapping(value = "/{recipientId}", produces = {MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_READ)
   default ResponseEntity<DioDataRecipient> getRecipient(
@@ -69,11 +69,11 @@ public interface BankingDataRecipientApi {
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_WRITE})})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_CREATED,
-          description = Constants.RESPONSE_SUCCESSFUL_CREATE,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_CREATED,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_CREATE,
           content = @Content(schema = @Schema(implementation = DioDataRecipient.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_INPUT_VALIDATION_ERROR,
           content = @Content(array = @ArraySchema(
               schema = @Schema(implementation = ValidationListException.class))))})
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -89,11 +89,11 @@ public interface BankingDataRecipientApi {
       security = {@SecurityRequirement(name = Constants.SECURITY_SCHEME_NAME,
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_WRITE})})
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-          description = Constants.RESPONSE_SUCCESSFUL_UPDATE,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_UPDATE,
           content = @Content(schema = @Schema(implementation = DioDataRecipient.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
-          description = Constants.RESPONSE_INPUT_VALIDATION_ERROR,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_UNPROCESSABLE_ENTITY,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_INPUT_VALIDATION_ERROR,
           content = @Content(array = @ArraySchema(
               schema = @Schema(implementation = ValidationListException.class))))})
   @PutMapping(path = "/{recipientId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -110,11 +110,11 @@ public interface BankingDataRecipientApi {
           scopes = {Constants.SECURITY_SCOPE_RECIPIENT_WRITE})})
 
   @ApiResponses(value = {
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_OK,
-          description = Constants.RESPONSE_SUCCESSFUL_DELETE,
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_OK,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_SUCCESSFUL_DELETE,
           content = @Content(schema = @Schema(implementation = DioDataRecipient.class))),
-      @ApiResponse(responseCode = Constants.RESPONSE_CODE_NOT_FOUND,
-          description = Constants.RESPONSE_OBJECT_NOT_FOUND)})
+      @ApiResponse(responseCode = io.biza.babelfish.spring.Constants.RESPONSE_CODE_NOT_FOUND,
+          description = io.biza.babelfish.spring.Constants.RESPONSE_OBJECT_NOT_FOUND)})
   @DeleteMapping(path = "/{recipientId}")
   @PreAuthorize(Constants.OAUTH2_SCOPE_RECIPIENT_WRITE)
   default ResponseEntity<Void> deleteRecipient(

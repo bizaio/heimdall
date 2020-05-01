@@ -2,11 +2,13 @@ package io.biza.heimdall.register.api.configuration;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
+@ConditionalOnProperty(name = "server.ssl.enabled", havingValue="true")
 @Slf4j
 public class ClientTrustStoreConfiguration implements InitializingBean {
     @Autowired

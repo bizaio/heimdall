@@ -6,8 +6,9 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
+
+import io.biza.babelfish.cdr.exceptions.NotFoundException;
+import io.biza.babelfish.cdr.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 
 public interface BankingDataHolderApiDelegate {

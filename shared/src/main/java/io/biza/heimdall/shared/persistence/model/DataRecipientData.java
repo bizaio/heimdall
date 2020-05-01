@@ -35,7 +35,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import io.biza.babelfish.cdr.enumerations.register.DataRecipientStatusType;
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
-import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
+import io.biza.babelfish.spring.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

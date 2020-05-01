@@ -7,10 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+
+import io.biza.babelfish.cdr.exceptions.NotFoundException;
+import io.biza.babelfish.cdr.exceptions.ValidationListException;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandSoftwareProductApiDelegate;
 import io.biza.heimdall.shared.component.service.SoftwareProductService;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.specifications.SoftwareProductSpecifications;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class BankingDataRecipientBrandSoftwareProductApiDelegateImpl
       UUID recipientId, UUID brandId) {
 
     return ResponseEntity.ok(softwareService
-        .list(SoftwareProductSpecifications.recipientId(recipientId), null)
+        .list(SoftwareProductSpecifications.recipientId(recipientId), null, DioSoftwareProduct.class)
         .toList());
   }
 

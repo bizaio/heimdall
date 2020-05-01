@@ -8,12 +8,12 @@
     </Appenders>
  
     <Loggers>
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="Console" />
         </Root>
- 
+ 		<Logger name="ma.glasnost.orika" level="info"></Logger>
         <!-- LOG "io.biza*" at TRACE level -->
-        <Logger name="io.biza.*" level="trace"></Logger>
+        <Logger name="io.biza" level="trace"></Logger>
     </Loggers>
  
 </Configuration>

@@ -7,10 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+
+import io.biza.babelfish.cdr.exceptions.NotFoundException;
+import io.biza.babelfish.cdr.exceptions.ValidationListException;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.component.service.RecipientService;
-import io.biza.heimdall.shared.exceptions.NotFoundException;
-import io.biza.heimdall.shared.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +30,7 @@ public class BankingDataRecipientApiDelegateImpl implements BankingDataRecipient
 
   @Override
   public ResponseEntity<List<DioDataRecipient>> listRecipients() {
-    return ResponseEntity.ok(recipientService.list(null, null).toList());
+    return ResponseEntity.ok(recipientService.list(null, null, DioDataRecipient.class).toList());
   }
 
   @Override

@@ -32,7 +32,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.register.RegisterAuthType;
-import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
+import io.biza.babelfish.spring.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,7 +65,7 @@ public class DataHolderBrandAuthData {
   @Column(name = "AUTH_TYPE")
   @Enumerated(EnumType.STRING)
   @Builder.Default
-  RegisterAuthType authType = RegisterAuthType.HYBRIDFLOW_JWKS;
+  RegisterAuthType authType = RegisterAuthType.SIGNED_JWT;
 
   @Column(name = "JWKS_ENDPOINT")
   @NotNull

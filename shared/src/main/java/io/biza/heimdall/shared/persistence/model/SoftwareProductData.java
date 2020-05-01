@@ -15,7 +15,6 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -25,11 +24,11 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -38,7 +37,7 @@ import org.hibernate.annotations.Type;
 import io.biza.babelfish.cdr.enumerations.oidc.CDRScope;
 import io.biza.babelfish.cdr.enumerations.register.RegisterSoftwareRole;
 import io.biza.babelfish.cdr.enumerations.register.SoftwareProductStatusType;
-import io.biza.heimdall.shared.persistence.converter.URIDataConverter;
+import io.biza.babelfish.spring.persistence.converter.URIDataConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,7 +57,8 @@ import lombok.ToString;
 public class SoftwareProductData {
 
   @Id
-  @Column(name = "ID", updatable = false)
+  @Column(name = "ID", insertable = false, updatable = false)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Type(type = "uuid-char")
   UUID id;
 
@@ -69,10 +69,6 @@ public class SoftwareProductData {
   @NotNull
   DataRecipientBrandData dataRecipientBrand;
 
-  @OneToMany(mappedBy = "softwareProduct", cascade = CascadeType.ALL)
-  @ToString.Exclude
-  Set<ClientData> clients;
-
   @Column(name = "STATUS")
   @Enumerated(EnumType.STRING)
   SoftwareProductStatusType status;
@@ -80,8 +76,7 @@ public class SoftwareProductData {
   @Column(name = "NAME")
   String name;
 
-  @Column(name = "DESCRIPTION")
-  @Lob
+  @Column(name = "DESCRIPTION", length = 8192)
   String description;
 
   @Column(name = "URI")
