@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 
 import io.biza.babelfish.cdr.exceptions.EncryptionOperationException;
 import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
-import io.biza.babelfish.spring.interfaces.CertificateService;
+import io.biza.babelfish.interfaces.CertificateService;
 import io.biza.heimdall.shared.payloads.requests.dio.RequestCACertificateSign;
 import lombok.extern.slf4j.Slf4j;
 
