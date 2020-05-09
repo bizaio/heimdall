@@ -1,6 +1,7 @@
 package io.biza.heimdall.register.api;
 
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
+import io.biza.babelfish.cdr.exceptions.LabelValueEnumValueNotSupportedException;
 import io.biza.babelfish.cdr.models.requests.register.RequestGetDataHolderBrandsV1;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandListV1;
 import io.biza.heimdall.register.Constants;
@@ -44,12 +45,12 @@ public interface DataHolderApi {
 	@RequestMapping(path = "/brands", method = RequestMethod.GET)
 	@PreAuthorize(Constants.OAUTH2_SCOPE_REGISTER_BANK_READ)
 	default ResponseEntity<ResponseRegisterDataHolderBrandListV1> getBankingDataHolderBrands(
-			@Valid @NotNull @PathVariable(name = "industry", required = true) IndustryType industry,
+			@Valid @NotNull @PathVariable(name = "industry", required = true) String industry,
 			@Valid @RequestParam(name = "updated-since", required = false) OffsetDateTime updatedSince,
 			@Valid @RequestParam(name = "page", required = false, defaultValue = "1") @Min(1) Integer page,
-			@Valid @RequestParam(name = "page-size", required = false, defaultValue = "25") Integer pageSize) {
+			@Valid @RequestParam(name = "page-size", required = false, defaultValue = "25") Integer pageSize) throws LabelValueEnumValueNotSupportedException {
 		return getDelegate().getBankingDataHolderBrands(
-				RequestGetDataHolderBrandsV1.builder().industryType(industry).updatedSince(updatedSince).build(),
+				RequestGetDataHolderBrandsV1.builder().industryType(IndustryType.fromValue(industry)).updatedSince(updatedSince).build(),
 				PageRequest.of(page != null ? page - 1 : 0, pageSize != null ? pageSize : 25));
 	}
 
