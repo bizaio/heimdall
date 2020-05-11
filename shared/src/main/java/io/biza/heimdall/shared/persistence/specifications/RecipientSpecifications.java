@@ -11,16 +11,9 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.persistence.specifications;
 
-import java.time.OffsetDateTime;
-import java.util.UUID;
-import javax.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData;
-import io.biza.heimdall.shared.persistence.model.DataHolderBrandData_;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData;
-import io.biza.heimdall.shared.persistence.model.DataRecipientBrandData_;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData;
 import io.biza.heimdall.shared.persistence.model.DataRecipientData_;
 

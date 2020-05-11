@@ -1,9 +1,9 @@
 package io.biza.heimdall.register.api;
 
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
-import io.biza.babelfish.cdr.exceptions.LabelValueEnumValueNotSupportedException;
 import io.biza.babelfish.cdr.models.requests.register.RequestGetDataHolderBrandsV1;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandListV1;
+import io.biza.babelfish.common.exceptions.LabelValueEnumValueNotSupportedException;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.DataHolderApiDelegate;
 import io.swagger.v3.oas.annotations.Operation;

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import io.biza.babelfish.cdr.models.requests.register.RequestGetDataHolderBrandsV1;
-import io.biza.babelfish.cdr.models.requests.register.RequestGetDataHolderBrandsV1.RequestGetDataHolderBrandsV1Builder;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataHolderBrandListV1;
 
 public interface DataHolderApiDelegate {

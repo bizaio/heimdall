@@ -1,15 +1,15 @@
 package io.biza.heimdall.register.api;
 
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
-import io.biza.babelfish.cdr.exceptions.LabelValueEnumValueNotSupportedException;
-import io.biza.babelfish.cdr.exceptions.NotFoundException;
-import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
-import io.biza.babelfish.cdr.exceptions.SigningOperationException;
-import io.biza.babelfish.cdr.models.payloads.register.registration.SoftwareStatementAssertionV1;
+import io.biza.babelfish.cdr.models.payloads.register.SoftwareStatementAssertionV1;
 import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusListV1;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientListV1;
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusListV1;
 import io.biza.babelfish.cdr.support.RawJson;
+import io.biza.babelfish.common.exceptions.LabelValueEnumValueNotSupportedException;
+import io.biza.babelfish.common.exceptions.NotFoundException;
+import io.biza.babelfish.common.exceptions.NotInitialisedException;
+import io.biza.babelfish.common.exceptions.SigningOperationException;
 import io.biza.heimdall.register.Constants;
 import io.biza.heimdall.register.api.delegate.DataRecipientApiDelegate;
 import io.swagger.v3.oas.annotations.Operation;

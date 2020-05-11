@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
+import io.biza.babelfish.common.exceptions.NotInitialisedException;
 import io.biza.babelfish.oidc.payloads.JWKS;
 import io.biza.babelfish.oidc.requests.ProviderDiscoveryMetadata;
 

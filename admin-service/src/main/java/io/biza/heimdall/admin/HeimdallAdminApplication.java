@@ -9,12 +9,10 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @ComponentScan({"io.biza.heimdall.shared.component", "io.biza.heimdall.shared.loaders",
     "io.biza.heimdall.admin", "io.biza.babelfish.spring"})
-@Slf4j
 public class HeimdallAdminApplication {
 
   public static void main(String[] args) {

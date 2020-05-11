@@ -8,17 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
-import io.biza.babelfish.cdr.exceptions.NotFoundException;
-import io.biza.babelfish.cdr.exceptions.ValidationListException;
+import io.biza.babelfish.common.exceptions.NotFoundException;
+import io.biza.babelfish.common.exceptions.ValidationListException;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientBrandSoftwareProductApiDelegate;
 import io.biza.heimdall.shared.component.service.SoftwareProductService;
 import io.biza.heimdall.shared.payloads.dio.DioSoftwareProduct;
 import io.biza.heimdall.shared.persistence.specifications.SoftwareProductSpecifications;
-import lombok.extern.slf4j.Slf4j;
 
 @Validated
 @Controller
-@Slf4j
 public class BankingDataRecipientBrandSoftwareProductApiDelegateImpl
     implements BankingDataRecipientBrandSoftwareProductApiDelegate {
 
