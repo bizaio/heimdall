@@ -1,0 +1,5 @@
+name: heimdall 
+title: Heimdall
+version: latest
+nav:
+  - modules/ROOT/nav.adoc
