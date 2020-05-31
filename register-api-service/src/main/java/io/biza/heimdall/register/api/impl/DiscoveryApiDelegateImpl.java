@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
-import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
+import io.biza.babelfish.common.exceptions.NotInitialisedException;
 import io.biza.babelfish.interfaces.IssuerService;
 import io.biza.babelfish.oidc.payloads.JWKS;
 import io.biza.heimdall.register.api.delegate.DiscoveryApiDelegate;

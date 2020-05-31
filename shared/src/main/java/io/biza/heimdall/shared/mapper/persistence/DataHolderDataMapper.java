@@ -11,7 +11,7 @@
  *******************************************************************************/
 package io.biza.heimdall.shared.mapper.persistence;
 
-import io.biza.babelfish.cdr.orika.OrikaFactoryConfigurerInterface;
+import io.biza.babelfish.converter.orika.OrikaFactoryConfigurerInterface;
 import io.biza.heimdall.shared.payloads.dio.DioDataHolder;
 import io.biza.heimdall.shared.persistence.model.DataHolderData;
 import ma.glasnost.orika.MapperFactory;

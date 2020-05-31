@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import io.biza.babelfish.cdr.exceptions.NotFoundException;
-import io.biza.babelfish.cdr.exceptions.ValidationListException;
+import io.biza.babelfish.common.exceptions.NotFoundException;
+import io.biza.babelfish.common.exceptions.ValidationListException;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipientBrand;
 
 public interface BankingDataRecipientBrandApiDelegate {

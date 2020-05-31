@@ -1,7 +1,7 @@
 package io.biza.heimdall.admin.api;
 
-import io.biza.babelfish.cdr.exceptions.NotFoundException;
-import io.biza.babelfish.cdr.exceptions.ValidationListException;
+import io.biza.babelfish.common.exceptions.NotFoundException;
+import io.biza.babelfish.common.exceptions.ValidationListException;
 import io.biza.heimdall.admin.Constants;
 import io.biza.heimdall.admin.api.delegate.BankingDataRecipientApiDelegate;
 import io.biza.heimdall.shared.payloads.dio.DioDataRecipient;

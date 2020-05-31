@@ -2,14 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>io.biza</groupId>
+		<artifactId>biza-bom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.biza</groupId>
 	<artifactId>heimdall</artifactId>
 	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Heimdall: Parent Project</name>
 	<description>The Heimdall project is intended to be a sample implementation of the Consumer Data Right register. It is currently being developed by Biza.io as part of it's DataRight Lab initiative.</description>
-	<properties>
+	<!-- <properties>
 		<java.version>11</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
@@ -56,7 +60,7 @@
 		<electronic-thumb.version>0.0.1-SNAPSHOT</electronic-thumb.version>
 		<build-helper-maven-plugin>3.0.0</build-helper-maven-plugin>
 		<maven-replacer-plugin.version>1.5.3</maven-replacer-plugin.version>
-	</properties>
+	</properties> -->
 
 	<scm>
 		<url>https://github.com/bizaio/heimdall</url>
@@ -75,113 +79,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
-				<version>${maven-install-plugin.version}</version>
 				<configuration>
 					<skip>false</skip>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.ragedunicorn.tools.maven</groupId>
-				<artifactId>github-release-maven-plugin</artifactId>
-				<version>${github-release-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>default-cli</id>
-						<configuration>
-							<owner>bizaio</owner>
-							<repository>heimdall</repository>
-							<server>github-oauth</server>
-							<tagName>v${project.version}</tagName>
-							<releaseNotes>./RELEASE_NOTES.md</releaseNotes>
-							<assets>
-								<asset>admin-service/target/heimdall-admin-service-${project.version}.jar</asset>
-								<asset>product-api-service/target/heimdall-register-api-service-${project.version}.jar</asset>
-							</assets>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>${nexus-staging-maven-plugin.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-	<repositories>
-		<repository>
-			<id>oss.sonatype.org-snapshot</id>
-			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<profiles>
-		<profile>
-			<id>release</id>
-			<properties>
-				<skip.npm>false</skip.npm>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>${maven-gpg-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>${maven-javadoc-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>${maven-source-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>

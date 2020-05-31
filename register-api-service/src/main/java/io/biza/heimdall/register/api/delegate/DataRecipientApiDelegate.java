@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
-import io.biza.babelfish.cdr.exceptions.NotFoundException;
-import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
-import io.biza.babelfish.cdr.exceptions.SigningOperationException;
+import io.biza.babelfish.common.exceptions.NotFoundException;
+import io.biza.babelfish.common.exceptions.NotInitialisedException;
+import io.biza.babelfish.common.exceptions.SigningOperationException;
 import io.biza.babelfish.cdr.models.responses.register.DataRecipientsStatusListV1;
 import io.biza.babelfish.cdr.models.responses.register.ResponseRegisterDataRecipientListV1;
 import io.biza.babelfish.cdr.models.responses.register.SoftwareProductsStatusListV1;

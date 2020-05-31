@@ -1,6 +1,6 @@
 package io.biza.heimdall.register.api;
 
-import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
+import io.biza.babelfish.common.exceptions.NotInitialisedException;
 import io.biza.babelfish.oidc.payloads.JWKS;
 import io.biza.heimdall.register.api.delegate.DiscoveryApiDelegate;
 import io.swagger.v3.oas.annotations.Operation;

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import io.biza.babelfish.cdr.enumerations.register.IndustryType;
-import io.biza.babelfish.cdr.exceptions.NotFoundException;
-import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
-import io.biza.babelfish.cdr.exceptions.SigningOperationException;
+import io.biza.babelfish.common.exceptions.NotFoundException;
+import io.biza.babelfish.common.exceptions.NotInitialisedException;
+import io.biza.babelfish.common.exceptions.SigningOperationException;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.DataRecipientStatusV1;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.RegisterDataRecipientV1;
 import io.biza.babelfish.cdr.models.payloads.register.recipient.SoftwareProductStatusV1;

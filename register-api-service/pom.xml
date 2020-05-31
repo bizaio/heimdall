@@ -52,23 +52,17 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>${springdoc-openapi-ui.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-security</artifactId>
-			<version>${springdoc-openapi-ui.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-data-rest</artifactId>
-			<version>${springdoc-openapi-ui.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.biza</groupId>
@@ -81,19 +75,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-core</artifactId>
-			<version>${swagger-core.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -131,17 +121,14 @@
 		<dependency>
 			<groupId>io.biza</groupId>
 			<artifactId>babelfish-oidc</artifactId>
-			<version>${babelfish.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.biza</groupId>
 			<artifactId>babelfish-spring</artifactId>
-			<version>${babelfish.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.biza</groupId>
-			<artifactId>electronic-thumb-client</artifactId>
-			<version>${electronic-thumb.version}</version>
+			<artifactId>thumb-client</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -190,16 +177,6 @@
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
-				<version>${maven-replacer-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>replace-version-number</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<basedir>${project.basedir}/src/main/java</basedir>
 					<includes>
@@ -217,95 +194,13 @@
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>${dockerfile-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<repository>${docker.image.prefix}/${project.artifactId}</repository>
-					<tag>${project.version}</tag>
-					<buildArgs>
-						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-					</buildArgs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>${build-helper-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>reserve-tomcat-port</id>
-						<goals>
-							<goal>reserve-network-port</goal>
-						</goals>
-						<phase>process-resources</phase>
-						<configuration>
-							<skip>${skipDynamicServer}</skip>
-							<portNames>
-								<portName>tomcat.http.port</portName>
-							</portNames>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${spring-boot.version}</version>
-
-				<executions>
-					<execution>
-						<id>pre-integration-test</id>
-						<goals>
-							<goal>stop</goal>
-							<goal>start</goal>
-						</goals>
-						<configuration>
-							<profiles>
-								<profile>test</profile>
-							</profiles>
-							<skip>${skipDynamicServer}</skip>
-							<arguments>
-								<argument>--server.port=${tomcat.http.port}
-								</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>post-integration-test</id>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-						<configuration>
-							<skip>${skipDynamicServer}</skip>
-						</configuration>
-					</execution>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<requiresUnpack>
-								<dependency>
-									<groupId>io.biza</groupId>
-									<artifactId>heimdall-register-api-service
-									</artifactId>
-								</dependency>
-							</requiresUnpack>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<trimStackTrace>false</trimStackTrace>
 				</configuration>
@@ -313,56 +208,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${maven-failsafe-plugin.version}</version>
-				<executions>
-					<execution>
-						<phase>integration-test</phase>
-						<configuration>
-							<systemPropertyVariables>
-								<register-auth-uri>${register-auth-uri}</register-auth-uri>
-								<register-resource-uri>${register-resource-uri}</register-resource-uri>
-							</systemPropertyVariables>
-						</configuration>
-
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>test</id>
-			<properties>
-				<spring-boot.run.profiles>test</spring-boot.run.profiles>
-				<skipDynamicServer>false</skipDynamicServer>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<spring-boot.run.profiles>dev</spring-boot.run.profiles>
-				<skipDynamicServer>true</skipDynamicServer>
-				<register-auth-uri>https://localhost:9103/dio-auth</register-auth-uri>
-				<register-resource-uri>https://localhost:9101/cdr-register</register-resource-uri>
-				<tomcat.http.port>9101</tomcat.http.port>
-			</properties>
-		</profile>
-		<profile>
-			<id>demo</id>
-			<properties>
-				<spring-boot.run.profiles>demo</spring-boot.run.profiles>
-				<skipDynamicServer>true</skipDynamicServer>
-				<register-auth-uri>https://auth.register.demo.cdr.zone/dio-auth</register-auth-uri>
-				<register-resource-uri>https://api.register.demo.cdr.zone/cdr-register</register-resource-uri>
-				<tomcat.http.port>9101</tomcat.http.port>
-			</properties>
-		</profile>
-	</profiles>
 </project>

@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import io.biza.babelfish.cdr.Constants;
-import io.biza.babelfish.cdr.exceptions.AttributeNotSupportedException;
-import io.biza.babelfish.cdr.exceptions.NotInitialisedException;
 import io.biza.babelfish.cdr.models.responses.ResponseErrorListV1;
+import io.biza.babelfish.common.exceptions.AttributeNotSupportedException;
+import io.biza.babelfish.common.exceptions.NotInitialisedException;
 import io.biza.babelfish.spring.controlleradvice.CdrExceptionControllerAdvice;
 
 @ControllerAdvice
